@@ -87,3 +87,10 @@ STORAGES = {
         "BACKEND": "whitenoise.storage.CompressedStaticFilesStorage",
     },
 }
+
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': Path(os.getenv('DATABASE_PATH', BASE_DIR / 'db.sqlite3')),
+    }
+}
