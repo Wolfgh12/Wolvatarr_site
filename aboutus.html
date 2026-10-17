@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About Us | Wolvatarr Digital Architects</title>
+    <link rel="icon" type="image/png" href="images/Wolf.png">
+    <style>
+        :root {
+            --sea-deep: #000a12;
+            --sea-mid: #003355;
+            --sea-bright: #00d4ff;
+            --glass: rgba(255, 255, 255, 0.03);
+            --text: #e0f2fe;
+            --accent: #00ffcc;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, sans-serif;
+            cursor: default;
+            scroll-behavior: smooth;
+        }
+
+        /* Updated: Added .howl-trigger to pointer cursors */
+        a, button, .interactive-card, .howl-trigger { cursor: pointer; }
+
+        body {
+            background-color: var(--sea-deep);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            position: relative;
+        }
+
+        /* --- PRELOADER --- */
+        #loader {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--sea-deep);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+
+        .loader-content img {
+            width: 150px;
+            filter: drop-shadow(0 0 20px var(--sea-bright));
+            animation: howl-pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes howl-pulse {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.8; }
+            50% { transform: scale(1.1) rotate(-5deg); opacity: 1; filter: drop-shadow(0 0 40px var(--sea-bright)); }
+        }
+
+        .loader-text {
+            margin-top: 20px;
+            letter-spacing: 5px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--sea-bright);
+            opacity: 0.6;
+        }
+
+        /* --- HOWL COMMAND CENTER STYLES --- */
+        .howl-trigger {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            z-index: 9999;
+            background: var(--glass);
+            border: 1px solid var(--sea-bright);
+            padding: 15px 25px;
+            border-radius: 12px;
+            backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
+        }
+
+        .howl-trigger:hover {
+            background: rgba(0, 212, 255, 0.1);
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .howl-pulse-icon {
+            width: 12px;
+            height: 12px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        .howl-label {
+            font-size: 0.7rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text);
+        }
+
+        /* Consistent Background Branding */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('images/Wolf2.png') center/cover no-repeat;
+            opacity: 0.05;
+            z-index: -1;
+        }
+
+        /* Mouse Glow Effect */
+        #bg-glow {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle 400px at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(0, 212, 255, 0.08), transparent 80%);
+            z-index: -1;
+            pointer-events: none;
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 8%;
+            position: fixed;
+            width: 100%;
+            backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 1000;
+        }
+
+        .logo-img { height: 60px; transition: 0.3s; }
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            margin-left: 25px;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.7;
+            transition: 0.3s;
+        }
+        .nav-links a:hover { opacity: 1; color: var(--sea-bright); }
+
+        /* About Hero */
+        .about-hero {
+            padding: 200px 10% 100px;
+            text-align: center;
+        }
+
+        .about-hero h1 {
+            font-size: clamp(3rem, 10vw, 6rem);
+            font-weight: 900;
+            letter-spacing: -2px;
+            margin-bottom: 20px;
+        }
+
+        .highlight { color: var(--sea-bright); text-shadow: 0 0 20px rgba(0, 212, 255, 0.3); }
+
+        /* Narrative Section */
+        .narrative {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 80px;
+            padding: 100px 10%;
+            align-items: center;
+        }
+
+        .narrative-text h2 {
+            font-size: 2.5rem;
+            margin-bottom: 20px;
+            color: var(--sea-bright);
+        }
+
+        .narrative-text p {
+            font-size: 1.1rem;
+            color: #94a3b8;
+            margin-bottom: 20px;
+        }
+
+        .vision-box {
+            background: var(--glass);
+            padding: 40px;
+            border-radius: 24px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(10px);
+        }
+
+        /* Team / Founder Section */
+        .founder-section {
+            padding: 100px 10%;
+            text-align: center;
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        .founder-card {
+            max-width: 400px;
+            margin: 150px auto 50px;
+            padding: 40px;
+            background: linear-gradient(145deg, rgba(0, 212, 255, 0.05), transparent);
+            border-radius: 40px;
+            border: 1px solid var(--sea-bright);
+            position: relative;
+        }
+
+        /* --- UPDATED FOUNDER IMAGE --- */
+        .founder-img {
+            width: 150px;
+            height: 150px;
+            margin: -110px auto 20px;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+
+        .flip-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transition: transform 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+            transform-style: preserve-3d;
+        }
+
+        .founder-img:hover .flip-inner {
+            transform: rotateY(180deg);
+        }
+
+        .flip-front, .flip-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            border-radius: 50%;
+            border: 4px solid var(--sea-bright); 
+            box-shadow: 0 0 30px var(--sea-bright);
+            overflow: hidden;
+            background: var(--sea-deep);
+        }
+
+        .flip-back {
+            transform: rotateY(180deg);
+        }
+
+        .flip-front img, .flip-back img { 
+            width: 100%; 
+            height: 100%; 
+            object-fit: cover; 
+        }
+
+        /* Values Grid */
+        .values-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            padding: 100px 10%;
+        }
+
+        .value-card {
+            padding: 40px;
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 20px;
+            border-bottom: 3px solid transparent;
+            transition: 0.3s;
+        }
+
+        .value-card:hover {
+            background: rgba(255, 255, 255, 0.05);
+            border-bottom-color: var(--accent);
+            transform: translateY(-10px);
+        }
+
+        footer {
+            padding: 80px 10%;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+        }
+
+        /* Back to Top Button */
+        #backToTop {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            color: var(--sea-bright);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            text-decoration: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+            z-index: 9999;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            cursor: pointer;
+        }
+
+        #backToTop.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #backToTop:hover {
+            background: var(--sea-bright);
+            color: var(--sea-deep);
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px var(--sea-bright);
+        }
+
+        /* Electric Surge Animation */
+        .electric-surge {
+            animation: surge 0.5s ease-out forwards;
+        }
+
+        @keyframes surge {
+            0% { box-shadow: 0 0 0 0 rgba(0, 212, 255, 0.8); }
+            50% { box-shadow: 0 0 50px 25px rgba(0, 212, 255, 0.5); transform: scale(1.3); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 212, 255, 0); transform: scale(1); }
+        }
+
+        @media (max-width: 900px) {
+            .narrative { grid-template-columns: 1fr; text-align: center; }
+        }
+    </style>
+</head>
+<body>
+
+    <div id="loader">
+        <div class="loader-content">
+            <img src="images/Wolf2.png" alt="Wolf Icon">
+        </div>
+        <div class="loader-text">Summoning Excellence...</div>
+    </div>
+
+    <div class="howl-trigger" onclick="wolfHowl()">
+        <div class="howl-pulse-icon"></div>
+        <span class="howl-label">Wolf Command: Howl</span>
+    </div>
+
+    <div id="bg-glow"></div>
+
+    <nav>
+        <a href="index.html" style="display: flex; align-items: center; text-decoration: none; gap: 10px;">
+            <img src="images/Wolf2.png" alt="W" class="logo-img">
+            <span style="font-weight: 900; letter-spacing: 4px; color: var(--text); font-size: 1.2rem;">WOLVATARR</span>
+        </a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="aboutus.html" style="opacity: 1; color: var(--sea-bright);">About Us</a>
+            <a href="services.html">Services</a>
+            <a href="portfolio.html">Portfolio</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </nav>
+
+    <header class="about-hero">
+        <h1>We Build <span class="highlight">The Future.</span></h1>
+        <p style="max-width: 700px; margin: 0 auto; color: #94a3b8; font-size: 1.2rem;">
+            Wolvatarr is a multidisciplinary design and engineering powerhouse based in Accra, dedicated to transforming bold ideas into digital reality through elite software craftsmanship.
+        </p>
+    </header>
+
+    <section class="narrative">
+        <div class="narrative-text">
+            <h2>The Wolvatarr Story</h2>
+            <p>Wolvatarr was born out of a necessity for superior digital ecosystems. In an era where "good enough" is the standard, we chose to be the exception. We don't just build websites; we engineer high-ROI growth engines that combine psychological UI/UX with unbreakable, high-performance backend architectures.</p>
+            <p>Our journey is rooted in the belief that African tech should lead the global stage. By leveraging agentic AI orchestration, custom automation, and advanced Full-Stack Software Engineering, we reduce the distance between a visionary concept and a market-dominant product.</p>
+            <p>At Wolvatarr, we don't believe in templates. We believe in <strong>Digital Architecture</strong>—the precise intersection of mission-critical engineering and sophisticated branding.</p>
+            <p>Our collaborative approach ensures that every pixel and every line of code serves a strategic purpose. From administrative portal hardening to interactive e-commerce marketplaces, we handle the technical complexity so you can focus on scale.</p>
+        </div>
+        <div class="vision-box">
+            <h3 style="color: var(--accent); margin-bottom: 10px; letter-spacing: 1px;">01. OUR MISSION</h3>
+            <p style="font-size: 0.95rem; opacity: 0.9; margin-bottom: 20px; line-height: 1.7;">
+                To deliver a unified ecosystem of digital excellence—merging world-class web engineering, cinematic video production, and elite graphic design. We are committed to building the infrastructure and visual identity that ambitious global brands need to dominate their markets.
+            </p>
+            <hr style="margin: 25px 0; opacity: 0.1;">
+            <h3 style="color: var(--accent); margin-bottom: 10px; letter-spacing: 1px;">02. OUR VISION</h3>
+            <p style="font-size: 0.95rem; opacity: 0.9; line-height: 1.7;">
+                To be the world’s premier "Digital Architect," where code, motion, and design converge. We envision a future where Wolvatarr is the undisputed gold standard for full-spectrum innovation, bridging the gap between human imagination and multi-platform execution.
+            </p>
+        </div>
+    </section>
+
+    <section class="founder-section">
+        <h2 style="font-size: 2.5rem; margin-bottom: 80px;">The <span class="highlight">Lead Architect</span></h2>
+        <div class="founder-card">
+            <div class="founder-img">
+                <div class="flip-inner">
+                    <div class="flip-front">
+                        <img src="images/Wolf.png" alt="Wolf Logo">
+                    </div>
+                    <div class="flip-back">
+                        <img src="images/ceo.jpg" alt="CEO Portrait">
+                    </div>
+                </div>
+            </div>
+            <h3 style="font-size: 1.8rem; margin-bottom: 5px;">Nana Yaw Awuah</h3>
+            <p style="color: var(--sea-bright); text-transform: uppercase; letter-spacing: 2px; font-size: 0.8rem; margin-bottom: 20px;">Founder & Lead Engineer</p>
+            <p style="font-size: 0.9rem; opacity: 0.7; line-height: 1.8;">
+                Known in the tech ecosystem as "Wolf," Nana Yaw is a full-stack specialist and digital marketing strategist. With a deep mastery of Python, Django, and modern UI fundamentals, he leads Wolvatarr with a "Security-First" and "Aesthetics-Driven" mindset, ensuring every project is a masterpiece of function and form.
+            </p>
+        </div>
+    </section>
+
+    <section class="values-grid">
+        <div class="value-card">
+            <h4 style="color: var(--sea-bright); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">Engineering Excellence</h4>
+            <p style="font-size: 0.85rem; opacity: 0.6;">We write clean, scalable code using the Django framework and Vanilla JS, ensuring your infrastructure is built to stand the test of time and massive traffic.</p>
+        </div>
+        <div class="value-card">
+            <h4 style="color: var(--sea-bright); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">Visual Dominance</h4>
+            <p style="font-size: 0.85rem; opacity: 0.6;">If it doesn't look elite, it's not Wolvatarr. We focus on premium, dark-themed UI/UX with neon accents that capture attention and build immediate brand authority.</p>
+        </div>
+        <div class="value-card">
+            <h4 style="color: var(--sea-bright); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">Data-Driven Marketing</h4>
+            <p style="font-size: 0.85rem; opacity: 0.6;">Beyond code, we optimize for growth. Our strategies include SEO, PPC, and Conversion Rate Optimization to ensure your digital presence generates tangible ROI.</p>
+        </div>
+        <div class="value-card">
+            <h4 style="color: var(--sea-bright); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 1px;">Security & Performance</h4>
+            <p style="font-size: 0.85rem; opacity: 0.6;">We implement administrative hardening and custom security protocols, protecting your data while maintaining lightning-fast load times.</p>
+        </div>
+    </section>
+
+    <footer>
+        <p style="font-weight: 900; letter-spacing: 6px; margin-bottom: 10px; color: var(--text); font-size: 1.1rem;">WOLVATARR</p>
+        <p style="opacity: 0.4; font-size: 0.85rem; letter-spacing: 1px;">&copy; 2026 THE DIGITAL ARCHITECTS</p>
+        <p style="margin-top: 40px; font-size: 1.2rem; font-weight: 700; color: var(--sea-bright); display: flex; align-items: center; justify-content: center; gap: 0;">
+            Developed by Wolf<img src="images/Wolf2.png" alt="Wolf Icon" style="width: 70px; height: auto; filter: drop-shadow(0 0 15px rgba(0, 212, 255, 0.3)); margin: 0 5px;"> +233 27 506 3004
+        </p>
+        <p style="font-size: 0.75rem; margin-top: 30px; opacity: 0.3; letter-spacing: 3px; text-transform: uppercase;">
+            Accra | Ghana | Global
+        </p>
+    </footer>
+
+    <a href="#" id="backToTop" onclick="initiateBeam(event)" title="Back to Top">↑</a>
+
+    <script>
+        // 3-Second Loader Logic
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const loader = document.getElementById('loader');
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.style.visibility = 'hidden';
+                }, 800);
+            }, 3000); 
+        });
+
+        // WOLF HOWL FUNCTION (Audio only)
+        function wolfHowl() {
+            const audio = new Audio('audio/wolf sound.mp3'); 
+            audio.play().catch(e => {
+                console.warn("Audio playback was blocked. Interaction required.");
+            });
+        }
+
+        const backToTop = document.getElementById("backToTop");
+
+        // Scroll Logic for Back to Top
+        window.onscroll = function() {
+            if (document.body.scrollTop > 300 || document.documentElement.scrollTop > 300) {
+                backToTop.classList.add("show");
+            } else {
+                backToTop.classList.remove("show");
+            }
+        };
+
+        function initiateBeam(e) {
+            e.preventDefault();
+            backToTop.classList.add('electric-surge');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            setTimeout(() => {
+                backToTop.classList.remove('electric-surge');
+            }, 600);
+        }
+
+        // Mouse Glow Tracking Logic
+        document.addEventListener('mousemove', (e) => {
+            const x = (e.clientX / window.innerWidth) * 100;
+            const y = (e.clientY / window.innerHeight) * 100;
+            document.documentElement.style.setProperty('--mouse-x', x + '%');
+            document.documentElement.style.setProperty('--mouse-y', y + '%');
+        });
+    </script>
+<script src="assets/js/wolf-effects.js"></script>
+</body>
+</html>

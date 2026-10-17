@@ -1,0 +1,1471 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{% block title %}Wolvatarr | The Digital Architects{% endblock %}</title>
+    <link rel="icon" type="image/png" href="{% static 'images/Wolf.png' %}">
+    
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&family=JetBrains+Mono:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Global Shared Styling -->
+    <style>
+        :root {
+            --sea-deep: #000913;
+            --sea-mid: #00223a;
+            --sea-bright: #00d4ff;
+            --glass: rgba(255, 255, 255, 0.03);
+            --glass-border: rgba(0, 212, 255, 0.15);
+            --text: #e0f2fe;
+            --text-dim: #94a3b8;
+            --accent: #00ffcc;
+            --surge-color: rgba(0, 212, 255, 0.85);
+            --depth-shadow: 0 25px 60px rgba(0, 0, 0, 0.85);
+            --font-mono: 'JetBrains Mono', monospace;
+            --font-main: 'Inter', system-ui, -apple-system, sans-serif;
+            --theme-transition: all 0.45s cubic-bezier(0.16, 1, 0.3, 1);
+
+            /* --- HIGH-VISIBILITY WOLF CLAW CURSORS (PURE CSS VECTOR) --- */
+            --cursor-claw: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M2 2 C6 5 9 10 10 17 C8 15 6 13 4 13 C3 9 2 5 2 2 Z' fill='%2300d4ff' stroke='%23000000' stroke-width='2' stroke-linejoin='round'/%3E%3Cpath d='M9 3 C13 7 15 12 16 19 C14 17 12 15 10 16 C9 11 9 6 9 3 Z' fill='%2300d4ff' stroke='%23000000' stroke-width='2' stroke-linejoin='round'/%3E%3Cpath d='M16 6 C20 10 22 15 22 22 C20 20 18 18 17 19 C16 14 16 9 16 6 Z' fill='%2300d4ff' stroke='%23000000' stroke-width='2' stroke-linejoin='round'/%3E%3Cpath d='M4 15 C10 16 16 18 21 22 C18 26 9 26 4 15 Z' fill='%2300182c' stroke='%2300d4ff' stroke-width='1.5'/%3E%3Cpath d='M3 4 L6 13 M10 5 L13 15 M17 8 L19 17' stroke='%23ffffff' stroke-width='1.2' stroke-linecap='round'/%3E%3C/svg%3E") 2 2, auto;
+
+            --cursor-claw-hover: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M2 2 C6 5 9 10 10 17 C8 15 6 13 4 13 C3 9 2 5 2 2 Z' fill='%2300ffcc' stroke='%23000000' stroke-width='2' stroke-linejoin='round'/%3E%3Cpath d='M9 2 C13 6 16 11 17 19 C15 17 13 15 11 16 C10 11 9 5 9 2 Z' fill='%2300ffcc' stroke='%23000000' stroke-width='2' stroke-linejoin='round'/%3E%3Cpath d='M17 4 C21 8 23 14 24 22 C22 20 20 18 18 19 C17 14 17 8 17 4 Z' fill='%2300ffcc' stroke='%23000000' stroke-width='2' stroke-linejoin='round'/%3E%3Cpath d='M4 15 C10 16 17 18 22 22 C19 27 9 27 4 15 Z' fill='%23003a2f' stroke='%2300ffcc' stroke-width='1.5'/%3E%3Cpath d='M3 4 L7 13 M10 4 L14 15 M18 6 L20 18' stroke='%23ffffff' stroke-width='1.2' stroke-linecap='round'/%3E%3C/svg%3E") 2 2, pointer;
+        }
+
+        /* --- ALPHA OVERCLOCK THEME (RED SHIFT CLAW PROTOCOL) --- */
+        body.alpha-mode {
+            --sea-deep: #0e0205;
+            --sea-mid: #2b040a;
+            --sea-bright: #ff0055;
+            --accent: #ffaa00;
+            --glass-border: rgba(255, 0, 85, 0.25);
+            --surge-color: rgba(255, 0, 85, 0.9);
+            --text: #ffe4e6;
+
+            --cursor-claw: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M2 2 C6 5 9 10 10 17 C8 15 6 13 4 13 C3 9 2 5 2 2 Z' fill='%23ff0055' stroke='%23000000' stroke-width='2' stroke-linejoin='round'/%3E%3Cpath d='M9 3 C13 7 15 12 16 19 C14 17 12 15 10 16 C9 11 9 6 9 3 Z' fill='%23ff0055' stroke='%23000000' stroke-width='2' stroke-linejoin='round'/%3E%3Cpath d='M16 6 C20 10 22 15 22 22 C20 20 18 18 17 19 C16 14 16 9 16 6 Z' fill='%23ff0055' stroke='%23000000' stroke-width='2' stroke-linejoin='round'/%3E%3Cpath d='M4 15 C10 16 16 18 21 22 C18 26 9 26 4 15 Z' fill='%233a0010' stroke='%23ff0055' stroke-width='1.5'/%3E%3Cpath d='M3 4 L6 13 M10 5 L13 15 M17 8 L19 17' stroke='%23ffffff' stroke-width='1.2' stroke-linecap='round'/%3E%3C/svg%3E") 2 2, auto;
+
+            --cursor-claw-hover: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='32' height='32' viewBox='0 0 32 32'%3E%3Cpath d='M2 2 C6 5 9 10 10 17 C8 15 6 13 4 13 C3 9 2 5 2 2 Z' fill='%23ffaa00' stroke='%23000000' stroke-width='2' stroke-linejoin='round'/%3E%3Cpath d='M9 2 C13 6 16 11 17 19 C15 17 13 15 11 16 C10 11 9 5 9 2 Z' fill='%23ffaa00' stroke='%23000000' stroke-width='2' stroke-linejoin='round'/%3E%3Cpath d='M17 4 C21 8 23 14 24 22 C22 20 20 18 18 19 C17 14 17 8 17 4 Z' fill='%23ffaa00' stroke='%23000000' stroke-width='2' stroke-linejoin='round'/%3E%3Cpath d='M4 15 C10 16 17 18 22 22 C19 27 9 27 4 15 Z' fill='%233a2000' stroke='%23ffaa00' stroke-width='1.5'/%3E%3Cpath d='M3 4 L7 13 M10 4 L14 15 M18 6 L20 18' stroke='%23ffffff' stroke-width='1.2' stroke-linecap='round'/%3E%3C/svg%3E") 2 2, pointer;
+        }
+
+        /* 1. UNIVERSAL BOX-SIZING & BASE RESET */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        /* 2. STRICT VIEWPORT BOUNDS (PREVENTS MOBILE HORIZONTAL SCROLL) */
+        html, body {
+            width: 100%;
+            max-width: 100%;
+            overflow-x: clip;
+            position: relative;
+            font-family: var(--font-main);
+            cursor: var(--cursor-claw);
+            -webkit-text-size-adjust: 100%;
+        }
+
+        @supports not (overflow-x: clip) {
+            html, body {
+                overflow-x: hidden;
+            }
+        }
+
+        a, button, .btn, .card, #backToTop, .howl-trigger, .mode-switcher, .spec-pill, .q-tag, .filter-btn, .view-gallery-btn, .arch-layer-card, .arena-tab, [onclick] {
+            cursor: var(--cursor-claw-hover);
+        }
+
+        input, textarea, select {
+            cursor: text;
+        }
+
+        body {
+            background-color: var(--sea-deep);
+            color: var(--text);
+            line-height: 1.6;
+            transition: var(--theme-transition);
+        }
+
+        /* 3. UNIVERSAL MEDIA & TEXT WRAPPING GUARD FOR SUBPAGES */
+        img, picture, video, canvas, svg, iframe {
+            max-width: 100%;
+            height: auto;
+        }
+
+        p, h1, h2, h3, h4, h5, h6, span, a {
+            overflow-wrap: break-word;
+        }
+
+        pre, code {
+            white-space: pre-wrap;
+            word-break: break-word;
+            max-width: 100%;
+            overflow-x: auto;
+        }
+
+        table {
+            display: block;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: auto;
+            -webkit-overflow-scrolling: touch;
+        }
+
+        /* Persistent Wolf Watermark */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url("{% static 'images/Wolvatarr_main_logo.png' %}") center 48% / min(88vw, 1200px) auto no-repeat;
+            opacity: 0.11;
+            z-index: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease, filter 0.5s ease;
+        }
+
+        body.alpha-mode::before {
+            opacity: 0.18;
+            filter: hue-rotate(140deg) saturate(1.8);
+        }
+
+        /* Constellation Particle Canvas */
+        #packMeshCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 1;
+            opacity: 0.7;
+        }
+
+        #rippleCanvas {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 9998;
+        }
+
+        /* Ambient Cursor Light */
+        .ambient-light {
+            position: fixed;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.08) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 1;
+            transform: translate(-50%, -50%);
+            filter: blur(50px);
+            transition: background 0.4s ease;
+        }
+
+        body.alpha-mode .ambient-light {
+            background: radial-gradient(circle, rgba(255, 0, 85, 0.12) 0%, transparent 70%);
+        }
+
+        /* Loader */
+        #loader {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--sea-deep);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+
+        .loader-content img {
+            width: clamp(200px, 26vw, 300px);
+            max-width: 85vw;
+            height: auto;
+            object-fit: contain;
+            filter: drop-shadow(0 0 35px var(--sea-bright));
+            animation: howl-pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes howl-pulse {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.85; }
+            50% { transform: scale(1.08) rotate(-4deg); opacity: 1; filter: drop-shadow(0 0 45px var(--sea-bright)); }
+        }
+
+        .loader-text {
+            margin-top: 20px;
+            font-family: var(--font-mono);
+            letter-spacing: 5px;
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            color: var(--sea-bright);
+            opacity: 0.7;
+        }
+
+        /* Navigation */
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 8%;
+            position: fixed;
+            width: 100%;
+            backdrop-filter: blur(28px) saturate(200%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+            z-index: 1000;
+            transition: var(--theme-transition);
+        }
+
+        .logo-wrap {
+            display: flex;
+            align-items: center;
+            text-decoration: none;
+            gap: 12px;
+        }
+
+        .logo-img {
+            height: 52px;
+            width: auto;
+            filter: drop-shadow(0 0 14px rgba(0, 212, 255, 0.45));
+            transition: transform 0.3s ease;
+        }
+
+        .logo-wrap:hover .logo-img { transform: scale(1.08) rotate(-3deg); }
+
+        .brand-title {
+            font-weight: 900;
+            letter-spacing: 4px;
+            color: var(--text);
+            font-size: 1.25rem;
+        }
+
+        .nav-center {
+            display: flex;
+            align-items: center;
+        }
+
+        .nav-links {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .nav-links a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            letter-spacing: 1.5px;
+            padding: 9px 18px;
+            border-radius: 40px;
+            border: 1px solid transparent;
+            background: transparent;
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            position: relative;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+        }
+
+        .nav-links a:hover {
+            color: #ffffff;
+            background: rgba(0, 212, 255, 0.08);
+            border-color: rgba(0, 212, 255, 0.25);
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+            transform: translateY(-1px);
+        }
+
+        .nav-links a.active {
+            color: #ffffff;
+            font-weight: 900;
+            background: linear-gradient(135deg, rgba(0, 212, 255, 0.22) 0%, rgba(0, 255, 204, 0.08) 100%);
+            border: 1px solid var(--sea-bright);
+            box-shadow: 0 0 25px rgba(0, 212, 255, 0.45), inset 0 0 14px rgba(0, 212, 255, 0.25);
+            text-shadow: 0 0 12px rgba(0, 212, 255, 0.9);
+            transform: translateY(-1px);
+        }
+
+        .nav-links a.active::before {
+            content: '';
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 10px var(--accent), 0 0 16px var(--accent);
+            margin-right: 8px;
+            animation: nav-pulse-dot 2s infinite ease-in-out;
+        }
+
+        @keyframes nav-pulse-dot {
+            0%, 100% { transform: scale(1); opacity: 0.7; }
+            50% { transform: scale(1.35); opacity: 1; filter: drop-shadow(0 0 8px var(--accent)); }
+        }
+
+        .mode-switcher {
+            margin-left: 24px;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 18px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid var(--glass-border);
+            border-radius: 30px;
+            font-family: var(--font-mono);
+            font-size: 0.7rem;
+            color: var(--sea-bright);
+            letter-spacing: 1px;
+            transition: all 0.3s ease;
+            outline: none;
+        }
+
+        .mode-switcher:hover {
+            background: rgba(0, 212, 255, 0.1);
+            transform: translateY(-2px);
+            box-shadow: 0 0 20px var(--glass-border);
+        }
+
+        .mode-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background: var(--sea-bright);
+            box-shadow: 0 0 8px var(--sea-bright);
+            transition: all 0.3s ease;
+        }
+
+        body.alpha-mode .mode-switcher {
+            border-color: rgba(255, 0, 85, 0.4);
+            color: #ff0055;
+        }
+
+        body.alpha-mode .mode-indicator {
+            background: #ff0055;
+            box-shadow: 0 0 10px #ff0055;
+        }
+
+        .howl-trigger {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            z-index: 9999;
+            background: var(--glass);
+            border: 1px solid var(--sea-bright);
+            padding: 14px 24px;
+            border-radius: 12px;
+            backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.15);
+        }
+
+        .howl-trigger:hover {
+            background: rgba(0, 212, 255, 0.12);
+            transform: scale(1.05);
+            box-shadow: 0 0 30px var(--surge-color);
+        }
+
+        .howl-pulse-icon {
+            width: 12px;
+            height: 12px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        .howl-label {
+            font-size: 0.72rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-family: var(--font-mono);
+            color: var(--text);
+        }
+
+        .electric-surge { animation: surge 0.5s ease-out forwards; }
+        @keyframes surge {
+            0% { box-shadow: 0 0 0 0 var(--surge-color); }
+            50% { box-shadow: 0 0 50px 25px var(--surge-color); transform: scale(1.3); }
+            100% { box-shadow: 0 0 0 0 var(--surge-color); transform: scale(1); }
+        }
+
+        #backToTop {
+            position: fixed;
+            bottom: 30px;
+            left: 30px;
+            right: auto;
+            width: 52px;
+            height: 52px;
+            background: rgba(0, 15, 30, 0.75);
+            border: 1px solid var(--sea-bright);
+            backdrop-filter: blur(20px);
+            color: var(--sea-bright);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+            text-decoration: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 9999;
+            box-shadow: 0 0 25px rgba(0, 212, 255, 0.25);
+        }
+
+        #backToTop.show { opacity: 1; visibility: visible; }
+        #backToTop:hover {
+            background: var(--sea-bright);
+            color: var(--sea-deep);
+            transform: translateY(-5px) scale(1.08);
+            box-shadow: 0 0 30px var(--surge-color);
+        }
+
+        /* 4. MAIN WRAPPER BOUNDS */
+        main {
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 100%;
+            overflow-x: clip;
+        }
+
+        @supports not (overflow-x: clip) {
+            main {
+                overflow-x: hidden;
+            }
+        }
+
+        .active-intercept-shield-wrap {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 30px 10% 80px;
+            position: relative;
+            z-index: 2;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .active-intercept-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 18px;
+            padding: 10px 36px 10px 12px;
+            border-radius: 9999px;
+            background: radial-gradient(ellipse at center, #2e0207 0%, #150104 65%, #0a0002 100%);
+            border: 2px solid #ff1f3a;
+            box-shadow: 0 0 25px rgba(255, 31, 58, 0.75), 
+                        0 0 60px rgba(255, 20, 50, 0.45), 
+                        inset 0 0 18px rgba(255, 31, 58, 0.35);
+            backdrop-filter: blur(20px);
+            transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+            user-select: none;
+            animation: intercept-breath 3.5s infinite ease-in-out;
+            max-width: 100%;
+        }
+
+        .active-intercept-pill:hover {
+            transform: scale(1.03) translateY(-3px);
+            box-shadow: 0 0 35px rgba(255, 31, 58, 0.95), 
+                        0 0 80px rgba(255, 20, 50, 0.65), 
+                        inset 0 0 22px rgba(255, 31, 58, 0.5);
+        }
+
+        @keyframes intercept-breath {
+            0%, 100% {
+                box-shadow: 0 0 24px rgba(255, 31, 58, 0.7), 
+                            0 0 50px rgba(255, 20, 50, 0.38), 
+                            inset 0 0 16px rgba(255, 31, 58, 0.3);
+            }
+            50% {
+                box-shadow: 0 0 32px rgba(255, 31, 58, 0.95), 
+                            0 0 75px rgba(255, 20, 50, 0.55), 
+                            inset 0 0 22px rgba(255, 31, 58, 0.45);
+            }
+        }
+
+        .intercept-avatar-ring {
+            width: 52px;
+            height: 52px;
+            border-radius: 50%;
+            border: 2px solid #ff2b47;
+            box-shadow: 0 0 16px #ff2b47, inset 0 0 10px rgba(255, 43, 71, 0.6);
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: #000000;
+            flex-shrink: 0;
+        }
+
+        .intercept-avatar-ring img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: contrast(1.15) brightness(1.05);
+            transition: transform 0.4s ease;
+        }
+
+        .active-intercept-pill:hover .intercept-avatar-ring img {
+            transform: scale(1.1);
+        }
+
+        .intercept-text {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-size: 1.15rem;
+            letter-spacing: -0.2px;
+        }
+
+        .intercept-text .txt-white {
+            color: #ffffff;
+            font-weight: 700;
+            text-shadow: 0 0 12px rgba(255, 255, 255, 0.4);
+        }
+
+        .intercept-text .txt-red {
+            color: #ff334b;
+            font-weight: 900;
+            text-shadow: 0 0 18px rgba(255, 51, 75, 0.7);
+        }
+
+        .intercept-text .txt-tm {
+            color: #ff334b;
+            font-size: 0.7rem;
+            vertical-align: super;
+            font-weight: 800;
+            margin-left: 2px;
+        }
+
+        /* --- ENHANCED EXPANDED FOOTER --- */
+        footer {
+            background: rgba(0, 4, 10, 0.92);
+            border-top: 1px solid rgba(0, 212, 255, 0.12);
+            position: relative;
+            z-index: 2;
+            padding: 90px 10% 40px;
+            width: 100%;
+            max-width: 100%;
+        }
+
+        .footer-grid {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr 1fr 1.2fr;
+            gap: 50px;
+            max-width: 1400px;
+            margin: 0 auto 60px;
+        }
+
+        .footer-col h4 {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            color: var(--sea-bright);
+            margin-bottom: 22px;
+            font-weight: 800;
+        }
+
+        .footer-col p {
+            color: var(--text-dim);
+            font-size: 0.88rem;
+            line-height: 1.8;
+            margin-bottom: 16px;
+        }
+
+        .footer-links {
+            list-style: none;
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+        }
+
+        .footer-links li a {
+            color: var(--text-dim);
+            text-decoration: none;
+            font-size: 0.86rem;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+        }
+
+        .footer-links li a:hover {
+            color: var(--sea-bright);
+            transform: translateX(4px);
+        }
+
+        .system-pill {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            padding: 6px 14px;
+            background: rgba(0, 212, 255, 0.05);
+            border: 1px solid var(--glass-border);
+            border-radius: 20px;
+            font-family: var(--font-mono);
+            font-size: 0.68rem;
+            color: var(--accent);
+            letter-spacing: 1px;
+            margin-top: 10px;
+        }
+
+        .system-pulse {
+            width: 7px;
+            height: 7px;
+            border-radius: 50%;
+            background: var(--accent);
+            box-shadow: 0 0 8px var(--accent);
+            animation: pulse-glow 2s infinite;
+        }
+
+        .footer-divider {
+            height: 1px;
+            background: rgba(255, 255, 255, 0.06);
+            max-width: 1400px;
+            margin: 0 auto 35px;
+        }
+
+        .footer-bottom {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+            font-family: var(--font-mono);
+            font-size: 0.8rem;
+            color: var(--text-dim);
+            position: relative;
+            z-index: 10;
+            padding-right: 280px;
+            padding-bottom: max(35px, env(safe-area-inset-bottom));
+        }
+
+        .dev-credit {
+            display: inline-flex;
+            align-items: center;
+            gap: 14px;
+            color: var(--text);
+            font-weight: 700;
+            font-size: 0.92rem;
+            letter-spacing: 0.5px;
+            background: linear-gradient(135deg, rgba(0, 18, 36, 0.75) 0%, rgba(0, 10, 22, 0.9) 100%);
+            padding: 12px 22px;
+            border-radius: 16px;
+            border: 1px solid rgba(0, 212, 255, 0.28);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.6), inset 0 0 15px rgba(0, 212, 255, 0.08);
+            backdrop-filter: blur(16px);
+            transition: all 0.3s ease;
+        }
+
+        .dev-credit:hover {
+            border-color: var(--sea-bright);
+            box-shadow: 0 10px 35px rgba(0, 0, 0, 0.7), 0 0 25px rgba(0, 212, 255, 0.3);
+            transform: translateY(-2px);
+        }
+
+        .dev-credit span.brand {
+            color: var(--sea-bright);
+            text-shadow: 0 0 12px var(--surge-color);
+        }
+
+        .dev-credit img {
+            width: 36px;
+            height: 36px;
+            object-fit: contain;
+            border-radius: 10px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.35);
+            padding: 4px;
+            filter: drop-shadow(0 0 10px var(--surge-color));
+            transition: transform 0.4s ease;
+            flex-shrink: 0;
+        }
+
+        .dev-credit:hover img {
+            transform: rotate(-10deg) scale(1.1);
+        }
+
+        .footer-copyright {
+            font-family: var(--font-mono);
+            font-size: 0.78rem;
+            color: var(--text-dim);
+            letter-spacing: 0.5px;
+        }
+
+        @media (max-width: 1100px) {
+            .footer-grid { grid-template-columns: repeat(2, 1fr); gap: 40px; }
+        }
+
+        /* Cyber Hamburger Trigger */
+        .cyber-nav-toggle {
+            display: none;
+            width: 48px;
+            height: 48px;
+            background: rgba(0, 18, 36, 0.7);
+            border: 1px solid var(--sea-bright);
+            border-radius: 12px;
+            backdrop-filter: blur(16px);
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            gap: 6px;
+            padding: 0;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.25);
+            transition: all 0.35s cubic-bezier(0.16, 1, 0.3, 1);
+            z-index: 1002;
+            outline: none;
+        }
+
+        .cyber-bar {
+            width: 24px;
+            height: 2px;
+            background: #ffffff;
+            box-shadow: 0 0 8px var(--sea-bright);
+            border-radius: 2px;
+            transition: transform 0.35s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease, background 0.3s;
+            transform-origin: center;
+        }
+
+        .cyber-nav-toggle.portal-open {
+            border-color: #ff0055;
+            box-shadow: 0 0 25px rgba(255, 0, 85, 0.65), inset 0 0 10px rgba(255, 0, 85, 0.3);
+            background: rgba(26, 2, 8, 0.9);
+        }
+
+        .cyber-nav-toggle.portal-open .cyber-bar:nth-child(1) {
+            transform: translateY(8px) rotate(45deg);
+            background: #ff0055;
+            box-shadow: 0 0 10px #ff0055;
+        }
+
+        .cyber-nav-toggle.portal-open .cyber-bar:nth-child(2) {
+            opacity: 0;
+            transform: scaleX(0);
+        }
+
+        .cyber-nav-toggle.portal-open .cyber-bar:nth-child(3) {
+            transform: translateY(-8px) rotate(-45deg);
+            background: #ff0055;
+            box-shadow: 0 0 10px #ff0055;
+        }
+
+        /* 5. RESPONSIVE MOBILE DRAWER & CONTAINER OVERFLOW PROTECTION */
+        @media (max-width: 768px) {
+            body::before {
+                background-size: min(88vw, 420px) auto !important;
+                background-position: center 36% !important;
+                opacity: 0.16 !important;
+            }
+
+            body.alpha-mode::before {
+                opacity: 0.22 !important;
+            }
+
+            nav {
+                padding: 0.9rem 6%;
+                justify-content: space-between;
+            }
+
+            .cyber-nav-toggle {
+                display: flex;
+            }
+
+            .nav-center {
+                position: fixed;
+                inset: 0;
+                width: 100%;
+                height: 100dvh;
+                background: radial-gradient(circle at 85% 6%, #00172e 0%, #000711 75%, #000206 100%);
+                backdrop-filter: blur(40px) saturate(220%);
+                flex-direction: column;
+                justify-content: center;
+                align-items: center;
+                gap: 32px;
+                padding: 100px 8% 60px;
+                z-index: 1001;
+                pointer-events: none;
+                clip-path: circle(0% at 88% 38px);
+                transition: clip-path 0.55s cubic-bezier(0.77, 0, 0.175, 1);
+            }
+
+            .nav-center::before {
+                content: "";
+                position: absolute;
+                inset: 0;
+                background: linear-gradient(rgba(0, 212, 255, 0.03) 1px, transparent 1px),
+                            linear-gradient(90deg, rgba(0, 212, 255, 0.03) 1px, transparent 1px);
+                background-size: 32px 32px;
+                pointer-events: none;
+                opacity: 0.45;
+            }
+
+            .nav-center.portal-active {
+                clip-path: circle(150% at 88% 38px);
+                pointer-events: all;
+            }
+
+            .nav-links {
+                flex-direction: column;
+                width: 100%;
+                max-width: 380px;
+                gap: 12px;
+            }
+
+            .nav-links a {
+                width: 100%;
+                font-size: 1.05rem;
+                padding: 15px 22px;
+                border-radius: 14px;
+                border: 1px solid rgba(0, 212, 255, 0.15);
+                background: rgba(0, 18, 36, 0.55);
+                justify-content: flex-start;
+                letter-spacing: 2px;
+                opacity: 0;
+                transform: translateY(22px);
+                transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.4s ease, border-color 0.3s;
+            }
+
+            .nav-center.portal-active .nav-links a {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .nav-center.portal-active .nav-links a:nth-child(1) { transition-delay: 0.12s; }
+            .nav-center.portal-active .nav-links a:nth-child(2) { transition-delay: 0.18s; }
+            .nav-center.portal-active .nav-links a:nth-child(3) { transition-delay: 0.24s; }
+            .nav-center.portal-active .nav-links a:nth-child(4) { transition-delay: 0.30s; }
+            .nav-center.portal-active .nav-links a:nth-child(5) { transition-delay: 0.36s; }
+
+            .nav-links a.active {
+                border-color: var(--sea-bright);
+                background: linear-gradient(135deg, rgba(0, 212, 255, 0.28) 0%, rgba(0, 255, 204, 0.1) 100%);
+            }
+
+            .mode-switcher {
+                margin-left: 0;
+                width: 100%;
+                max-width: 380px;
+                justify-content: center;
+                padding: 14px 22px;
+                border-radius: 14px;
+                font-size: 0.8rem;
+                opacity: 0;
+                transform: translateY(20px);
+                transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1) 0.42s;
+            }
+
+            .nav-center.portal-active .mode-switcher {
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .howl-trigger {
+                bottom: 25px;
+                right: 18px;
+                padding: 10px 16px;
+                border-radius: 50px;
+            }
+
+            .howl-label { display: none; }
+
+            #backToTop {
+                bottom: 25px;
+                left: 18px;
+                width: 44px;
+                height: 44px;
+                font-size: 1.2rem;
+            }
+
+            .active-intercept-shield-wrap { 
+                padding: 20px 4% 60px; 
+            }
+
+            .active-intercept-pill { 
+                padding: 8px 16px 8px 10px; 
+                gap: 10px; 
+                max-width: 100%;
+            }
+
+            .intercept-avatar-ring { 
+                width: 40px; 
+                height: 40px; 
+            }
+
+            .intercept-text { 
+                font-size: 0.82rem; 
+                flex-wrap: wrap;
+                white-space: normal;
+            }
+
+            .footer-grid { grid-template-columns: 1fr; gap: 32px; }
+            .footer-bottom {
+                flex-direction: column !important;
+                text-align: center !important;
+                padding-right: 0 !important;
+                padding-bottom: 110px !important;
+                gap: 14px !important;
+            }
+
+            .dev-credit {
+                width: 100% !important;
+                max-width: 370px !important;
+                padding: 12px 16px !important;
+                gap: 12px !important;
+                margin: 0 auto !important;
+                display: flex !important;
+                align-items: center !important;
+                justify-content: flex-start !important;
+                text-align: left !important;
+                font-size: 0.78rem !important;
+                line-height: 1.4 !important;
+                border-radius: 14px !important;
+            }
+
+            .dev-credit img {
+                width: 34px !important;
+                height: 34px !important;
+                padding: 3px !important;
+            }
+
+            .footer-copyright {
+                font-size: 0.72rem !important;
+                opacity: 0.8 !important;
+                padding: 0 10px !important;
+                line-height: 1.5 !important;
+            }
+        }
+    </style>
+
+    <!-- Page-Specific CSS -->
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+
+    <!-- Shared Preloader -->
+    <div id="loader">
+        <div class="loader-content">
+            <img src="{% static 'images/Wolvatarr_main_logo.png' %}" alt="Wolf Icon" style="border-radius: 50%; object-fit: cover;">
+        </div>
+        <div class="loader-text">Summoning Excellence...</div>
+    </div>
+
+    <!-- Global Constellation Mesh Canvas & Ambient Glow -->
+    <canvas id="packMeshCanvas"></canvas>
+    <canvas id="rippleCanvas"></canvas>
+    <div class="ambient-light" id="light"></div>
+
+    <!-- Shared Navigation -->
+    <nav>
+        <a href="{% url 'core:home' %}" class="logo-wrap">
+            <img src="{% static 'images/Wolvatarr_main_logo.png' %}" alt="Wolvatarr" class="logo-img" style="border-radius: 50%; object-fit: cover;">
+            <span class="brand-title">WOLVATARR</span>
+        </a>
+
+        <!-- CYBER HAMBURGER / PORTAL TOGGLE TRIGGER -->
+        <button id="cyberNavToggle" class="cyber-nav-toggle" onclick="toggleCyberPortal()" aria-label="Toggle Cyber Portal">
+            <span class="cyber-bar"></span>
+            <span class="cyber-bar"></span>
+            <span class="cyber-bar"></span>
+        </button>
+        
+        <div class="nav-center" id="navCenterPortal">
+            <div class="nav-links">
+                <a href="{% url 'core:home' %}" class="{% if request.resolver_match.url_name == 'home' %}active{% endif %}" onclick="closeCyberPortal()">
+                    <span style="font-family:var(--font-mono); font-size:0.7rem; color:var(--accent); margin-right:6px; white-space:nowrap;">01 //</span> Home
+                </a>
+                <a href="{% url 'core:about' %}" class="{% if request.resolver_match.url_name == 'about' %}active{% endif %}" onclick="closeCyberPortal()">
+                    <span style="font-family:var(--font-mono); font-size:0.7rem; color:var(--accent); margin-right:6px; white-space:nowrap;">02 //</span> About Us
+                </a>
+                <a href="{% url 'core:services' %}" class="{% if request.resolver_match.url_name == 'services' %}active{% endif %}" onclick="closeCyberPortal()">
+                    <span style="font-family:var(--font-mono); font-size:0.7rem; color:var(--accent); margin-right:6px; white-space:nowrap;">03 //</span> Services
+                </a>
+                <a href="{% url 'core:portfolio' %}" class="{% if request.resolver_match.url_name == 'portfolio' %}active{% endif %}" onclick="closeCyberPortal()">
+                    <span style="font-family:var(--font-mono); font-size:0.7rem; color:var(--accent); margin-right:6px; white-space:nowrap;">04 //</span> Portfolio
+                </a>
+                <a href="{% url 'core:contact' %}" class="{% if request.resolver_match.url_name == 'contact' %}active{% endif %}" onclick="closeCyberPortal()">
+                    <span style="font-family:var(--font-mono); font-size:0.7rem; color:var(--accent); margin-right:6px; white-space:nowrap;">05 //</span> Contact
+                </a>
+            </div>
+
+            <!-- ALPHA OVERCLOCK PROTOCOL SWITCHER -->
+            {% if request.resolver_match.url_name != 'active_intercept' %}
+            <button class="mode-switcher" onclick="toggleAlphaMode()" title="Toggle Apex Overclock Protocol">
+                <div class="mode-indicator"></div>
+                <span id="modeLabel">NORMAL</span>
+            </button>
+            {% endif %}
+        </div>
+    </nav>
+
+    <!-- Shared Floating Howl Button -->
+    <div class="howl-trigger" onclick="playWolfHowl()">
+        <div class="howl-pulse-icon"></div>
+        <span class="howl-label">Wolf Command: Howl</span>
+        <audio id="wolfHowlAudio" src="{% static 'audio/wolf sound.mp3' %}"></audio>
+    </div>
+
+    <!-- Main Dynamic Content (Injected by child pages) -->
+    <main>
+        {% block content %}
+        {% endblock %}
+    </main>
+
+    <!-- GLOBAL ACTIVE INTERCEPT VERIFICATION PILL -->
+    <section class="active-intercept-shield-wrap">
+        <a href="{% url 'core:active_intercept' %}" class="active-intercept-pill" style="text-decoration: none;">
+            <div class="intercept-avatar-ring">
+                <img src="{% static 'images/hacker.png' %}" alt="Active Intercept Guardian">
+            </div>
+            <div class="intercept-text">
+                <span class="txt-white">Protected by</span>
+                <span class="txt-red">Wolvatarr Active Intercept<span class="txt-tm">™</span></span>
+                <span style="font-size: 0.72rem; color: #ff1f3a; margin-left: 6px; font-family: var(--font-mono);">[INSPECT]</span>
+            </div>
+        </a>
+    </section>
+
+    <!-- Shared Back to Top Button -->
+    <a href="#" id="backToTop" onclick="initiateBeam(event)" title="Back to Top">↑</a>
+
+    <!-- ENHANCED SHARED FOOTER -->
+    <footer>
+        <div class="footer-grid">
+            <!-- BRAND COLUMN -->
+            <div class="footer-col">
+                <div style="display: flex; align-items: center; gap: 10px; margin-bottom: 18px;">
+                    <img src="{% static 'images/Wolvatarr_main_logo.png' %}" alt="Wolvatarr" style="width: 42px; height: 42px; border-radius: 50%; object-fit: cover; filter: drop-shadow(0 0 10px var(--sea-bright));">
+                    <span style="font-weight: 900; letter-spacing: 4px; color: var(--text); font-size: 1.3rem;">WOLVATARR</span>
+                </div>
+                <p>
+                    A high-performance digital engineering and visual storytelling house. We architect custom Django ecosystems, cinematic brand films, and dominant visual identities built to command market trust.
+                </p>
+                <div class="system-pill">
+                    <div class="system-pulse" style="{% if security_config and not security_config.is_armed %}background: #ef4444; box-shadow: 0 0 8px #ef4444;{% endif %}"></div>
+                    <span>ACTIVE INTERCEPT // {% if security_config and security_config.is_armed %}100% OPERATIONAL{% elif security_config %}STANDBY MODE{% else %}ARMED [DEFAULT]{% endif %}</span>
+                </div>
+            </div>
+
+            <!-- CORE SERVICES -->
+            <div class="footer-col">
+                <h4>Capabilities</h4>
+                <ul class="footer-links">
+                    <li><a href="{% url 'core:services' %}">Bespoke Web Systems (Django)</a></li>
+                    <li><a href="{% url 'core:services' %}">Cinematic 4K Commercials</a></li>
+                    <li><a href="{% url 'core:services' %}">3D Product Motion Graphics</a></li>
+                    <li><a href="{% url 'core:services' %}">Corporate Identity & Brand Bibles</a></li>
+                    <li><a href="{% url 'core:services' %}">Active Intercept Defense Vault</a></li>
+                </ul>
+            </div>
+
+            <!-- NAVIGATION -->
+            <div class="footer-col">
+                <h4>Navigation</h4>
+                <ul class="footer-links">
+                    <li><a href="{% url 'core:home' %}">Overview</a></li>
+                    <li><a href="{% url 'core:about' %}">About The Lead Architect</a></li>
+                    <li><a href="{% url 'core:portfolio' %}">Featured Deployments</a></li>
+                    <li><a href="{% url 'core:contact' %}">Start Project Transmission</a></li>
+                    <li><a href="{% url 'core:home' %}#blueprint">Interactive Project Planner</a></li>
+                </ul>
+            </div>
+
+            <!-- DIRECT COMMAND -->
+            <div class="footer-col">
+                <h4>Command Node</h4>
+                <p style="margin-bottom: 8px;"><strong>Accra Headquarters:</strong> Legon, Accra - Ghana</p>
+                <p style="margin-bottom: 8px;"><strong>Direct Call / WhatsApp:</strong> <a href="tel:+233275063004" style="color: var(--sea-bright); text-decoration: none;">+233 27 506 3004</a></p>
+                <p style="margin-bottom: 8px;"><strong>Direct Architect Email:</strong> <a href="mailto:nana@wolvatarr.com" style="color: var(--sea-bright); text-decoration: none;">nana@wolvatarr.com</a></p>
+                <p style="color: var(--accent); font-family: var(--font-mono); font-size: 0.78rem; font-weight: 700;">● Accepting Projects for 2026</p>
+            </div>
+        </div>
+
+        <div class="footer-divider"></div>
+
+        <!-- BOTTOM CREDITS BAR -->
+        <div class="footer-bottom">
+            <div class="dev-credit">
+                <img src="{% static 'images/Wolvatarr_main_logo.png' %}" alt="Wolvatarr" style="border-radius: 50%; object-fit: cover;">
+                <span>Engineered with excellence by <span class="brand">Wolvatarr - The Digital Architects.</span></span>
+            </div>
+            <div class="footer-copyright">
+                <span>&copy; 2026 WOLVATARR // ACCRA | GHANA | GLOBAL NODE</span>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Shared JavaScript File -->
+    <script src="{% static 'js/wolf-effects.js' %}"></script>
+
+    <!-- Global Interactive Constellation Mesh & Shockwaves -->
+    <script>
+        // 1. PARTICLES MESH CANVAS
+        const meshCanvas = document.getElementById('packMeshCanvas');
+        if (meshCanvas) {
+            const meshCtx = meshCanvas.getContext('2d');
+            let mWidth = meshCanvas.width = window.innerWidth;
+            let mHeight = meshCanvas.height = window.innerHeight;
+
+            window.addEventListener('resize', () => {
+                mWidth = meshCanvas.width = window.innerWidth;
+                mHeight = meshCanvas.height = window.innerHeight;
+            });
+
+            const meshParticles = [];
+            const particleCount = 55;
+            let cursorX = mWidth / 2;
+            let cursorY = mHeight / 2;
+
+            for (let i = 0; i < particleCount; i++) {
+                meshParticles.push({
+                    x: Math.random() * mWidth,
+                    y: Math.random() * mHeight,
+                    vx: (Math.random() - 0.5) * 0.7,
+                    vy: (Math.random() - 0.5) * 0.7,
+                    size: Math.random() * 2 + 1
+                });
+            }
+
+            document.addEventListener('mousemove', (e) => {
+                cursorX = e.clientX;
+                cursorY = e.clientY;
+            });
+
+            function runGlobalMesh() {
+                meshCtx.clearRect(0, 0, mWidth, mHeight);
+                const isAlpha = document.body.classList.contains('alpha-mode');
+                const nodeColor = isAlpha ? 'rgba(255, 0, 85, ' : 'rgba(0, 212, 255, ';
+
+                for (let i = 0; i < particleCount; i++) {
+                    const p = meshParticles[i];
+                    p.x += p.vx;
+                    p.y += p.vy;
+
+                    if (p.x < 0 || p.x > mWidth) p.vx *= -1;
+                    if (p.y < 0 || p.y > mHeight) p.vy *= -1;
+
+                    meshCtx.beginPath();
+                    meshCtx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+                    meshCtx.fillStyle = nodeColor + '0.75)';
+                    meshCtx.fill();
+
+                    for (let j = i + 1; j < particleCount; j++) {
+                        const p2 = meshParticles[j];
+                        const dist = Math.hypot(p.x - p2.x, p.y - p2.y);
+                        if (dist < 130) {
+                            meshCtx.beginPath();
+                            meshCtx.moveTo(p.x, p.y);
+                            meshCtx.lineTo(p2.x, p2.y);
+                            meshCtx.strokeStyle = nodeColor + (1 - dist / 130) * 0.2 + ')';
+                            meshCtx.lineWidth = 0.8;
+                            meshCtx.stroke();
+                        }
+                    }
+
+                    const mouseDist = Math.hypot(p.x - cursorX, p.y - cursorY);
+                    if (mouseDist < 160) {
+                        meshCtx.beginPath();
+                        meshCtx.moveTo(p.x, p.y);
+                        meshCtx.lineTo(cursorX, cursorY);
+                        meshCtx.strokeStyle = nodeColor + (1 - mouseDist / 160) * 0.4 + ')';
+                        meshCtx.lineWidth = 1;
+                        meshCtx.stroke();
+                    }
+                }
+                requestAnimationFrame(runGlobalMesh);
+            }
+            runGlobalMesh();
+        }
+
+        // 2. ALPHA OVERCLOCK PROTOCOL SWITCHER (GLOBAL)
+        function toggleAlphaMode() {
+            document.body.classList.toggle('alpha-mode');
+            const label = document.getElementById('modeLabel');
+            const isAlpha = document.body.classList.contains('alpha-mode');
+            
+            if (label) {
+                label.innerText = isAlpha ? 'OVERCLOCK' : 'NORMAL';
+                label.style.color = isAlpha ? '#ff0055' : 'var(--sea-bright)';
+            }
+            triggerShockwave(window.innerWidth / 2, window.innerHeight / 2, isAlpha ? '#ff0055' : '#00d4ff');
+        }
+
+        // 2B. MOBILE CYBER PORTAL CONTROLLER
+        function toggleCyberPortal() {
+            const toggleBtn = document.getElementById('cyberNavToggle');
+            const portal = document.getElementById('navCenterPortal');
+            if (!toggleBtn || !portal) return;
+
+            const isOpen = portal.classList.contains('portal-active');
+            if (isOpen) {
+                closeCyberPortal();
+            } else {
+                portal.classList.add('portal-active');
+                toggleBtn.classList.add('portal-open');
+                document.body.style.overflow = 'hidden';
+                if (typeof triggerShockwave === 'function') {
+                    triggerShockwave(window.innerWidth - 40, 40, '#00d4ff');
+                }
+            }
+        }
+
+        function closeCyberPortal() {
+            const toggleBtn = document.getElementById('cyberNavToggle');
+            const portal = document.getElementById('navCenterPortal');
+            if (!portal) return;
+
+            portal.classList.remove('portal-active');
+            if (toggleBtn) toggleBtn.classList.remove('portal-open');
+            document.body.style.overflow = '';
+            if (typeof triggerShockwave === 'function') {
+                triggerShockwave(window.innerWidth - 40, 40, '#ff0055');
+            }
+        }
+
+        // Auto-close portal on window resize past mobile breakpoint
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                closeCyberPortal();
+            }
+        });
+
+        // 3. SHOCKWAVE EFFECT CANVAS
+        const rCanvas = document.getElementById('rippleCanvas');
+        const rCtx = rCanvas ? rCanvas.getContext('2d') : null;
+        if (rCanvas) {
+            rCanvas.width = window.innerWidth;
+            rCanvas.height = window.innerHeight;
+            window.addEventListener('resize', () => {
+                rCanvas.width = window.innerWidth;
+                rCanvas.height = window.innerHeight;
+            });
+        }
+        let shockwaves = [];
+
+        function triggerShockwave(x, y, color = null) {
+            if (!rCanvas) return;
+            const isAlpha = document.body.classList.contains('alpha-mode');
+            const waveColor = color || (isAlpha ? '#ff0055' : '#00d4ff');
+            shockwaves.push({ x, y, radius: 10, maxRadius: 600, alpha: 0.9, color: waveColor });
+        }
+
+        function animateRipples() {
+            if (!rCtx) return;
+            rCtx.clearRect(0, 0, rCanvas.width, rCanvas.height);
+            for (let i = shockwaves.length - 1; i >= 0; i--) {
+                const sw = shockwaves[i];
+                sw.radius += 18;
+                sw.alpha *= 0.94;
+
+                rCtx.beginPath();
+                rCtx.arc(sw.x, sw.y, sw.radius, 0, Math.PI * 2);
+                rCtx.strokeStyle = sw.color;
+                rCtx.globalAlpha = sw.alpha;
+                rCtx.lineWidth = 3;
+                rCtx.stroke();
+                rCtx.globalAlpha = 1;
+
+                if (sw.alpha < 0.02 || sw.radius > sw.maxRadius) {
+                    shockwaves.splice(i, 1);
+                }
+            }
+            requestAnimationFrame(animateRipples);
+        }
+        animateRipples();
+
+        // 4. PRELOADER DISMISSAL
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const loader = document.getElementById('loader');
+                if (loader) {
+                    loader.style.opacity = '0';
+                    setTimeout(() => loader.style.visibility = 'hidden', 800);
+                }
+            }, 800);
+        });
+
+        // 5. AMBIENT MOUSE GLOW
+        const light = document.getElementById('light');
+        document.addEventListener('mousemove', (e) => {
+            if (light) {
+                light.style.left = e.clientX + 'px';
+                light.style.top = e.clientY + 'px';
+            }
+        });
+    </script>
+
+    <!-- WOLVATARR ACTIVE INTERCEPT™ DEFENSE LAYER -->
+{% if security_config is None or security_config.is_armed %}
+<script>
+    (function() {
+        const BEACON_URL = "{% url 'core:intercept_beacon' %}";
+        let intrusionActive = false;
+
+        function transmitTelemetry(incidentType, details) {
+            {% if security_config is None or security_config.honeypot_traps %}
+            try {
+                const payload = JSON.stringify({
+                    incident_type: incidentType,
+                    details: details,
+                    timestamp: Date.now()
+                });
+                if (navigator.sendBeacon) {
+                    navigator.sendBeacon(BEACON_URL, new Blob([payload], { type: 'application/json' }));
+                } else {
+                    fetch(BEACON_URL, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: payload,
+                        keepalive: true
+                    }).catch(() => {});
+                }
+            } catch (err) {}
+            {% endif %}
+        }
+
+        function getRandomHex() {
+            return '0x' + Math.floor(Math.random() * 0xFFFFFFFF).toString(16).toUpperCase().padStart(8, '0');
+        }
+
+        function triggerQuarantineTerminal(incidentType, reason) {
+            if (intrusionActive) return;
+            intrusionActive = true;
+            transmitTelemetry(incidentType, reason);
+
+            try {
+                const audio = document.getElementById('wolfHowlAudio');
+                if (audio) audio.pause();
+            } catch(e) {}
+            document.documentElement.style.overflow = 'hidden';
+            document.body.style.overflow = 'hidden';
+
+            let overlay = document.getElementById('activeInterceptQuarantine');
+            if (!overlay) {
+                overlay = document.createElement('div');
+                overlay.id = 'activeInterceptQuarantine';
+                overlay.style.cssText = [
+                    'position: fixed !important',
+                    'top: 0 !important',
+                    'left: 0 !important',
+                    'width: 100vw !important',
+                    'height: 100vh !important',
+                    'background: #060204 !important',
+                    'z-index: 2147483647 !important',
+                    'font-family: Consolas, "JetBrains Mono", Courier, monospace !important',
+                    'font-size: 13px !important',
+                    'line-height: 1.45 !important',
+                    'padding: 24px 28px !important',
+                    'overflow-y: auto !important',
+                    'user-select: none !important',
+                    'pointer-events: all !important',
+                    'box-sizing: border-box !important',
+                    'color: #ff1f3a !important'
+                ].join(';');
+                document.documentElement.appendChild(overlay);
+            }
+
+            let output = '';
+            for (let i = 7; i <= 32; i++) {
+                const hex = getRandomHex();
+                output += 
+                    `<div style="margin-bottom: 3px;">` +
+                    `<span style="color: #ff2244; font-weight: 700;">[${hex}] SECTOR_CORRUPT:</span><br>` +
+                    `<span style="color: #6a141f; font-weight: 700; letter-spacing: 0.5px;">CRITICAL_FAULT_INSPECT_PROHIBITED :: REGISTER_${i}</span>` +
+                    `</div>`;
+            }
+            overlay.innerHTML = output;
+
+            executePoisonLoop();
+        }
+
+        function executePoisonLoop() {
+            {% if security_config is None or security_config.debugger_poison_loop %}
+            setInterval(function() {
+                (function() {
+                    Function('debugger')();
+                })();
+            }, 50);
+            {% endif %}
+        }
+
+        function probeDevTools() {
+            const threshold = 160;
+            const widthDiff = window.outerWidth - window.innerWidth > threshold;
+            const heightDiff = window.outerHeight - window.innerHeight > threshold;
+            if (widthDiff || heightDiff) {
+                triggerQuarantineTerminal('DEVTOOLS_DETECTED', 'DevTools docked window breach detected');
+                return;
+            }
+
+            const probe = new Image();
+            Object.defineProperty(probe, 'id', {
+                get: function() {
+                    triggerQuarantineTerminal('DEVTOOLS_DETECTED', 'Console introspection breach detected');
+                }
+            });
+            console.log('%c', probe);
+
+            const start = performance.now();
+            (function() {
+                Function('debugger')();
+            })();
+            if (performance.now() - start > 100) {
+                triggerQuarantineTerminal('DEVTOOLS_DETECTED', 'Active DevTools pause verified');
+            }
+        }
+        setInterval(probeDevTools, 600);
+
+        {% if security_config is None or security_config.block_devtools_keys %}
+        document.addEventListener('keydown', function(e) {
+            const key = e.key ? e.key.toUpperCase() : '';
+            const code = e.keyCode || e.which;
+
+            const isF12 = code === 123 || key === 'F12';
+            const isInspect = (e.ctrlKey || e.metaKey) && e.shiftKey && (key === 'I' || code === 73);
+            const isConsole = (e.ctrlKey || e.metaKey) && e.shiftKey && (key === 'J' || code === 74);
+            const isElementSelect = (e.ctrlKey || e.metaKey) && e.shiftKey && (key === 'C' || code === 67);
+            const isViewSource = (e.ctrlKey || e.metaKey) && (key === 'U' || code === 85);
+            const isSavePage = (e.ctrlKey || e.metaKey) && (key === 'S' || code === 83);
+
+            if (isF12 || isInspect || isConsole || isElementSelect || isViewSource || isSavePage) {
+                e.preventDefault();
+                e.stopPropagation();
+                triggerQuarantineTerminal('KEY_INTERCEPT', 'Intercepted DevTools keyboard combination');
+                return false;
+            }
+        }, true);
+        {% endif %}
+
+        {% if security_config is None or security_config.block_context_menu %}
+        document.addEventListener('contextmenu', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            transmitTelemetry('CONTEXT_MENU', 'Suppressed right-click inspection attempt');
+            if (typeof triggerShockwave === 'function') {
+                triggerShockwave(e.clientX, e.clientY, '#ff0055');
+            }
+            return false;
+        }, true);
+        {% endif %}
+    })();
+</script>
+{% endif %}
+
+    <!-- Page-Specific JavaScript -->
+    {% block extra_js %}{% endblock %}
+
+</body>
+</html>

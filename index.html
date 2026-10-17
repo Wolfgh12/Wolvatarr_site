@@ -1,0 +1,935 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Wolvatarr | The Digital Architects</title>
+    <link rel="icon" type="image/png" href="images/Wolf.png">
+    <style> 
+        /* --- CSS STYLES --- */
+        :root {
+            --sea-deep: #000a12;
+            --sea-mid: #003355;
+            --sea-bright: #00d4ff;
+            --glass: rgba(255, 255, 255, 0.03);
+            --text: #e0f2fe;
+            --accent: #00ffcc;
+            --depth-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', system-ui, -apple-system, sans-serif;
+            cursor: default;
+        }
+
+        /* Update: Ensure clickable items show pointer cursor */
+        a, button, .btn, .card, #backToTop, #progress-bar-container, .howl-trigger {
+            cursor: pointer;
+        }
+
+        body {
+            background-color: var(--sea-deep);
+            color: var(--text);
+            line-height: 1.6;
+            overflow-x: hidden;
+            transition: background 0.5s ease;
+            position: relative;
+        }
+
+        /* --- PRELOADER (Added from services.html) --- */
+        #loader {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: var(--sea-deep);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            z-index: 10000;
+            transition: opacity 0.8s ease, visibility 0.8s;
+        }
+
+        .loader-content img {
+            width: 150px;
+            filter: drop-shadow(0 0 20px var(--sea-bright));
+            animation: howl-pulse 2s infinite ease-in-out;
+        }
+
+        @keyframes howl-pulse {
+            0%, 100% { transform: scale(1) rotate(0deg); opacity: 0.8; }
+            50% { transform: scale(1.1) rotate(-5deg); opacity: 1; filter: drop-shadow(0 0 40px var(--sea-bright)); }
+        }
+
+        .loader-text {
+            margin-top: 20px;
+            letter-spacing: 5px;
+            font-size: 0.7rem;
+            text-transform: uppercase;
+            color: var(--sea-bright);
+            opacity: 0.6;
+        }
+
+        /* Fixed Wolf2 Background Update */
+        body::before {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: url('images/Wolf2.png') center/cover no-repeat;
+            opacity: 0.15;
+            pointer-events: none;
+            z-index: 0; 
+        }
+
+        /* Depth Layers: Background Noise Overlay */
+        body::after {
+            content: "";
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background-image: url("https://www.transparenttextures.com/patterns/asfalt-dark.png");
+            opacity: 0.05;
+            pointer-events: none;
+            z-index: 1;
+        }
+
+        .ambient-light {
+            position: fixed;
+            width: 800px;
+            height: 800px;
+            background: radial-gradient(circle, rgba(0, 212, 255, 0.12) 0%, transparent 70%);
+            border-radius: 50%;
+            pointer-events: none;
+            z-index: 2;
+            transform: translate(-50%, -50%);
+            filter: blur(40px);
+        }
+
+        /* UPDATED: Back-to-Top Button Style from aboutus.html */
+        #backToTop {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            width: 50px;
+            height: 50px;
+            background: var(--glass);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            backdrop-filter: blur(15px);
+            color: var(--sea-bright);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            text-decoration: none;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.4s ease;
+            z-index: 9999;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        #backToTop.show {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        #backToTop:hover {
+            background: var(--sea-bright);
+            color: var(--sea-deep);
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px var(--sea-bright);
+        }
+
+        /* NEW: VISIBLE HOWL COMMAND CENTER */
+        .howl-trigger {
+            position: fixed;
+            bottom: 100px;
+            right: 30px;
+            z-index: 9999;
+            background: var(--glass);
+            border: 1px solid var(--sea-bright);
+            padding: 15px 25px;
+            border-radius: 12px;
+            backdrop-filter: blur(20px);
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: all 0.3s ease;
+            box-shadow: 0 0 20px rgba(0, 212, 255, 0.1);
+        }
+
+        .howl-trigger:hover {
+            background: rgba(0, 212, 255, 0.1);
+            transform: scale(1.05);
+            box-shadow: 0 0 30px rgba(0, 212, 255, 0.3);
+        }
+
+        .howl-pulse-icon {
+            width: 12px;
+            height: 12px;
+            background: var(--accent);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--accent);
+        }
+
+        .howl-label {
+            font-size: 0.7rem;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: var(--text);
+        }
+
+        .electric-surge {
+            animation: surge 0.5s ease-out forwards;
+        }
+
+        @keyframes surge {
+            0% { box-shadow: 0 0 0 0 rgba(0, 212, 255, 0.8); }
+            50% { box-shadow: 0 0 50px 25px rgba(0, 212, 255, 0.5); transform: scale(1.3); }
+            100% { box-shadow: 0 0 0 0 rgba(0, 212, 255, 0); transform: scale(1); }
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1rem 8%;
+            position: fixed;
+            width: 100%;
+            backdrop-filter: blur(20px) saturate(180%);
+            border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+            z-index: 1000;
+        }
+
+        .logo-img {
+            height: 70px; /* BIGGER LOGO */
+            width: auto;
+            display: block;
+            filter: drop-shadow(0 0 10px rgba(0, 212, 255, 0.3));
+            transition: transform 0.3s ease;
+        }
+
+        .logo-img:hover {
+            transform: scale(1.05);
+        }
+
+        .nav-links a {
+            color: var(--text);
+            text-decoration: none;
+            margin-left: 25px;
+            font-weight: 500;
+            transition: 0.3s;
+            position: relative;
+            padding-bottom: 5px;
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.8;
+        }
+
+        .nav-links a:hover { opacity: 1; }
+        .nav-links a::after {
+            content: '';
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--sea-bright);
+            transition: 0.3s cubic-bezier(0.65, 0, 0.35, 1);
+        }
+        .nav-links a:hover::after { width: 100%; }
+
+        /* Hero Section */
+        .hero {
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 180px 10% 100px 10%; 
+            perspective: 1200px;
+            position: relative;
+            z-index: 2;
+        }
+
+        .hero h1 {
+            font-size: clamp(2.5rem, 8vw, 5rem); 
+            font-weight: 900;
+            line-height: 1.1;
+            margin-bottom: 2.5rem;
+            text-shadow: 0 20px 40px rgba(0,0,0,0.6);
+            letter-spacing: -1.5px;
+        }
+
+        .highlight { 
+            color: var(--sea-bright); 
+            text-shadow: 0 0 30px rgba(0, 212, 255, 0.5);
+            display: inline-block;
+        }
+
+        .hero-tech-stack {
+            margin-top: 3rem;
+            padding: 20px 40px;
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 24px;
+            backdrop-filter: blur(15px);
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            align-items: center;
+            box-shadow: var(--depth-shadow);
+            width: fit-content;
+        }
+
+        .stack-row {
+            display: flex;
+            gap: 20px;
+            align-items: center;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .hero-tech-stack span {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-weight: 700;
+            opacity: 0.8;
+            color: var(--sea-bright);
+        }
+
+        .status-info {
+            display: flex;
+            gap: 30px;
+            padding-top: 10px;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .status-item {
+            font-size: 0.65rem;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            opacity: 0.5;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .dot {
+            width: 6px;
+            height: 6px;
+            background: var(--sea-bright);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--sea-bright);
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0% { opacity: 0.4; transform: scale(1); }
+            50% { opacity: 1; transform: scale(1.2); }
+            100% { opacity: 0.4; transform: scale(1); }
+        }
+
+        section { padding: 140px 10%; position: relative; z-index: 2; }
+        
+        h2.section-header {
+            font-size: clamp(2.2rem, 5vw, 3.5rem);
+            margin-bottom: 60px;
+            text-align: center;
+            font-weight: 800;
+            letter-spacing: -1px;
+        }
+
+        .services {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr); 
+            gap: 35px;
+        }
+
+        .card {
+            background: linear-gradient(145deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.01) 100%);
+            padding: 60px 45px;
+            border-radius: 30px;
+            border: 1px solid rgba(255, 255, 255, 0.08);
+            backdrop-filter: blur(15px);
+            position: relative;
+            transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+            transform-style: preserve-3d;
+            text-decoration: none;
+            color: inherit;
+            display: block;
+        }
+
+        .card::before {
+            content: "";
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            border-radius: 30px;
+            background: radial-gradient(800px circle at var(--x) var(--y), rgba(0, 212, 255, 0.08), transparent 40%);
+            opacity: 0;
+            transition: opacity 0.5s;
+        }
+
+        .card:hover::before { opacity: 1; }
+        .card:hover {
+            border-color: var(--sea-bright);
+            box-shadow: 0 40px 80px -20px rgba(0, 0, 0, 0.8);
+            background: rgba(255, 255, 255, 0.04);
+        }
+
+        .card h3 { 
+            font-size: 1.8rem;
+            margin-bottom: 18px; 
+            transform: translateZ(50px);
+            color: var(--sea-bright);
+            font-weight: 800;
+        }
+
+        .card p { 
+            transform: translateZ(30px); 
+            opacity: 0.7; 
+            font-size: 0.95rem;
+            line-height: 1.7;
+        }
+
+        .btn {
+            padding: 22px 55px;
+            background: var(--sea-bright);
+            color: var(--sea-deep);
+            text-decoration: none;
+            border-radius: 50px;
+            font-weight: 900;
+            text-transform: uppercase;
+            letter-spacing: 3px;
+            transition: 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            border: none;
+            display: inline-block;
+            box-shadow: 0 10px 20px rgba(0, 212, 255, 0.2);
+        }
+
+        .btn:hover {
+            transform: translateY(-8px) scale(1.02);
+            background: #fff;
+            box-shadow: 0 20px 40px rgba(0, 212, 255, 0.4);
+        }
+
+        /* Video Controls Mobile Support */
+        .video-container {
+            margin-top: 3.5rem; 
+            width: 100%; 
+            max-width: 1400px; 
+            position: relative; 
+            margin-left: auto; 
+            margin-right: auto;
+        }
+
+        .video-wrapper {
+            position: relative; 
+            border-radius: 24px; 
+            overflow: hidden; 
+            border: 1px solid rgba(255, 255, 255, 0.08); 
+            background: #000; 
+            box-shadow: 0 50px 120px rgba(0, 0, 0, 0.9), 0 0 30px rgba(0, 212, 255, 0.05);
+        }
+
+        .custom-controls {
+            position: absolute; 
+            bottom: 20px; 
+            left: 50%; 
+            transform: translateX(-50%); 
+            width: 90%; 
+            max-width: 1200px; 
+            height: 60px; 
+            background: rgba(15, 23, 42, 0.6); 
+            backdrop-filter: blur(20px); 
+            border-radius: 15px; 
+            border: 1px solid rgba(255, 255, 255, 0.1); 
+            display: flex; 
+            align-items: center; 
+            padding: 0 20px; 
+            justify-content: space-between; 
+            z-index: 10;
+        }
+
+        footer {
+            padding: 80px 10%;
+            text-align: center;
+            border-top: 1px solid rgba(255, 255, 255, 0.05);
+            background: rgba(0, 0, 0, 0.2);
+        }
+
+        /* Animations */
+        .reveal { opacity: 1 !important; transform: translateY(0) !important; }
+        .hidden { 
+            opacity: 0; 
+            transform: translateY(40px); 
+            transition: all 1.2s cubic-bezier(0.22, 1, 0.36, 1); 
+        }
+
+        /* --- NEW SECTIONS STYLES --- */
+        .vision-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 50px;
+            align-items: center;
+        }
+
+        .vision-text h4 {
+            font-size: 2rem;
+            color: var(--sea-bright);
+            margin-bottom: 20px;
+            font-weight: 800;
+        }
+
+        .vision-text p {
+            margin-bottom: 20px;
+            color: #94a3b8;
+        }
+
+        .architectural-pillars {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            margin-top: 30px;
+        }
+
+        .pillar-tag {
+            padding: 10px 20px;
+            background: rgba(0, 212, 255, 0.1);
+            border: 1px solid rgba(0, 212, 255, 0.2);
+            color: var(--sea-bright);
+            border-radius: 50px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+        }
+
+        .process-steps {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 40px;
+            margin-top: 50px;
+        }
+
+        .step {
+            position: relative;
+            padding-left: 60px;
+        }
+
+        .step-num {
+            position: absolute;
+            left: 0;
+            top: 0;
+            font-size: 3rem;
+            font-weight: 900;
+            color: rgba(0, 212, 255, 0.1);
+            line-height: 1;
+        }
+
+        .step h4 {
+            color: #fff;
+            margin-bottom: 10px;
+            letter-spacing: 1px;
+        }
+
+        .market-dominance {
+            background: rgba(255, 255, 255, 0.02);
+            border-radius: 40px;
+            padding: 80px 60px;
+            border: 1px solid rgba(255, 255, 255, 0.05);
+            text-align: center;
+        }
+
+        /* --- MOBILE OPTIMIZATION UPDATES --- */
+        @media (max-width: 1100px) {
+            .services { grid-template-columns: repeat(2, 1fr); }
+            .hero-tech-stack { width: 95%; }
+            .vision-grid { grid-template-columns: 1fr; }
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                flex-direction: column;
+                padding: 1rem;
+                gap: 10px;
+            }
+            .logo-img { height: 50px; }
+            .nav-links {
+                display: flex;
+                gap: 10px;
+                overflow-x: auto;
+                width: 100%;
+                justify-content: center;
+                padding-bottom: 5px;
+            }
+            .nav-links a { margin-left: 10px; font-size: 0.75rem; white-space: nowrap; }
+            
+            .services { grid-template-columns: 1fr; }
+            section { padding: 100px 5%; }
+            .hero { padding-top: 200px; padding-left: 5%; padding-right: 5%; }
+            
+            .hero h1 { font-size: 2.8rem; }
+            
+            .stats-container {
+                gap: 20px !important;
+                flex-direction: column !important;
+            }
+            .stat-divider { display: none; }
+            
+            .custom-controls { height: 50px; padding: 0 15px; }
+            #progress-bar-container { margin: 0 15px !important; }
+            
+            #backToTop { bottom: 20px; right: 20px; width: 50px; height: 50px; }
+            .howl-trigger { bottom: 85px; right: 20px; padding: 10px 15px; }
+            .market-dominance { padding: 40px 20px; }
+        }
+        .electric-surge { 
+    animation: surge 0.5s ease-out forwards; 
+}
+
+@keyframes surge {
+    0% { box-shadow: 0 0 0 0 rgba(0, 212, 255, 0.8); }
+    50% { box-shadow: 0 0 50px 25px rgba(0, 212, 255, 0.5); transform: scale(1.3); }
+    100% { box-shadow: 0 0 0 0 rgba(0, 212, 255, 0); transform: scale(1); }
+}
+
+    </style>
+</head>
+<body>
+
+    <div id="loader">
+        <div class="loader-content">
+            <img src="images/Wolf2.png" alt="Wolf Icon">
+        </div>
+        <div class="loader-text">Summoning Excellence...</div>
+    </div>
+
+    <div class="ambient-light" id="light"></div>
+
+    <nav>
+        <a href="index.html" style="display: flex; align-items: center; text-decoration: none; gap: 10px;">
+            <img src="images/Wolf2.png" alt="W" class="logo-img">
+            <span style="font-weight: 900; letter-spacing: 4px; color: var(--text); font-size: 1.2rem;">WOLVATARR</span>
+        </a>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="aboutus.html">About Us</a>
+            <a href="services.html">Services</a>
+            <a href="portfolio.html">Portfolio</a>
+            <a href="contact.html">Contact</a>
+        </div>
+    </nav>
+
+    <section class="hero">
+        <h1 class="hidden">Digital Architecture <br>for <span class="highlight">Bold Brands.</span></h1>
+        
+        <div class="hidden" style="margin-bottom: 3.5rem;">
+            <a href="contact.html" class="btn">Initialize Vision</a>
+        </div>
+
+        <div class="hidden" style="max-width: 800px; margin-bottom: 2rem;">
+            <p style="font-size: 1.1rem; line-height: 1.8; color: #94a3b8; margin-bottom: 1.2rem;">
+                Wolvatarr is not just a development studio; it is a high-performance engine for business evolution. In an era where "good enough" is the standard for most, we cater to the bold. We believe that your digital presence should be as powerful as your physical vision—uncompromising, fast, and visually dominant. 
+            </p>
+            <p style="font-size: 1rem; line-height: 1.7; color: #cbd5e1; opacity: 0.8;">
+                We are the best at what we do because we bridge the gap between heavy-duty engineering and elite aesthetics. While others deliver templates, we architect custom ecosystems leveraging the reliability of Python and Django, the speed of modern JavaScript, and a design philosophy that focuses on psychological impact.
+            </p>
+        </div>
+        
+        <div class="hero-tech-stack hidden" style="transition-delay: 0.4s;">
+            <div class="stack-row">
+                <span>Python</span>
+                <span>Django</span>
+                <span>PostgreSQL</span>
+                <span>Tailwind CSS</span>
+            </div>
+            <div class="status-info">
+                <div class="status-item"><div class="dot"></div> System: Online</div>
+                <div class="status-item">Deployment: Accra / Global</div>
+                <div class="status-item">Architects: Wolf</div>
+            </div>
+        </div>
+
+        <div class="hidden stats-container" style="margin-top: 4rem; display: flex; gap: 40px; justify-content: center; align-items: center; flex-wrap: wrap; max-width: 1000px;">
+            <div style="text-align: center; min-width: 120px;">
+                <h4 style="font-size: 2.2rem; color: var(--sea-bright); font-weight: 900; margin-bottom: 5px; letter-spacing: -1px;">50+</h4>
+                <p style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; opacity: 0.6;">Core Engines Built</p>
+            </div>
+            <div class="stat-divider" style="height: 40px; width: 1px; background: rgba(255,255,255,0.1);"></div>
+            <div style="text-align: center; min-width: 120px;">
+                <h4 style="font-size: 2.2rem; color: #fff; font-weight: 900; margin-bottom: 5px; letter-spacing: -1px;">99.9%</h4>
+                <p style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; opacity: 0.6;">Uptime Integrity</p>
+            </div>
+            <div class="stat-divider" style="height: 40px; width: 1px; background: rgba(255,255,255,0.1);"></div>
+            <div style="text-align: center; min-width: 120px;">
+                <h4 style="font-size: 2.2rem; color: var(--sea-bright); font-weight: 900; margin-bottom: 5px; letter-spacing: -1px;">24/7</h4>
+                <p style="font-size: 0.65rem; text-transform: uppercase; letter-spacing: 2px; opacity: 0.6;">Command Support</p>
+            </div>
+        </div>
+
+        <div class="video-container hidden">
+            <div class="video-wrapper">
+                <video id="mainPlayer" style="width: 100%; display: block; filter: contrast(1.05);">
+                    <source src="your-video-file.mp4" type="video/mp4">
+                    Your browser does not support the video tag.
+                </video>
+                <div style="position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: linear-gradient(rgba(18, 16, 16, 0) 50%, rgba(0, 0, 0, 0.1) 50%), linear-gradient(90deg, rgba(255, 212, 0, 0.01), rgba(0, 212, 255, 0.02)); background-size: 100% 4px, 4px 100%; pointer-events: none; opacity: 0.4;"></div>
+                <div class="custom-controls">
+                    <button onclick="togglePlay()" style="background: none; border: none; display: flex; align-items: center; transition: transform 0.2s;">
+                        <div id="playBtn" style="width: 0; height: 0; border-top: 10px solid transparent; border-bottom: 10px solid transparent; border-left: 15px solid var(--sea-bright); filter: drop-shadow(0 0 8px var(--sea-bright));"></div>
+                    </button>
+                    <div id="progress-bar-container" style="flex-grow: 1; height: 4px; background: rgba(255,255,255,0.1); margin: 0 25px; border-radius: 10px; position: relative;">
+                        <div id="progress" style="width: 0%; height: 100%; background: linear-gradient(90deg, var(--sea-bright), #00ffcc); border-radius: 10px; box-shadow: 0 0 15px rgba(0, 212, 255, 0.6);"></div>
+                    </div>
+                    <div style="font-size: 0.6rem; letter-spacing: 2px; color: var(--sea-bright); font-weight: 900; text-transform: uppercase; white-space: nowrap;">
+                        <span id="time">00:00</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div style="margin-top: 2.5rem; display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 30px; text-align: left;">
+                <div style="padding: 25px; background: rgba(255,255,255,0.02); border-left: 2px solid var(--sea-bright); backdrop-filter: blur(10px);">
+                    <h5 style="color: #fff; text-transform: uppercase; letter-spacing: 2px; font-size: 0.85rem; margin-bottom: 12px; font-weight: 800;">Uncompromising Quality</h5>
+                    <p style="font-size: 0.85rem; color: #94a3b8; line-height: 1.6;">
+                        We don't settle for 'functional.' Whether we are architecting mission-critical code, crafting premium brand identities, or producing cinematic 4K media, every asset is built to elite global standards. Our commitment to excellence ensures that your platform is not only visually stunning but structurally sound and future-proof. At Wolvatarr, we don't just build—we engineer digital legacies.
+                    </p>
+                </div>
+                <div style="padding: 25px; background: rgba(255,255,255,0.02); border-left: 2px solid #fff; backdrop-filter: blur(10px);">
+                    <h5 style="color: #fff; text-transform: uppercase; letter-spacing: 2px; font-size: 0.85rem; margin-bottom: 12px; font-weight: 800;">Absolute Integrity</h5>
+                    <p style="font-size: 0.85rem; color: #94a3b8; line-height: 1.6;">
+                        Trust is our primary currency. With a proven track record of safeguarding sensitive institutional data and architecting complex commercial ecosystems, we operate with 100% transparency. Whether we are securing a backend or launching a brand, our word is our bond. When we commit to a project, we deliver—period..
+                    </p>
+                </div>
+                <div style="padding: 25px; background: rgba(255,255,255,0.02); border-left: 2px solid var(--accent); backdrop-filter: blur(10px);">
+                    <h5 style="color: #fff; text-transform: uppercase; letter-spacing: 2px; font-size: 0.85rem; margin-bottom: 12px; font-weight: 800;">Security-First Mindset</h5>
+                    <p style="font-size: 0.85rem; color: #94a3b8; line-height: 1.6;">
+                        In an era of digital vulnerability, we prioritize your protection. From encrypted authentication to secure payment gateways, we build fortresses around your brand to ensure your customers feel safe and respected.
+                    </p>
+                </div>
+            </div>
+            <div style="position: absolute; top: -10px; right: -10px; width: 40px; height: 40px; border-top: 2px solid var(--sea-bright); border-right: 2px solid var(--sea-bright); opacity: 0.6;"></div>
+            <div style="position: absolute; bottom: -10px; left: -10px; width: 40px; height: 40px; border-bottom: 2px solid var(--sea-bright); border-left: 2px solid var(--sea-bright); opacity: 0.6;"></div>
+        </div>
+    </section>
+
+    <section>
+    <div class="vision-grid hidden">
+        <div class="vision-image" style="background: rgba(255,255,255,0.03); border-radius: 30px; height: 400px; border: 1px solid rgba(255,255,255,0.1); display: flex; align-items: center; justify-content: center; position: relative; overflow: hidden;">
+             <img src="images/Wolf2.png" alt="Architecture" style="width: 60%; opacity: 0.2; filter: brightness(2);">
+             <div style="position: absolute; bottom: 30px; left: 30px; text-align: left;">
+                <span style="font-size: 0.7rem; color: var(--accent); letter-spacing: 4px; text-transform: uppercase;">Est. 2026</span>
+                <h4 style="font-size: 1.5rem; font-weight: 900;">Elite Tier Delivery</h4>
+             </div>
+        </div>
+        <div class="vision-text">
+            <h4>The <span class="highlight">Unrivaled</span> Standard</h4>
+            <p>At Wolvatarr, we don't just provide services; we engineer dominance. Our multi-disciplinary approach ensures that whether it is technical development, creative branding, or strategic marketing, every deliverable is positioned at the peak of industry standards. We specialize in high-performance solutions that are both aesthetically supreme and functionally superior.</p>
+            <p>Our philosophy is rooted in <strong>Systemic Intelligence</strong>—a methodology that fuses rigorous data-driven strategy with high-speed execution. By leveraging advanced automation and deep architectural insights, we deliver complex solutions with a level of sophistication and precision that leaves conventional competitors behind.</p>
+            <div class="architectural-pillars">
+                <div class="pillar-tag">Premium Full-Stack Solutions</div>
+                <div class="pillar-tag">Strategic Brand Growth</div>
+                <div class="pillar-tag">High-ROI Digital Marketing</div>
+                <div class="pillar-tag">Rapid Technical Scaling</div>
+            </div>
+        </div>
+    </div>
+</section>
+
+    <section>
+    <h2 class="section-header hidden">The <span class="highlight">Wolvatarr</span> Protocol</h2>
+    <div class="process-steps hidden">
+        <div class="step">
+            <div class="step-num">01</div>
+            <h4>Discovery & Strategy</h4>
+            <p style="font-size: 0.85rem; color: #94a3b8;">We deep-dive into your brand mechanics to understand the technical requirements and the psychological profile of your audience, ensuring every move aligns with your growth goals.</p>
+        </div>
+        <div class="step">
+            <div class="step-num">02</div>
+            <h4>Architectural Blueprint</h4>
+            <p style="font-size: 0.85rem; color: #94a3b8;">Creation of high-fidelity design systems, campaign frameworks, and structural schemas that form the solid skeleton of your digital or physical ecosystem.</p>
+        </div>
+        <div class="step">
+            <div class="step-num">03</div>
+            <h4>Precision Execution</h4>
+            <p style="font-size: 0.85rem; color: #94a3b8;">Implementing the core engine of your project—whether through advanced engineering, creative design, or strategic marketing. Every asset is optimized for maximum impact.</p>
+        </div>
+        <div class="step">
+            <div class="step-num">04</div>
+            <h4>Launch & Command</h4>
+            <p style="font-size: 0.85rem; color: #94a3b8;">Deploying your solution to the market with 24/7 monitoring and performance tracking. We remain your digital command center for all future iterations and scaling.</p>
+        </div>
+    </div>
+</section>
+
+    <section>
+        <h2 class="section-header hidden">Dominating the <span class="highlight">Digital Frontier</span></h2>
+        <div class="services">
+            <a href="services.html" class="card hidden" style="transition-delay: 0.1s;">
+                <h3>High-Octane Web Building</h3>
+                <p>We don't just "make websites"—we engineer high-performance digital ecosystems. Leveraging Python, Django, HTML, CSS, and modern JavaScript.</p>
+            </a>
+            <a href="services.html" class="card hidden" style="transition-delay: 0.2s;">
+                <h3>Elite Graphic Design</h3>
+                <p>Visual warfare in every pixel. From corporate identities to sophisticated UI/UX layouts that demand attention.</p>
+            </a>
+            <a href="services.html" class="card hidden" style="transition-delay: 0.3s;">
+                <h3>Cinematic Video</h3>
+                <p>Storytelling with the precision of a master architect. High-fidelity cinematic content and motion graphics.</p>
+            </a>
+        </div>
+    </section>
+
+    <section>
+        <div class="market-dominance hidden">
+            <span style="color: var(--sea-bright); letter-spacing: 5px; text-transform: uppercase; font-size: 0.8rem; font-weight: 800;">Strategic Evolution</span>
+            <h2 style="font-size: clamp(2rem, 5vw, 3rem); margin: 20px 0; font-weight: 900;">Ready to Outpace the <span class="highlight">Competition?</span></h2>
+            <p style="max-width: 700px; margin: 0 auto 40px; color: #94a3b8;">In the digital landscape, you are either the hunter or the prey. Wolvatarr provides the tools, the technology, and the vision to ensure your brand stays at the top of the food chain.</p>
+            <a href="contact.html" class="btn">Initialize Project</a>
+        </div>
+    </section>
+
+    <a href="#" id="backToTop" onclick="initiateBeam(event)" title="Back to Top">↑</a>
+
+    <div class="howl-trigger hidden" onclick="playHowl()">
+        <div class="howl-pulse-icon"></div>
+        <span class="howl-label">Wolf Command: Howl</span>
+    </div>
+
+    <audio id="wolfHowl">
+        <source src="audio/wolf sound.mp3" type="audio/mpeg">
+    </audio>
+
+    <footer style="padding: 80px 10% 60px; text-align: center; border-top: 1px solid rgba(255, 255, 255, 0.05);">
+        <p style="font-weight: 900; letter-spacing: 6px; margin-bottom: 10px; color: var(--text); font-size: 1.1rem;">WOLVATARR</p>
+        <p style="opacity: 0.4; font-size: 0.85rem; letter-spacing: 1px;">&copy; 2026 THE DIGITAL ARCHITECTS</p>
+        <p style="margin-top: 40px; font-size: 1.2rem; font-weight: 700; color: var(--sea-bright); display: flex; align-items: center; justify-content: center; gap: 0;">
+            Developed by Wolf<img src="images/Wolf2.png" alt="Wolf Icon" style="width: 70px; height: auto; filter: drop-shadow(0 0 15px rgba(0, 212, 255, 0.3)); margin: 0 5px;"> +233 27 506 3004
+        </p>
+        <p style="font-size: 0.75rem; margin-top: 30px; opacity: 0.3; letter-spacing: 3px; text-transform: uppercase;">
+            Accra | Ghana | Global
+        </p>
+    </footer>
+
+   <script>
+        // --- HOWL AUDIO LOGIC ---
+        // Updated to match the "NEW: WOLF HOWL FUNCTION" exactly
+        function playHowl() {
+            const howl = document.getElementById('wolfHowl');
+            if (howl) {
+                howl.currentTime = 0;
+                howl.play().catch(e => console.log("Audio play blocked until user interaction."));
+                
+                // Add visual surge to trigger button
+                const trigger = document.querySelector('.howl-trigger');
+                trigger.classList.add('electric-surge');
+                setTimeout(() => trigger.classList.remove('electric-surge'), 500);
+            }
+        }
+
+        // --- 3-SECOND LOADER LOGIC ---
+        window.addEventListener('load', () => {
+            setTimeout(() => {
+                const loader = document.getElementById('loader');
+                loader.style.opacity = '0';
+                setTimeout(() => {
+                    loader.style.visibility = 'hidden';
+                }, 800);
+            }, 3000); 
+        });
+
+        const light = document.getElementById('light');
+        document.addEventListener('mousemove', (e) => {
+            requestAnimationFrame(() => {
+                light.style.left = e.clientX + 'px';
+                light.style.top = e.clientY + 'px';
+            });
+        });
+
+        const topBtn = document.getElementById('backToTop');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 400) {
+                topBtn.classList.add('show');
+            } else {
+                topBtn.classList.remove('show');
+            }
+        });
+
+        function initiateBeam(e) {
+            e.preventDefault();
+            topBtn.classList.add('electric-surge');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+            setTimeout(() => {
+                topBtn.classList.remove('electric-surge');
+            }, 600);
+        }
+
+        const cards = document.querySelectorAll('.card');
+        cards.forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--x', `${x}px`);
+                card.style.setProperty('--y', `${y}px`);
+                const rotateX = (y - rect.height/2) / 12;
+                const rotateY = (rect.width/2 - x) / 12;
+                card.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) scale3d(1.02, 1.02, 1.02)`;
+            });
+            card.addEventListener('mouseleave', () => {
+                card.style.transform = `perspective(1000px) rotateX(0deg) rotateY(0deg) scale3d(1, 1, 1)`;
+            });
+        });
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('reveal');
+                }
+            });
+        }, { threshold: 0.1 });
+
+        document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
+
+        const video = document.getElementById('mainPlayer');
+        const playBtn = document.getElementById('playBtn');
+        const progress = document.getElementById('progress');
+        const timeDisplay = document.getElementById('time');
+
+        function togglePlay() {
+            if (video.paused) {
+                video.play();
+                playBtn.style.border = "none";
+                playBtn.style.width = "12px";
+                playBtn.style.height = "15px";
+                playBtn.style.borderLeft = "4px solid var(--sea-bright)";
+                playBtn.style.borderRight = "4px solid var(--sea-bright)";
+            } else {
+                video.pause();
+                playBtn.style.width = "0";
+                playBtn.style.height = "0";
+                playBtn.style.borderTop = "10px solid transparent";
+                playBtn.style.borderBottom = "10px solid transparent";
+                playBtn.style.borderLeft = "15px solid var(--sea-bright)";
+                playBtn.style.borderRight = "none";
+            }
+        }
+
+        video.addEventListener('timeupdate', () => {
+            const pos = (video.currentTime / video.duration) * 100;
+            progress.style.width = pos + "%";
+            let mins = Math.floor(video.currentTime / 60);
+            let secs = Math.floor(video.currentTime % 60);
+            timeDisplay.textContent = `${mins.toString().padStart(2, '0')}:${secs.toString().padStart(2, '0')}`;
+        });
+</script>
+<script src="js/wolf-effects.js"></script>
+</body>
+</html> 

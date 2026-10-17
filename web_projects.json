@@ -1,0 +1,9 @@
+{
+    "category": "web",
+    "tag": "Django",
+    "tag2": "Python",
+    "title": "Web Development",
+    "image": "images/w.png",
+    "description": "Architecting secure, mission-critical web ecosystems. We build multi-vendor marketplaces and automated management portals.",
+    "sub_category": "Full-Stack Engineering"
+}

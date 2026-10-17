@@ -1,0 +1,1141 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Active Intercept™ | Enterprise Cyber Defense Vault{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* --- CRIMSON ROOT SYSTEM OVERRIDES --- */
+    :root {
+        --crimson-glow: #ff1f3a;
+        --crimson-neon: #ff0033;
+        --crimson-dark: #120104;
+        --crimson-mid: #250208;
+        --crimson-border: rgba(255, 31, 58, 0.35);
+        --crimson-amber: #ffaa00;
+        --surge-color: rgba(255, 31, 58, 0.9);
+    }
+
+    body {
+        background-color: #060102 !important;
+        color: #ffe4e6 !important;
+    }
+
+    body::before {
+        filter: hue-rotate(140deg) saturate(2) brightness(0.8) !important;
+        opacity: 0.08 !important;
+    }
+
+    nav {
+        background: rgba(10, 1, 3, 0.92) !important;
+        border-bottom: 1px solid rgba(255, 31, 58, 0.22) !important;
+    }
+
+    .brand-title {
+        color: #ffffff !important;
+        text-shadow: 0 0 16px rgba(255, 31, 58, 0.6) !important;
+    }
+
+    .nav-links a.active {
+        background: linear-gradient(135deg, rgba(255, 31, 58, 0.28) 0%, rgba(255, 0, 51, 0.1) 100%) !important;
+        border: 1px solid #ff1f3a !important;
+        color: #ffffff !important;
+        box-shadow: 0 0 25px rgba(255, 31, 58, 0.5), inset 0 0 14px rgba(255, 31, 58, 0.25) !important;
+        text-shadow: 0 0 12px rgba(255, 31, 58, 0.9) !important;
+    }
+
+    .nav-links a.active::before {
+        background: #ff1f3a !important;
+        box-shadow: 0 0 10px #ff1f3a, 0 0 16px #ff1f3a !important;
+    }
+
+    /* --- HERO HEADER --- */
+    .intercept-hero {
+        padding: 190px 8% 60px;
+        text-align: center;
+        position: relative;
+        background: radial-gradient(circle at 50% 20%, rgba(255, 31, 58, 0.15) 0%, transparent 65%);
+    }
+
+    .intercept-avatar-hero {
+        position: relative;
+        width: 120px;
+        height: 120px;
+        margin: 0 auto 24px;
+        border-radius: 50%;
+        border: 2px solid #ff1f3a;
+        box-shadow: 0 0 35px rgba(255, 31, 58, 0.8), inset 0 0 20px rgba(255, 31, 58, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #000000;
+        overflow: hidden;
+    }
+
+    .intercept-avatar-hero img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: contrast(1.2) brightness(1.1);
+        animation: heroEyeGlow 2.5s infinite ease-in-out;
+    }
+
+    @keyframes heroEyeGlow {
+        0%, 100% { filter: drop-shadow(0 0 6px #ff0033); }
+        50% { filter: drop-shadow(0 0 22px #ff0033) contrast(1.25); }
+    }
+
+    .laser-reticle {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 3px;
+        background: linear-gradient(90deg, transparent, #ff1f3a, #ffffff, #ff1f3a, transparent);
+        box-shadow: 0 0 14px #ff0033;
+        animation: reticleSweep 2.8s infinite ease-in-out;
+        pointer-events: none;
+    }
+
+    @keyframes reticleSweep {
+        0% { top: 0%; opacity: 0.2; }
+        50% { top: 90%; opacity: 1; }
+        100% { top: 0%; opacity: 0.2; }
+    }
+
+    .crimson-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 7px 22px;
+        border-radius: 50px;
+        background: rgba(35, 2, 7, 0.8);
+        border: 1px solid rgba(255, 31, 58, 0.45);
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #ff334b;
+        margin-bottom: 1.5rem;
+        backdrop-filter: blur(15px);
+        box-shadow: 0 0 25px rgba(255, 31, 58, 0.25);
+    }
+
+    .back-home-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 20px;
+        border-radius: 50px;
+        background: rgba(255, 31, 58, 0.08);
+        border: 1px solid rgba(255, 31, 58, 0.35);
+        color: #fda4af;
+        text-decoration: none;
+        font-family: var(--font-mono);
+        font-size: 0.74rem;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        margin-bottom: 2rem;
+        box-shadow: 0 0 15px rgba(255, 31, 58, 0.15);
+    }
+
+    .back-home-btn:hover {
+        background: #ff1f3a;
+        color: #000000;
+        border-color: #ff1f3a;
+        transform: translateY(-2px);
+        box-shadow: 0 0 25px rgba(255, 31, 58, 0.6);
+    }
+
+    .intercept-hero h1 {
+        font-size: clamp(2.6rem, 7vw, 5.2rem);
+        font-weight: 900;
+        letter-spacing: -2px;
+        line-height: 1.08;
+        margin-bottom: 24px;
+        color: #ffffff;
+    }
+
+    .crimson-highlight {
+        color: #ff1f3a;
+        text-shadow: 0 0 35px rgba(255, 31, 58, 0.9);
+    }
+
+    .intercept-hero p {
+        max-width: 820px;
+        margin: 0 auto 36px;
+        color: #cbd5e1;
+        font-size: 1.12rem;
+        line-height: 1.85;
+    }
+
+    /* --- REAL-TIME TELEMETRY HUD BAR --- */
+    .intercept-tele-bar {
+        max-width: 1240px;
+        margin: 0 auto;
+        background: linear-gradient(135deg, rgba(28, 2, 6, 0.9) 0%, rgba(10, 0, 2, 0.95) 100%);
+        border: 1px solid rgba(255, 31, 58, 0.35);
+        border-radius: 18px;
+        padding: 16px 24px;
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        align-items: center;
+        font-family: var(--font-mono);
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.9), 0 0 30px rgba(255, 31, 58, 0.15);
+        gap: 16px;
+    }
+
+    .tele-cell {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        font-size: 0.72rem;
+        border-right: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 4px 10px;
+        white-space: nowrap;
+    }
+
+    .tele-cell:last-child { border-right: none; }
+    .tele-cell span { color: #94a3b8; text-transform: uppercase; }
+    .tele-cell strong { color: #ffffff; font-weight: 900; }
+
+    .crimson-pulse-dot {
+        width: 8px; height: 8px;
+        border-radius: 50%;
+        background: #ff1f3a;
+        box-shadow: 0 0 10px #ff1f3a, 0 0 18px #ff1f3a;
+        animation: crimsonPulse 1.8s infinite ease-in-out;
+    }
+
+    @keyframes crimsonPulse {
+        0%, 100% { opacity: 0.4; transform: scale(1); }
+        50% { opacity: 1; transform: scale(1.3); }
+    }
+
+    /* --- THE 4 IRONCLAD DEFENSE LAYERS --- */
+    .defense-section {
+        padding: 80px 8%;
+        max-width: 1360px;
+        margin: 0 auto;
+    }
+
+    .section-label {
+        font-family: var(--font-mono);
+        font-size: 0.74rem;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: #ff334b;
+        font-weight: 800;
+        display: block;
+        margin-bottom: 10px;
+        text-align: center;
+    }
+
+    .section-title {
+        font-size: clamp(2.2rem, 5vw, 3.4rem);
+        font-weight: 900;
+        letter-spacing: -1.5px;
+        margin-bottom: 50px;
+        text-align: center;
+        color: #ffffff;
+    }
+
+    .defense-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 32px;
+    }
+
+    .defense-card {
+        background: linear-gradient(145deg, rgba(30, 2, 7, 0.8) 0%, rgba(12, 1, 3, 0.95) 100%);
+        border: 1px solid rgba(255, 31, 58, 0.25);
+        border-radius: 26px;
+        padding: 44px 38px;
+        backdrop-filter: blur(25px);
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.8), inset 0 0 25px rgba(255, 31, 58, 0.05);
+        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+    }
+
+    .defense-card:hover {
+        transform: translateY(-6px);
+        border-color: #ff1f3a;
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.95), 0 0 45px rgba(255, 31, 58, 0.3);
+    }
+
+    .card-num-tag {
+        font-family: var(--font-mono);
+        font-size: 0.7rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #ff334b;
+        font-weight: 900;
+        margin-bottom: 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .defense-card h3 {
+        font-size: 1.65rem;
+        font-weight: 900;
+        color: #ffffff;
+        margin-bottom: 16px;
+        line-height: 1.25;
+    }
+
+    .defense-card p {
+        color: #cbd5e1;
+        font-size: 0.94rem;
+        line-height: 1.8;
+        margin-bottom: 24px;
+        flex-grow: 1;
+    }
+
+    .feature-specs {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        border-top: 1px solid rgba(255, 255, 255, 0.08);
+        padding-top: 20px;
+    }
+
+    .feature-specs li {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+        color: #fda4af;
+        line-height: 1.5;
+    }
+
+    .feature-specs li span.glyph {
+        color: #ff1f3a;
+        font-weight: 900;
+        flex-shrink: 0;
+    }
+
+    /* --- INTERACTIVE SIMULATOR TERMINAL --- */
+    .simulator-wrap {
+        padding: 50px 8% 100px;
+        max-width: 1240px;
+        margin: 0 auto;
+    }
+
+    .sim-terminal {
+        background: #080103;
+        border: 2px solid #ff1f3a;
+        border-radius: 22px;
+        box-shadow: 0 0 65px rgba(255, 31, 58, 0.35), inset 0 0 25px rgba(255, 31, 58, 0.08);
+        overflow: hidden;
+        font-family: var(--font-mono);
+    }
+
+    .sim-top-bar {
+        background: #190206;
+        padding: 14px 22px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(255, 31, 58, 0.3);
+    }
+
+    .sim-dots { display: flex; gap: 8px; }
+    .sim-dot { width: 10px; height: 10px; border-radius: 50%; }
+
+    .sim-screen {
+        padding: 20px 24px;
+        color: #fda4af;
+        font-size: 0.8rem;
+        line-height: 1.65;
+        min-height: 240px;
+        max-height: 340px;
+        overflow-y: auto;
+        white-space: pre-wrap;
+        word-break: break-word;
+        background: #040102;
+        border-bottom: 1px solid rgba(255, 31, 58, 0.2);
+    }
+
+    /* Decoy Code Syntax Highlighting */
+    .c-kw { color: #ff0055; font-weight: 700; }
+    .c-fn { color: #ffaa00; font-weight: 700; }
+    .c-str { color: #00ffcc; }
+    .c-cm { color: #64748b; font-style: italic; }
+    .c-exec { color: #38bdf8; font-weight: 600; }
+    .c-alert { color: #ff1f3a; font-weight: 900; text-shadow: 0 0 10px rgba(255, 31, 58, 0.6); }
+    .c-pass { color: #00ffcc; font-weight: 800; }
+
+    /* Live Tactical Execution Stage (Appears after code completes) */
+    .sim-visual-stage {
+        padding: 22px 24px;
+        background: radial-gradient(ellipse at 50% 0%, #150206 0%, #080103 100%);
+        border-bottom: 1px solid rgba(255, 31, 58, 0.25);
+        font-family: var(--font-mono);
+        animation: visualStageFadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    }
+
+    @keyframes visualStageFadeIn {
+        0% { opacity: 0; transform: translateY(8px); }
+        100% { opacity: 1; transform: translateY(0); }
+    }
+
+    .v-stage-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 16px;
+        padding-bottom: 8px;
+        border-bottom: 1px dashed rgba(255, 31, 58, 0.25);
+    }
+
+    .v-stage-title {
+        font-size: 0.72rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: #ff334b;
+        font-weight: 900;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .v-stage-badge {
+        font-size: 0.65rem;
+        padding: 3px 10px;
+        border-radius: 12px;
+        font-weight: 800;
+        letter-spacing: 1px;
+    }
+
+    /* Packet Collision Track for Bot Simulation */
+    .packet-track {
+        display: grid;
+        grid-template-columns: 1fr auto 1fr;
+        align-items: center;
+        gap: 16px;
+        background: rgba(0, 0, 0, 0.4);
+        padding: 16px 20px;
+        border-radius: 14px;
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        margin-bottom: 14px;
+    }
+
+    .node-box {
+        padding: 12px;
+        border-radius: 10px;
+        text-align: center;
+        font-size: 0.75rem;
+    }
+
+    .shield-gate {
+        width: 48px;
+        height: 64px;
+        border-radius: 10px;
+        background: rgba(255, 31, 58, 0.15);
+        border: 2px solid #ff1f3a;
+        box-shadow: 0 0 25px rgba(255, 31, 58, 0.6);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 1.4rem;
+        animation: gatePulse 1.2s infinite ease-in-out;
+    }
+
+    @keyframes gatePulse {
+        0%, 100% { box-shadow: 0 0 15px #ff1f3a; }
+        50% { box-shadow: 0 0 32px #ff1f3a, inset 0 0 10px #ff1f3a; }
+    }
+
+    /* Simulated DevTools Freeze Screen */
+    .mock-devtools {
+        background: #02060c;
+        border: 1px solid rgba(255, 0, 85, 0.4);
+        border-radius: 12px;
+        padding: 14px 18px;
+        box-shadow: 0 0 25px rgba(255, 0, 85, 0.25);
+    }
+
+    .devtools-top {
+        display: flex;
+        justify-content: space-between;
+        font-size: 0.68rem;
+        color: #94a3b8;
+        padding-bottom: 8px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        margin-bottom: 10px;
+    }
+
+    .trap-strobe {
+        background: rgba(255, 0, 85, 0.12);
+        border: 1px solid #ff0055;
+        border-radius: 8px;
+        padding: 12px 16px;
+        color: #ffffff;
+        font-size: 0.78rem;
+        animation: strobeRed 1s infinite alternate;
+    }
+
+    @keyframes strobeRed {
+        0% { border-color: rgba(255, 0, 85, 0.4); background: rgba(255, 0, 85, 0.08); }
+        100% { border-color: #ff0055; background: rgba(255, 0, 85, 0.22); box-shadow: 0 0 20px rgba(255, 0, 85, 0.4); }
+    }
+
+    /* Live Telemetry KPI Tiles */
+    .visual-kpi-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+    }
+
+    .visual-kpi-tile {
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 10px;
+        padding: 10px 14px;
+        font-size: 0.72rem;
+    }
+
+    .visual-kpi-tile span { color: #94a3b8; display: block; margin-bottom: 4px; font-size: 0.65rem; }
+    .visual-kpi-tile strong { font-size: 0.85rem; }
+
+    @media (max-width: 768px) {
+        .packet-track { grid-template-columns: 1fr; gap: 10px; }
+        .visual-kpi-grid { grid-template-columns: 1fr; }
+    }
+
+    .sim-controls {
+        background: #110104;
+        padding: 16px 22px;
+        border-top: 1px solid rgba(255, 31, 58, 0.2);
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        align-items: center;
+        justify-content: space-between;
+    }
+
+    .sim-btn {
+        background: rgba(255, 31, 58, 0.15);
+        border: 1px solid #ff1f3a;
+        color: #ffffff;
+        font-family: var(--font-mono);
+        font-size: 0.76rem;
+        font-weight: 800;
+        padding: 10px 18px;
+        border-radius: 8px;
+        cursor: pointer;
+        transition: all 0.25s ease;
+        text-transform: uppercase;
+    }
+
+    .sim-btn:hover {
+        background: #ff1f3a;
+        color: #000000;
+        box-shadow: 0 0 20px #ff1f3a;
+    }
+
+    /* --- COMMISSION BANNER --- */
+    .commission-box {
+        background: radial-gradient(ellipse at center, rgba(255, 31, 58, 0.22) 0%, rgba(18, 1, 4, 0.95) 75%);
+        border: 1.5px solid #ff1f3a;
+        border-radius: 28px;
+        padding: 60px 40px;
+        text-align: center;
+        max-width: 1240px;
+        margin: 0 8% 100px;
+        box-shadow: 0 0 60px rgba(255, 31, 58, 0.28);
+    }
+
+    .commission-box h2 {
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-weight: 900;
+        color: #ffffff;
+        margin-bottom: 16px;
+    }
+
+    .commission-box p {
+        color: #cbd5e1;
+        max-width: 740px;
+        margin: 0 auto 32px;
+        font-size: 1.05rem;
+        line-height: 1.8;
+    }
+
+    .crimson-cta-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        background: #ff1f3a;
+        color: #ffffff;
+        padding: 18px 44px;
+        border-radius: 50px;
+        font-weight: 900;
+        font-size: 0.85rem;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        text-decoration: none;
+        box-shadow: 0 0 35px rgba(255, 31, 58, 0.65);
+        transition: all 0.35s ease;
+    }
+
+    .crimson-cta-btn:hover {
+        background: #ffffff;
+        color: #000000;
+        transform: translateY(-3px) scale(1.02);
+        box-shadow: 0 0 45px #ffffff;
+    }
+
+    /* --- MOBILE RESPONSIVENESS --- */
+    @media (max-width: 992px) {
+        .intercept-tele-bar { grid-template-columns: repeat(2, 1fr); }
+        .defense-grid { grid-template-columns: 1fr; }
+    }
+
+    @media (max-width: 768px) {
+        .intercept-hero { padding: 150px 5% 40px; }
+        .intercept-hero h1 { font-size: 2.3rem; }
+        .intercept-hero p { font-size: 0.95rem; }
+        .intercept-avatar-hero { width: 92px; height: 92px; }
+
+        .intercept-tele-bar {
+            grid-template-columns: 1fr;
+            padding: 14px 18px;
+            gap: 10px;
+        }
+
+        .tele-cell {
+            border-right: none;
+            justify-content: space-between;
+            background: rgba(255, 255, 255, 0.02);
+            padding: 8px 12px;
+            border-radius: 8px;
+        }
+
+        .defense-section { padding: 40px 5%; }
+        .defense-card { padding: 26px 20px; border-radius: 20px; }
+        .defense-card h3 { font-size: 1.35rem; }
+        .defense-card p { font-size: 0.88rem; }
+
+        .simulator-wrap { padding: 20px 5% 60px; }
+        .sim-screen { font-size: 0.74rem; padding: 18px; min-height: 200px; }
+        .sim-controls { flex-direction: column; align-items: stretch; }
+        .sim-btn { width: 100%; text-align: center; }
+
+        .commission-box {
+            margin: 0 5% 60px;
+            padding: 36px 20px;
+            border-radius: 20px;
+        }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- CRIMSON DEFENSE HERO -->
+<header class="intercept-hero">
+    <div style="margin-bottom: 1.5rem;">
+        <a href="{% url 'core:home' %}" class="back-home-btn">
+            <span>←</span>
+            <span>Return to Command Console</span>
+        </a>
+    </div>
+
+    <div class="intercept-avatar-hero">
+        <img src="{% static 'images/hacker.png' %}" alt="Active Intercept Guardian">
+        <div class="laser-reticle"></div>
+    </div>
+
+    <div class="crimson-badge">
+        <span class="crimson-pulse-dot"></span>
+        <span>DEFENSE PROTOCOL // ZERO-TRUST ARMOR</span>
+    </div>
+
+    <h1>Autonomous Perimeter <br><span class="crimson-highlight">Active Intercept™</span></h1>
+    
+    <p>
+        The web is filled with automated scrapers, intrusive vulnerability scanners, and malicious bots seeking entry. Active Intercept™ is Wolvatarr’s proprietary multi-layer defense engine engineered directly into our custom Django architectures to preemptively detect, isolate, and neutralize adversaries at the edge.
+    </p>
+
+    <!-- LIVE TELEMETRY BAR -->
+    <div class="intercept-tele-bar">
+        <div class="tele-cell">
+            <div class="crimson-pulse-dot"></div>
+            <span>Perimeter Armor:</span>
+            <strong>ARMED // 100% OPERATIONAL</strong>
+        </div>
+        <div class="tele-cell">
+            <span>Attack Surface:</span>
+            <strong>ZERO-TRUST ENFORCED</strong>
+        </div>
+        <div class="tele-cell">
+            <span>Threats Neutralized:</span>
+            <strong style="color: #ff334b;">4,120+ ATTACKS</strong>
+        </div>
+        <div class="tele-cell">
+            <span>Honeypot Traps:</span>
+            <strong>RECURSIVE LOCK ACTIVE</strong>
+        </div>
+    </div>
+</header>
+
+<!-- THE 4 IRONCLAD DEFENSE LAYERS -->
+<section class="defense-section">
+    <span class="section-label">// ARCHITECTURAL SPECIFICATIONS</span>
+    <h2 class="section-title">The Four Pillars of Active Intercept™</h2>
+
+    <div class="defense-grid">
+        <!-- LAYER 01 -->
+        <div class="defense-card">
+            <div>
+                <div class="card-num-tag">
+                    <span>[LAYER 01]</span>
+                    <span>EDGE PERIMETER SENTINEL</span>
+                </div>
+                <h3>Intelligent Layer-7 Traffic Interception</h3>
+                <p>
+                    Every inbound HTTP request undergoes pre-routing inspection before touching core database records. Advanced rate-limiting, IP reputation scoring, and anomaly detection suppress DDoS attacks and brute-force form floods in real time.
+                </p>
+            </div>
+            <ul class="feature-specs">
+                <li><span class="glyph">▶</span> Dynamic heuristic rate-limiting on all POST endpoints</li>
+                <li><span class="glyph">▶</span> Automated Cloudflare & Nginx edge proxy synchronization</li>
+                <li><span class="glyph">▶</span> Strict CORS, CSP script nonce hashing & HSTS preloading</li>
+            </ul>
+        </div>
+
+        <!-- LAYER 02 -->
+        <div class="defense-card">
+            <div>
+                <div class="card-num-tag">
+                    <span>[LAYER 02]</span>
+                    <span>BROWSER INTROSPECTION ARMOR</span>
+                </div>
+                <h3>DevTools Detection & Code-Poison Loop</h3>
+                <p>
+                    Competitors routinely inspect production consoles to clone CSS styles and reverse-engineer API calls. When unauthorized inspection tools or keyboard hooks fire, Active Intercept instantly triggers recursive debugger traps and view corruption.
+                </p>
+            </div>
+            <ul class="feature-specs">
+                <li><span class="glyph">▶</span> Recursive Function('debugger') execution lock</li>
+                <li><span class="glyph">▶</span> Viewport corrupt screen replacement under inspection</li>
+                <li><span class="glyph">▶</span> Silent telemetry beacon dispatch via navigator.sendBeacon</li>
+            </ul>
+        </div>
+
+        <!-- LAYER 03 -->
+        <div class="defense-card">
+            <div>
+                <div class="card-num-tag">
+                    <span>[LAYER 03]</span>
+                    <span>ZERO-TRUST DATA VAULT</span>
+                </div>
+                <h3>Cryptographic DB Query Parameterization</h3>
+                <p>
+                    SQL injection and data leakage are eradicated through strict Django ORM parameter isolation. Client proposals, executive contacts, and sensitive form transmissions are sealed in encrypted PostgreSQL storage with isolated user credentials.
+                </p>
+            </div>
+            <ul class="feature-specs">
+                <li><span class="glyph">▶</span> Zero raw concatenation queries across all endpoints</li>
+                <li><span class="glyph">▶</span> Cross-Site Request Forgery (CSRF) token rotation</li>
+                <li><span class="glyph">▶</span> Honeypot database entities that trap automated crawlers</li>
+            </ul>
+        </div>
+
+        <!-- LAYER 04 -->
+        <div class="defense-card">
+            <div>
+                <div class="card-num-tag">
+                    <span>[LAYER 04]</span>
+                    <span>AUTONOMOUS SENTINEL</span>
+                </div>
+                <h3>Self-Healing Process & Memory Watchdog</h3>
+                <p>
+                    Background ASGI daemons continuously monitor memory allocations, detecting thread locks and memory leaks. The sentinel automatically cleans hanging worker processes, guaranteeing 99.98% uninterrupted platform uptime.
+                </p>
+            </div>
+            <ul class="feature-specs">
+                <li><span class="glyph">▶</span> Automated thread cleanup & zombie process recycling</li>
+                <li><span class="glyph">▶</span> Real-time error trapping with automated failover routes</li>
+                <li><span class="glyph">▶</span> Isolated transaction contexts that prevent cascading faults</li>
+            </ul>
+        </div>
+    </div>
+</section>
+
+<!-- INTERACTIVE SIMULATOR TERMINAL -->
+<section class="simulator-wrap">
+    <div style="text-align: center; margin-bottom: 24px;">
+        <span class="section-label">// LIVE DIAGNOSTIC HARNESS</span>
+        <h3 style="font-size: 1.8rem; font-weight: 900; color: #ffffff;">Active Intercept™ Decoy Defense Engine</h3>
+        <p style="color: #94a3b8; font-size: 0.78rem; font-family: var(--font-mono); margin: 6px auto 0; max-width: 720px; line-height: 1.6;">
+            [SANDBOX SIMULATION // ZERO PRODUCTION IMPACT] Live stream of syntactically complete defensive code snippets and execution traces. Internal infrastructure endpoints are masked for OpSec.
+        </p>
+    </div>
+
+    <div class="sim-terminal">
+        <div class="sim-top-bar">
+            <div class="sim-dots">
+                <div class="sim-dot" style="background: #ef4444;"></div>
+                <div class="sim-dot" style="background: #eab308;"></div>
+                <div class="sim-dot" style="background: #22c55e;"></div>
+            </div>
+            <span style="font-size: 0.7rem; color: #fda4af;">ACTIVE_INTERCEPT_DECOY_ENGINE v6.2 // ISOLATED HARNESS</span>
+            <span style="font-size: 0.7rem; color: #00ffcc;">● SANDBOX READY</span>
+        </div>
+
+        <div class="sim-screen" id="simOutput">
+<span class="c-cm"># [SANDBOX] Active Intercept™ Decoy Harness Initialized.</span>
+<span class="c-cm"># Select any adversarial vector below to stream production defensive logic & execution telemetry:</span>
+<span class="c-pass">> Ready for diagnostic drill.</span>
+        </div>
+
+        <!-- DYNAMIC VISUAL EXECUTION STAGE (RENDERED AFTER CODE COMPLETES) -->
+        <div id="simVisualStage" class="sim-visual-stage" style="display: none;"></div>
+
+        <div class="sim-controls">
+            <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                <button type="button" class="sim-btn" onclick="simTrigger('bot')">Simulate Bot Injection</button>
+                <button type="button" class="sim-btn" onclick="simTrigger('inspect')">Simulate DevTools Introspection</button>
+                <button type="button" class="sim-btn" onclick="simTrigger('spoof')">Simulate Email Spoof Test</button>
+                <button type="button" class="sim-btn" onclick="simTrigger('honeypot')">Trigger Honeypot Trap</button>
+            </div>
+            <button type="button" class="sim-btn" style="background: transparent; border-color: rgba(255,255,255,0.2); color: #cbd5e1;" onclick="simClear()">Clear Terminal</button>
+        </div>
+    </div>
+</section>
+
+<!-- COMMISSION DEFENSE ARCHITECTURE BANNER -->
+<section>
+    <div class="commission-box">
+        <span class="crimson-badge" style="margin-bottom: 1rem;">FORTRESS GRADE FOR YOUR ENTERPRISE</span>
+        <h2>Need Bulletproof Defense For Your Platform?</h2>
+        <p>
+            Whether you operate high-volume eCommerce, proprietary fintech portals, or enterprise client vaults, Wolvatarr engineers your entire stack on Python and Django with Active Intercept™ pre-configured to keep your customer records secure and your business online.
+        </p>
+        <a href="{% url 'core:contact' %}" class="crimson-cta-btn">
+            <span>Commission Fortress Architecture</span>
+            <span style="font-size: 1.1rem;">⚡</span>
+        </a>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const simScreen = document.getElementById('simOutput');
+    const visualStage = document.getElementById('simVisualStage');
+    let streamTimer = null;
+    let tarpitCounterTimer = null;
+
+    function simClear() {
+        if (streamTimer) clearInterval(streamTimer);
+        if (tarpitCounterTimer) clearInterval(tarpitCounterTimer);
+        if (visualStage) visualStage.style.display = 'none';
+        if (!simScreen) return;
+        simScreen.innerHTML = `<span class="c-cm"># [SANDBOX] Threat ledger cleared. Active Intercept™ Sentinel listening...</span>\n<span class="c-pass">> Ready for diagnostic drill.</span>`;
+    }
+
+    const DECOY_PAYLOADS = {
+        bot: [
+            `<span class="c-cm"># [DECOY_MIDDLEWARE] core.security.perimeter.AdaptiveThrottleMiddleware</span>`,
+            `<span class="c-kw">class</span> <span class="c-fn">AdaptiveThrottleMiddleware</span>(MiddlewareMixin):`,
+            `    <span class="c-kw">def</span> <span class="c-fn">process_request</span>(self, request):`,
+            `        client_fp = hashlib.<span class="c-fn">sha256</span>(f<span class="c-str">"{get_client_ip(request)}:{request.headers.get('User-Agent')}"</span>.encode()).<span class="c-fn">hexdigest</span>()`,
+            `        pipe = redis_cluster.<span class="c-fn">pipeline</span>()`,
+            `        pipe.<span class="c-fn">incr</span>(f<span class="c-str">"rate:{client_fp}"</span>)`,
+            `        pipe.<span class="c-fn">expire</span>(f<span class="c-str">"rate:{client_fp}"</span>, 60)`,
+            `        req_count, _ = pipe.<span class="c-fn">execute</span>()`,
+            `        <span class="c-kw">if</span> req_count > 45:  <span class="c-cm"># Burst threshold exceeded</span>`,
+            `            nftables_drop(ip=get_client_ip(request), lease=3600)`,
+            `            <span class="c-kw">return</span> <span class="c-fn">HttpResponse</span>(status=429, headers={<span class="c-str">'Retry-After'</span>: <span class="c-str">'3600'</span>, <span class="c-str">'X-Perimeter'</span>: <span class="c-str">'INTERCEPT_ISOLATED'</span>})`,
+            ` `,
+            `<span class="c-exec">>>> [0.002s] INBOUND_POST :: /api/contact/ -> 182 req/sec burst detected from 198.51.100.84</span>`,
+            `<span class="c-exec">>>> [0.008s] PIPELINE_CHECK :: rate:8f3c7b > threshold [EVALUATED]</span>`,
+            `<span class="c-alert">>>> [0.014s] KERNEL_RULE :: nft add rule inet filter input ip saddr 198.51.100.84 drop</span>`,
+            `<span class="c-pass">>>> [0.019s] ACTION_COMMITTED :: HTTP 429 Too Many Requests | Socket severed in 9.4ms</span>`
+        ],
+        inspect: [
+            `<span class="c-cm">// [DECOY_CLIENT] security/sentinel-introspection-trap.js</span>`,
+            `<span class="c-kw">const</span> <span class="c-fn">SentinelIntrospectionTrap</span> = (() => {`,
+            `    <span class="c-kw">const</span> probe = <span class="c-kw">new</span> <span class="c-fn">Image</span>();`,
+            `    <span class="c-kw">let</span> isQuarantined = <span class="c-kw">false</span>;`,
+            `    Object.<span class="c-fn">defineProperty</span>(probe, <span class="c-str">'id'</span>, {`,
+            `        <span class="c-fn">get</span>: () => {`,
+            `            <span class="c-kw">if</span> (isQuarantined) <span class="c-kw">return</span>;`,
+            `            isQuarantined = <span class="c-kw">true</span>;`,
+            `            navigator.<span class="c-fn">sendBeacon</span>(<span class="c-str">'/api/intercept-beacon/'</span>, JSON.<span class="c-fn">stringify</span>({ event: <span class="c-str">'DEVTOOLS_BREACH'</span> }));`,
+            `            <span class="c-fn">setInterval</span>(() => { <span class="c-fn">Function</span>(<span class="c-str">'debugger'</span>)(); }, 40);  <span class="c-cm">// Poison thread lock</span>`,
+            `            document.body.innerHTML = <span class="c-str">'&lt;div class="quarantine-fault"&gt;CRITICAL_FAULT_INSPECT_PROHIBITED&lt;/div&gt;'</span>;`,
+            `        }`,
+            `    });`,
+            `    console.<span class="c-fn">log</span>(<span class="c-str">'%c'</span>, probe);`,
+            `})();`,
+            ` `,
+            `<span class="c-exec">>>> [HOOK] Window dimension delta breach: outerWidth - innerWidth = 340px</span>`,
+            `<span class="c-exec">>>> [PROBE TRIPPED] Introspection getter evaluated in Console runtime</span>`,
+            `<span class="c-alert">>>> [TELEMETRY] Beacon queued: /api/intercept-beacon/ (Event ID #INC-9481)</span>`,
+            `<span class="c-pass">>>> [THREAD STATUS] Execution isolated inside recursive debugger poison loop</span>`
+        ],
+        spoof: [
+            `<span class="c-cm"># [DECOY_VALIDATOR] recon.crypto.dmarc.DMARCSpoofShield</span>`,
+            `<span class="c-kw">def</span> <span class="c-fn">verify_dmarc_enforcement</span>(target_domain: str) -> dict:`,
+            `    doh_url = f<span class="c-str">"https://dns.google/resolve?name=_dmarc.{target_domain}&type=TXT"</span>`,
+            `    <span class="c-kw">with</span> urllib.request.<span class="c-fn">urlopen</span>(doh_url, timeout=2.0) <span class="c-kw">as</span> resp:`,
+            `        data = json.<span class="c-fn">loads</span>(resp.<span class="c-fn">read</span>().<span class="c-fn">decode</span>())`,
+            `        <span class="c-kw">for</span> answer <span class="c-kw">in</span> data.<span class="c-fn">get</span>(<span class="c-str">'Answer'</span>, []):`,
+            `            txt = answer.<span class="c-fn">get</span>(<span class="c-str">'data'</span>, <span class="c-str">''</span>).<span class="c-fn">replace</span>(<span class="c-str">'\"'</span>, <span class="c-str">''</span>)`,
+            `            <span class="c-kw">if</span> <span class="c-str">'v=DMARC1'</span> <span class="c-kw">in</span> txt:`,
+            `                is_strict = <span class="c-str">'p=reject'</span> <span class="c-kw">in</span> txt <span class="c-kw">or</span> <span class="c-str">'p=quarantine'</span> <span class="c-kw">in</span> txt`,
+            `                <span class="c-kw">return</span> {<span class="c-str">'policy'</span>: <span class="c-str">'STRICT_REJECT'</span> <span class="c-kw">if</span> is_strict <span class="c-kw">else</span> <span class="c-str">'MONITOR_ONLY'</span>, <span class="c-str">'enforced'</span>: is_strict}`,
+            `    <span class="c-kw">return</span> {<span class="c-str">'policy'</span>: <span class="c-str">'MISSING_VULNERABLE'</span>, <span class="c-str">'enforced'</span>: <span class="c-kw">False</span>}`,
+            ` `,
+            `<span class="c-exec">>>> [QUERY] DoH TXT query -> _dmarc.target-enterprise.com</span>`,
+            `<span class="c-exec">>>> [RAW] "v=DMARC1; p=reject; pct=100; rua=mailto:dmarc-reports@target-enterprise.com"</span>`,
+            `<span class="c-pass">>>> [VALIDATION] Strict Rejection (p=reject) verified: Mail spoofing prohibited</span>`,
+            `<span class="c-pass">>>> [VERDICT] 100% Anti-Impersonation Armor: Forged sender relays rejected at SMTP handshake</span>`
+        ],
+        honeypot: [
+            `<span class="c-cm"># [DECOY_CONSUMER] core.channels.tarpit.CrawlerSinkConsumer</span>`,
+            `<span class="c-kw">class</span> <span class="c-fn">CrawlerTarpitConsumer</span>(AsyncHttpConsumer):`,
+            `    <span class="c-kw">async def</span> <span class="c-fn">handle</span>(self, body):`,
+            `        <span class="c-kw">await</span> self.<span class="c-fn">send_headers</span>(headers=[`,
+            `            (b<span class="c-str">"Content-Type"</span>, b<span class="c-str">"text/plain; charset=utf-8"</span>),`,
+            `            (b<span class="c-str">"Transfer-Encoding"</span>, b<span class="c-str">"chunked"</span>),`,
+            `            (b<span class="c-str">"X-Tarpit"</span>, b<span class="c-str">"ACTIVE_INTERCEPT_SINK"</span>),`,
+            `        ])`,
+            `        <span class="c-cm"># Trickle single random bytes at 1 byte/sec to lock adversary crawler threads</span>`,
+            `        <span class="c-kw">while True</span>:`,
+            `            chunk = os.<span class="c-fn">urandom</span>(1)`,
+            `            <span class="c-kw">await</span> self.<span class="c-fn">send_body</span>(b<span class="c-str">"%x\\r\\n%s\\r\\n"</span> % (<span class="c-fn">len</span>(chunk), chunk))`,
+            `            <span class="c-kw">await</span> asyncio.<span class="c-fn">sleep</span>(1.0)`,
+            ` `,
+            `<span class="c-exec">>>> [HONEYPOT HIT] Bot traversed hidden anchor: /vault/admin-node-secret/</span>`,
+            `<span class="c-exec">>>> [FINGERPRINT] User-Agent: python-requests/2.31.0 (Headless Scanner)</span>`,
+            `<span class="c-alert">>>> [TARPIT ENGAGED] Initiated async chunked stream: 1 byte/second trickle</span>`,
+            `<span class="c-pass">>>> [THREAD DRAIN] Adversary worker pool locked indefinitely with 0% CPU impact</span>`
+        ]
+    };
+
+    window.simTrigger = function(action) {
+        if (!simScreen || !DECOY_PAYLOADS[action]) return;
+        if (streamTimer) clearInterval(streamTimer);
+        if (tarpitCounterTimer) clearInterval(tarpitCounterTimer);
+        if (visualStage) visualStage.style.display = 'none';
+
+        simScreen.innerHTML = '';
+        const lines = DECOY_PAYLOADS[action];
+        let lineIdx = 0;
+
+        streamTimer = setInterval(() => {
+            if (lineIdx < lines.length) {
+                simScreen.innerHTML += lines[lineIdx] + '\n';
+                simScreen.scrollTop = simScreen.scrollHeight;
+                lineIdx++;
+            } else {
+                clearInterval(streamTimer);
+                // Trigger realistic visual execution stage directly after code completion
+                setTimeout(() => {
+                    renderVisualStage(action);
+                }, 280);
+            }
+        }, 35);
+    };
+
+    function renderVisualStage(action) {
+        if (!visualStage) return;
+        visualStage.style.display = 'block';
+
+        if (action === 'bot') {
+            visualStage.innerHTML = `
+                <div class="v-stage-header">
+                    <span class="v-stage-title">
+                        <span class="crimson-pulse-dot"></span>
+                        LIVE EDGE PERIMETER INTERCEPTION // LAYER-7 BURST DEFENSE
+                    </span>
+                    <span class="v-stage-badge" style="background: rgba(255, 31, 58, 0.2); color: #ff1f3a; border: 1px solid #ff1f3a;">
+                        NFTABLES DROP ACTIVE
+                    </span>
+                </div>
+
+                <div class="packet-track">
+                    <div class="node-box" style="background: rgba(255, 0, 85, 0.08); border: 1px solid rgba(255, 0, 85, 0.3);">
+                        <span style="color: #94a3b8; font-size: 0.65rem; text-transform: uppercase;">Hostile Cluster IP</span>
+                        <div style="color: #ffffff; font-weight: 800; font-size: 0.88rem; margin: 4px 0;">198.51.100.84:51204</div>
+                        <div style="color: #ff334b; font-size: 0.7rem; font-weight: 700;">Flood Rate: 182 req/sec</div>
+                    </div>
+
+                    <div style="text-align: center;">
+                        <div class="shield-gate">🛡️</div>
+                        <span style="font-size: 0.62rem; color: #ff1f3a; font-weight: 800; display: block; margin-top: 6px;">SHIELD ENGAGED</span>
+                    </div>
+
+                    <div class="node-box" style="background: rgba(0, 255, 204, 0.05); border: 1px solid rgba(0, 255, 204, 0.25);">
+                        <span style="color: #94a3b8; font-size: 0.65rem; text-transform: uppercase;">Protected Core</span>
+                        <div style="color: #00ffcc; font-weight: 800; font-size: 0.88rem; margin: 4px 0;">Python 3.12 / Django Core</div>
+                        <div style="color: #cbd5e1; font-size: 0.7rem;">Inbound Penetration: 0.00%</div>
+                    </div>
+                </div>
+
+                <div class="visual-kpi-grid">
+                    <div class="visual-kpi-tile">
+                        <span>Disposition</span>
+                        <strong style="color: #ff1f3a;">HTTP 429 ISOLATED</strong>
+                    </div>
+                    <div class="visual-kpi-tile">
+                        <span>Socket Sever Time</span>
+                        <strong style="color: #00ffcc;">9.4 ms</strong>
+                    </div>
+                    <div class="visual-kpi-tile">
+                        <span>Kernel Lease Duration</span>
+                        <strong style="color: #ffffff;">3,600s (Quarantined)</strong>
+                    </div>
+                </div>
+            `;
+        } else if (action === 'inspect') {
+            visualStage.innerHTML = `
+                <div class="v-stage-header">
+                    <span class="v-stage-title">
+                        <span class="crimson-pulse-dot"></span>
+                        CLIENT-SIDE CODE INTROSPECTION // RECURSIVE POISON SHIELD
+                    </span>
+                    <span class="v-stage-badge" style="background: rgba(0, 255, 204, 0.15); color: #00ffcc; border: 1px solid #00ffcc;">
+                        TELEMETRY TRANSMITTED
+                    </span>
+                </div>
+
+                <div class="mock-devtools">
+                    <div class="devtools-top">
+                        <span>Console :: Developer Tools [Docked 340px]</span>
+                        <span style="color: #ff0055;">● PAUSED ON DEBUGGER</span>
+                    </div>
+                    <div class="trap-strobe">
+                        <strong style="display: block; margin-bottom: 4px;">⚠️ THREAD LOCKED AT MEMORY OFFSET 0x7FFF5BE24018</strong>
+                        <span>Function('debugger') recursion loop initiated. Inspection window execution halted. Viewport contents purged to prevent CSS/API extraction.</span>
+                    </div>
+                </div>
+
+                <div class="visual-kpi-grid" style="margin-top: 14px;">
+                    <div class="visual-kpi-tile">
+                        <span>Telemetry Dispatch</span>
+                        <strong style="color: #00ffcc;">navigator.sendBeacon (OK)</strong>
+                    </div>
+                    <div class="visual-kpi-tile">
+                        <span>Incident Classification</span>
+                        <strong style="color: #ff0055;">#INC-9481 (DEVTOOLS_BREACH)</strong>
+                    </div>
+                    <div class="visual-kpi-tile">
+                        <span>DOM Exposure</span>
+                        <strong style="color: #ffffff;">0 Bytes Leaked</strong>
+                    </div>
+                </div>
+            `;
+        } else if (action === 'spoof') {
+            visualStage.innerHTML = `
+                <div class="v-stage-header">
+                    <span class="v-stage-title">
+                        <span class="crimson-pulse-dot"></span>
+                        DOH CRYPTOGRAPHIC VALIDATION // ANTI-SPOOFING HANDSHAKE
+                    </span>
+                    <span class="v-stage-badge" style="background: rgba(0, 255, 204, 0.15); color: #00ffcc; border: 1px solid #00ffcc;">
+                        DMARC STRICT ENFORCED
+                    </span>
+                </div>
+
+                <div style="background: rgba(0, 0, 0, 0.45); border: 1px solid rgba(255, 255, 255, 0.08); border-radius: 12px; padding: 14px 18px; margin-bottom: 14px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px;">
+                        <span style="font-size: 0.72rem; color: #cbd5e1;">INBOUND SENDER HEADER:</span>
+                        <span style="font-size: 0.68rem; color: #ff334b; font-weight: 800; background: rgba(255, 31, 58, 0.1); padding: 2px 8px; border-radius: 4px;">UNAUTHORIZED RELAY</span>
+                    </div>
+                    <div style="color: #ffffff; font-weight: 700; font-size: 0.82rem; margin-bottom: 10px;">
+                        From: executive@target-enterprise.com [Relayed via 203.0.113.19]
+                    </div>
+                    <div style="display: flex; gap: 10px; flex-wrap: wrap;">
+                        <span style="background: rgba(0, 255, 204, 0.1); border: 1px solid #00ffcc; color: #00ffcc; padding: 4px 10px; border-radius: 6px; font-size: 0.68rem; font-weight: 800;">
+                            ✓ SPF Alignment: PASS
+                        </span>
+                        <span style="background: rgba(0, 255, 204, 0.1); border: 1px solid #00ffcc; color: #00ffcc; padding: 4px 10px; border-radius: 6px; font-size: 0.68rem; font-weight: 800;">
+                            ✓ DMARC Policy: p=reject
+                        </span>
+                    </div>
+                </div>
+
+                <div class="visual-kpi-grid">
+                    <div class="visual-kpi-tile">
+                        <span>Perimeter Action</span>
+                        <strong style="color: #00ffcc;">550 5.7.1 REJECTED</strong>
+                    </div>
+                    <div class="visual-kpi-tile">
+                        <span>Inbox Delivery Risk</span>
+                        <strong style="color: #00ffcc;">0.0% (Zero Forgery)</strong>
+                    </div>
+                    <div class="visual-kpi-tile">
+                        <span>DNS Lookup Channel</span>
+                        <strong style="color: #38bdf8;">Encrypted DoH (Port 443)</strong>
+                    </div>
+                </div>
+            `;
+        } else if (action === 'honeypot') {
+            visualStage.innerHTML = `
+                <div class="v-stage-header">
+                    <span class="v-stage-title">
+                        <span class="crimson-pulse-dot"></span>
+                        ASYNC ASGI TARPIT CONSUMER // AUTOMATED BOT CONCURRENCY SINK
+                    </span>
+                    <span class="v-stage-badge" style="background: rgba(255, 170, 0, 0.18); color: #ffaa00; border: 1px solid #ffaa00;">
+                        TARPIT ACTIVE
+                    </span>
+                </div>
+
+                <div style="background: rgba(18, 2, 5, 0.75); border: 1px solid rgba(255, 31, 58, 0.35); border-radius: 12px; padding: 14px 18px; margin-bottom: 14px;">
+                    <div style="display: flex; justify-content: space-between; font-size: 0.72rem; margin-bottom: 8px;">
+                        <span>Target Hidden Endpoint: <strong style="color:#ffffff;">/vault/admin-node-secret/</strong></span>
+                        <span style="color: #ffaa00; font-weight: 800;">Streaming: 1 Byte/sec</span>
+                    </div>
+
+                    <div style="width: 100%; height: 8px; background: rgba(255, 255, 255, 0.08); border-radius: 10px; overflow: hidden; margin-bottom: 10px; border: 1px solid rgba(255, 31, 58, 0.2);">
+                        <div id="tarpitProgressBar" style="width: 15%; height: 100%; background: linear-gradient(90deg, #ff1f3a, #ffaa00); box-shadow: 0 0 12px #ff1f3a;"></div>
+                    </div>
+
+                    <div style="display: flex; justify-content: space-between; font-size: 0.7rem; color: #cbd5e1;">
+                        <span>Client Thread Stream: <strong id="tarpitByteCount" style="color:#00ffcc;">14 Bytes Delivered</strong></span>
+                        <span style="color: #ff334b; font-weight: 700;">Adversary Worker: HUNG INDEFINITELY</span>
+                    </div>
+                </div>
+
+                <div class="visual-kpi-grid">
+                    <div class="visual-kpi-tile">
+                        <span>Host CPU Overhead</span>
+                        <strong style="color: #00ffcc;">0.00% (Async Non-Blocking)</strong>
+                    </div>
+                    <div class="visual-kpi-tile">
+                        <span>Bot Concurrency Pool</span>
+                        <strong style="color: #ff1f3a;">Exhausted</strong>
+                    </div>
+                    <div class="visual-kpi-tile">
+                        <span>Security Audit Log</span>
+                        <strong style="color: #ffffff;">Recorded in SQLite/DB</strong>
+                    </div>
+                </div>
+            `;
+
+            // Active trickle animation counter
+            let bytes = 14;
+            const byteEl = document.getElementById('tarpitByteCount');
+            const barEl = document.getElementById('tarpitProgressBar');
+            tarpitCounterTimer = setInterval(() => {
+                bytes++;
+                if (byteEl) byteEl.innerText = `${bytes} Bytes Delivered`;
+                if (barEl) barEl.style.width = Math.min(95, 15 + ((bytes - 14) * 8)) + '%';
+            }, 1000); 
+        }
+
+        // Smooth scroll to reveal the newly activated visual stage
+        visualStage.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+</script>
+{% endblock %}

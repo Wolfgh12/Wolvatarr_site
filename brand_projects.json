@@ -1,0 +1,14 @@
+{
+    "category": "brand",
+    "tag": "Identity",
+    "tag2": "UI/UX",
+    "title": "Graphic Design Services",
+    "thumbnail": "images/g.png",
+    "gallery": [
+        "images/1.jpg",
+        "images/2.jpg",
+        "images/3.jpg"
+    ],
+    "description": "Crafting sophisticated brand identities and premium marketing assets. We specialize in glassmorphism, dark-theme aesthetics, and minimalist layouts.",
+    "sub_category": "Creative Strategy"
+}

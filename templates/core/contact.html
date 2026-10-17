@@ -1,0 +1,594 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Contact | Wolvatarr The Digital Architects{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* --- HERO --- */
+    .contact-hero {
+        padding: 210px 10% 40px;
+        text-align: center;
+        position: relative;
+    }
+
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
+        padding: 8px 22px;
+        border-radius: 50px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid var(--glass-border);
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--sea-bright);
+        margin-bottom: 1.5rem;
+    }
+
+    .contact-hero h1 {
+        font-size: clamp(2.8rem, 8vw, 5.2rem);
+        font-weight: 900;
+        letter-spacing: -2px;
+        line-height: 1.1;
+        margin-bottom: 24px;
+    }
+
+    .highlight {
+        color: var(--sea-bright);
+        text-shadow: 0 0 35px var(--surge-color);
+    }
+
+    .contact-hero p {
+        max-width: 780px;
+        margin: 0 auto;
+        color: var(--text-dim);
+        font-size: 1.15rem;
+        line-height: 1.8;
+    }
+
+    /* --- DJANGO MESSAGES / ALERTS --- */
+    .messages-container {
+        max-width: 1400px;
+        margin: 0 auto 30px;
+        padding: 0 10%;
+    }
+
+    .alert-box {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        padding: 18px 24px;
+        border-radius: 18px;
+        backdrop-filter: blur(20px);
+        margin-bottom: 15px;
+        position: relative;
+        font-family: var(--font-mono);
+        animation: alertSlideIn 0.5s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    @keyframes alertSlideIn {
+        from { opacity: 0; transform: translateY(-12px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .alert-success {
+        background: rgba(0, 255, 204, 0.08);
+        border: 1px solid var(--accent);
+        box-shadow: 0 0 30px rgba(0, 255, 204, 0.2);
+        color: #e0f2fe;
+    }
+
+    .alert-error {
+        background: rgba(255, 0, 85, 0.1);
+        border: 1px solid #ff0055;
+        box-shadow: 0 0 30px rgba(255, 0, 85, 0.25);
+        color: #ffe4e6;
+    }
+
+    .alert-icon {
+        font-size: 1.4rem;
+        font-weight: 900;
+        line-height: 1;
+    }
+
+    .alert-success .alert-icon { color: var(--accent); }
+    .alert-error .alert-icon { color: #ff0055; }
+
+    .alert-content strong {
+        display: block;
+        font-size: 0.78rem;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        margin-bottom: 2px;
+    }
+
+    .alert-content p {
+        font-size: 0.88rem;
+        font-family: var(--font-main);
+        color: var(--text);
+        margin: 0;
+    }
+
+    .alert-close {
+        margin-left: auto;
+        background: none;
+        border: none;
+        color: inherit;
+        font-size: 1.5rem;
+        cursor: pointer;
+        opacity: 0.65;
+        transition: opacity 0.2s ease;
+        line-height: 1;
+    }
+
+    .alert-close:hover { opacity: 1; }
+
+    /* --- CONTACT GRID --- */
+    .contact-container {
+        display: grid;
+        grid-template-columns: 1fr 1.3fr;
+        gap: 60px;
+        padding: 20px 10% 100px;
+        max-width: 1400px;
+        margin: 0 auto;
+        align-items: start;
+    }
+
+    /* Left Info Panel */
+    .contact-info {
+        background: rgba(0, 14, 28, 0.6);
+        padding: 50px 40px;
+        border-radius: 32px;
+        border: 1px solid var(--glass-border);
+        backdrop-filter: blur(20px);
+        box-shadow: var(--depth-shadow);
+        display: flex;
+        flex-direction: column;
+        gap: 35px;
+    }
+
+    .info-item h4 {
+        color: var(--sea-bright);
+        font-family: var(--font-mono);
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 0.75rem;
+        margin-bottom: 8px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .info-item p.val {
+        font-size: 1.45rem;
+        font-weight: 800;
+        color: var(--text);
+        letter-spacing: -0.5px;
+        word-break: break-word;
+    }
+
+    .info-item p.val a {
+        color: inherit;
+        text-decoration: none;
+        transition: color 0.3s ease;
+    }
+
+    .info-item p.val a:hover {
+        color: var(--sea-bright);
+    }
+
+    .info-item p.sub {
+        font-size: 0.9rem;
+        color: var(--text-dim);
+        line-height: 1.7;
+        margin-top: 6px;
+    }
+
+    .channel-chips {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 10px;
+    }
+
+    .channel-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 16px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        border-radius: 50px;
+        color: var(--text);
+        text-decoration: none;
+        font-size: 0.78rem;
+        font-weight: 600;
+        transition: all 0.3s ease;
+    }
+
+    .channel-chip:hover {
+        border-color: var(--sea-bright);
+        color: var(--sea-bright);
+        background: rgba(0, 212, 255, 0.05);
+        transform: translateY(-2px);
+    }
+
+    .divider-line {
+        height: 1px;
+        background: rgba(255, 255, 255, 0.08);
+        width: 100%;
+    }
+
+    /* Right Form Box */
+    .contact-form-box {
+        background: rgba(0, 14, 28, 0.65);
+        padding: 55px 50px;
+        border-radius: 36px;
+        border: 1px solid var(--glass-border);
+        backdrop-filter: blur(25px);
+        box-shadow: var(--depth-shadow);
+    }
+
+    .form-header {
+        margin-bottom: 35px;
+    }
+
+    .form-header h3 {
+        font-size: 1.8rem;
+        font-weight: 900;
+        margin-bottom: 8px;
+        color: var(--text);
+        letter-spacing: -0.5px;
+    }
+
+    .form-header p {
+        font-size: 0.9rem;
+        color: var(--text-dim);
+    }
+
+    .form-row {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+    }
+
+    .form-group {
+        margin-bottom: 24px;
+        position: relative;
+    }
+
+    .form-group label {
+        display: block;
+        font-family: var(--font-mono);
+        font-size: 0.75rem;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--text-dim);
+        margin-bottom: 8px;
+        font-weight: 700;
+    }
+
+    .form-group input, 
+    .form-group select, 
+    .form-group textarea {
+        width: 100%;
+        background: rgba(0, 8, 16, 0.6);
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 14px;
+        padding: 16px 20px;
+        color: #ffffff;
+        font-size: 0.95rem;
+        outline: none;
+        transition: all 0.3s ease;
+        font-family: inherit;
+    }
+
+    .form-group select {
+        appearance: none;
+        background-image: url("data:image/svg+xml;charset=UTF-8,%3Csvg%20xmlns='http://www.w3.org/2000/svg'%20viewBox='0%200%2024%2024'%20fill='none'%20stroke='%2300d4ff'%20stroke-width='2'%20stroke-linecap='round'%20stroke-linejoin='round'%3E%3Cpolyline%20points='6%209%2012%2015%2018%209'%3E%3C/polyline%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 18px center;
+        background-size: 16px;
+        cursor: pointer;
+    }
+
+    .form-group select option {
+        background-color: var(--sea-deep);
+        color: #ffffff;
+    }
+
+    .form-group textarea {
+        height: 140px;
+        resize: vertical;
+        line-height: 1.6;
+    }
+
+    .form-group input:focus, 
+    .form-group select:focus, 
+    .form-group textarea:focus {
+        border-color: var(--sea-bright);
+        background: rgba(0, 212, 255, 0.03);
+        box-shadow: 0 0 25px rgba(0, 212, 255, 0.15);
+    }
+
+    .btn-submit {
+        width: 100%;
+        padding: 20px;
+        background: var(--sea-bright);
+        color: var(--sea-deep);
+        border: none;
+        border-radius: 16px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 2px;
+        font-size: 0.85rem;
+        margin-top: 10px;
+        transition: all 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        box-shadow: 0 10px 30px rgba(0, 212, 255, 0.25);
+        cursor: pointer;
+    }
+
+    .btn-submit:hover {
+        transform: translateY(-4px);
+        background: #ffffff;
+        color: #000;
+        box-shadow: 0 18px 45px var(--surge-color);
+    }
+
+    /* --- THE 3 COMMITMENTS --- */
+    .advantage-section {
+        padding: 30px 10% 120px;
+        max-width: 1400px;
+        margin: 0 auto;
+    }
+
+    .advantage-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+        gap: 30px;
+    }
+
+    .advantage-card {
+        background: rgba(0, 14, 28, 0.45);
+        padding: 40px 35px;
+        border-radius: 26px;
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        backdrop-filter: blur(15px);
+        transition: all 0.4s ease;
+    }
+
+    .advantage-card:hover {
+        border-color: var(--glass-border);
+        background: rgba(0, 212, 255, 0.03);
+        transform: translateY(-6px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.7);
+    }
+
+    .adv-num {
+        font-family: var(--font-mono);
+        font-size: 0.8rem;
+        color: var(--accent);
+        font-weight: 800;
+        letter-spacing: 2px;
+        margin-bottom: 12px;
+    }
+
+    .advantage-card h3 {
+        font-size: 1.3rem;
+        margin-bottom: 12px;
+        color: var(--text);
+        font-weight: 800;
+        transition: color 0.3s;
+    }
+
+    .advantage-card:hover h3 {
+        color: var(--sea-bright);
+    }
+
+    .advantage-card p {
+        font-size: 0.9rem;
+        color: var(--text-dim);
+        line-height: 1.7;
+    }
+
+    @media (max-width: 968px) {
+        .contact-container { grid-template-columns: 1fr; }
+        .form-row { grid-template-columns: 1fr; }
+        .contact-hero { padding-top: 180px; }
+        .contact-form-box { padding: 40px 25px; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- HERO HEADER -->
+<header class="contact-hero">
+    <div class="hero-badge">
+        <span>● COMMENCE COLLABORATION</span>
+        <span>|</span>
+        <span>24-HOUR RESPONSE</span>
+    </div>
+    <h1>Let's Build Something <br><span class="highlight">Unrivaled.</span></h1>
+    <p>
+        Whether you have a fully scoped technical brief or an ambitious concept ready to take form, reach out directly. We don't hide behind account reps—you'll speak straight with our architects.
+    </p>
+</header>
+
+<!-- DJANGO MESSAGES ALERT BANNER -->
+{% if messages %}
+<div class="messages-container">
+    {% for message in messages %}
+    <div class="alert-box alert-{{ message.tags }}">
+        <span class="alert-icon">{% if message.tags == 'success' %}✓{% else %}⚠{% endif %}</span>
+        <div class="alert-content">
+            <strong>{% if message.tags == 'success' %}TRANSMISSION SECURED{% else %}TRANSMISSION HALTED{% endif %}</strong>
+            <p>{{ message }}</p>
+        </div>
+        <button class="alert-close" onclick="this.parentElement.remove()" title="Dismiss">&times;</button>
+    </div>
+    {% endfor %}
+</div>
+{% endif %}
+
+<!-- MAIN CONTACT ROW -->
+<div class="contact-container">
+
+    <!-- LEFT: DIRECT ACCESS & CREDENTIALS -->
+    <div class="contact-info">
+        <!-- DIRECT EMAIL ITEM -->
+        <div class="info-item">
+            <h4><span>▶</span> Direct Architect Email</h4>
+            <p class="val"><a href="mailto:nana@wolvatarr.com">nana@wolvatarr.com</a></p>
+            <p class="sub">Direct transmission line to the Lead Digital Architect. Send RFPs, technical briefs, and partnership inquiries.</p>
+            <div class="channel-chips">
+                <a href="mailto:nana@wolvatarr.com" class="channel-chip">✉ Send Direct Email</a>
+            </div>
+        </div>
+
+        <div class="divider-line"></div>
+
+        <!-- PHONE & WHATSAPP ITEM -->
+        <div class="info-item">
+            <h4><span>▶</span> Direct Phone & WhatsApp</h4>
+            <p class="val"><a href="tel:+233275063004">+233 27 506 3004</a></p>
+            <p class="sub">Available Monday through Saturday, 8:00 AM – 7:00 PM GMT for direct calls and consultations.</p>
+            <div class="channel-chips">
+                <a href="https://wa.me/233275063004" target="_blank" class="channel-chip">💬 Chat on WhatsApp</a>
+                <a href="tel:+233275063004" class="channel-chip">📞 Direct Call</a>
+            </div>
+        </div>
+
+        <div class="divider-line"></div>
+
+        <div class="info-item">
+            <h4><span>▶</span> Command Headquarters</h4>
+            <p class="val">Accra, Ghana</p>
+            <p class="sub">Operating globally. We engineer platforms and campaign media for clients across West Africa, the United Kingdom, North America, and Europe.</p>
+        </div>
+
+        <div class="divider-line"></div>
+
+        <div class="info-item">
+            <h4><span>▶</span> Availability & Sprints</h4>
+            <p class="val" style="color: var(--accent); font-size: 1.25rem;">Now Accepting 2026 Projects</p>
+            <p class="sub">We accept a selective number of concurrent builds per quarter to ensure zero compromise on speed, security, and polish.</p>
+        </div>
+
+        <div class="divider-line"></div>
+
+        <div class="info-item">
+            <h4><span>▶</span> The Wolvatarr Guarantee</h4>
+            <p class="sub" style="color: var(--text); font-size: 0.92rem;">
+                Trust is our currency. We operate with strict non-disclosure agreements, complete code transparency, and zero proprietary lock-in. When we commit to your deadline, we deliver.
+            </p>
+        </div>
+    </div>
+
+    <!-- RIGHT: THE TRANSMISSION FORM -->
+    <div class="contact-form-box">
+        <div class="form-header">
+            <h3>Start Your Project Brief</h3>
+            <p>Tell us what you're looking to achieve. We will review your goals and reply with initial thoughts, realistic timelines, and cost ranges within 24 hours.</p>
+        </div>
+
+        <form id="wolfContactForm" method="POST" action="{% url 'core:contact' %}">
+            {% csrf_token %}
+            
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="id_name">Your Name *</label>
+                    <input type="text" id="id_name" name="name" placeholder="Nana Awuah" required>
+                </div>
+
+                <div class="form-group">
+                    <label for="id_email">Email Address *</label>
+                    <input type="email" id="id_email" name="email" placeholder="nana@company.com" required>
+                </div>
+            </div>
+
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="id_service">Primary Need *</label>
+                    <select id="id_service" name="service" required>
+                        <option value="" disabled {% if not request.GET.service %}selected{% endif %}>Select what you need built</option>
+                        <option value="web" {% if request.GET.service == 'web' %}selected{% endif %}>Custom Web & System Development (Django/Python)</option>
+                        <option value="video" {% if request.GET.service == 'video' %}selected{% endif %}>Cinematic Video & 3D Motion Commercials</option>
+                        <option value="brand" {% if request.GET.service == 'brand' %}selected{% endif %}>Brand Identity & Graphic Design Suite</option>
+                        <option value="full_pack" {% if request.GET.service == 'full_pack' %}selected{% endif %}>The Full Arsenal (Web + Video + Branding)</option>
+                    </select>
+                </div>
+
+                <div class="form-group">
+                    <label for="id_timeline">Target Launch Timeline</label>
+                    <select id="id_timeline" name="timeline">
+                        <option value="rush">⚡ Rush Priority (2 - 3 Weeks)</option>
+                        <option value="standard" selected>Standard Sprint (4 - 6 Weeks)</option>
+                        <option value="flexible">Flexible / Planning Phase</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="id_message">Project Details & Vision *</label>
+                <textarea id="id_message" name="message" placeholder="Describe what you want to achieve, any current roadblocks, or key features you require..." required></textarea>
+            </div>
+
+            <button type="submit" class="btn-submit" id="submitBtn">
+                <span>Send Project Transmission</span>
+                <span style="font-size: 1.1rem;">⚡</span>
+            </button>
+        </form>
+    </div>
+
+</div>
+
+<!-- WHAT HAPPENS NEXT SECTION -->
+<section class="advantage-section">
+    <div style="text-align: center; max-width: 650px; margin: 0 auto 50px;">
+        <span class="section-tagline">Client Experience</span>
+        <h2 style="font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 900;">What Happens Next</h2>
+    </div>
+
+    <div class="advantage-grid">
+        <div class="advantage-card">
+            <div class="adv-num">STEP 01</div>
+            <h3>24-Hour Intel Review</h3>
+            <p>We analyze your requirements, check technical feasibility, and prepare an initial breakdown of recommendations before we even hop on a call.</p>
+        </div>
+
+        <div class="advantage-card">
+            <div class="adv-num">STEP 02</div>
+            <h3>Direct Architect Call</h3>
+            <p>A focused 20-minute conversation directly with the lead engineer to align on project architecture, feature scope, and target launch dates.</p>
+        </div>
+
+        <div class="advantage-card">
+            <div class="adv-num">STEP 03</div>
+            <h3>Transparent Blueprint</h3>
+            <p>You receive a clear, milestone-driven proposal outlining exact deliverables, investment tiers, and fixed timelines with zero hidden fees.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}
+
+{% block extra_js %}
+<script>
+    const contactForm = document.getElementById('wolfContactForm');
+    const submitBtn = document.getElementById('submitBtn');
+
+    if (contactForm && submitBtn) {
+        contactForm.addEventListener('submit', function() {
+            submitBtn.disabled = true;
+            submitBtn.style.opacity = '0.75';
+            submitBtn.innerHTML = '<span>Transmitting Brief to Vault...</span>';
+        });
+    }
+</script>
+{% endblock %}

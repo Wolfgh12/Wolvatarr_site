@@ -1,0 +1,617 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Services | Wolvatarr The Digital Architects{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* --- HERO --- */
+    .services-hero {
+        padding: 200px 8% 50px;
+        text-align: center;
+        position: relative;
+    }
+
+    .hero-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        padding: 7px 20px;
+        border-radius: 50px;
+        background: rgba(0, 18, 36, 0.7);
+        border: 1px solid var(--glass-border);
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--sea-bright);
+        margin-bottom: 1.5rem;
+        backdrop-filter: blur(16px);
+    }
+
+    .services-hero h1 {
+        font-size: clamp(2.4rem, 6.5vw, 4.8rem);
+        font-weight: 900;
+        letter-spacing: -1.5px;
+        line-height: 1.1;
+        margin-bottom: 20px;
+    }
+
+    .highlight {
+        color: var(--sea-bright);
+        text-shadow: 0 0 35px var(--surge-color);
+    }
+
+    .services-hero p {
+        max-width: 760px;
+        margin: 0 auto;
+        color: var(--text-dim);
+        font-size: 1.05rem;
+        line-height: 1.8;
+    }
+
+    /* --- CYBER SERVICE PILLARS --- */
+    .service-pillar-section {
+        padding: 30px 8% 90px;
+        max-width: 1360px;
+        margin: 0 auto;
+        display: flex;
+        flex-direction: column;
+        gap: 40px;
+    }
+
+    .service-pillar-card {
+        background: linear-gradient(135deg, rgba(0, 18, 36, 0.75) 0%, rgba(0, 8, 18, 0.85) 100%);
+        border: 1px solid rgba(0, 212, 255, 0.18);
+        border-radius: 28px;
+        padding: 48px;
+        backdrop-filter: blur(25px);
+        -webkit-backdrop-filter: blur(25px);
+        box-shadow: 0 25px 60px rgba(0, 0, 0, 0.7), 0 0 30px rgba(0, 212, 255, 0.05);
+        display: grid;
+        grid-template-columns: 1.25fr 0.85fr;
+        gap: 44px;
+        align-items: stretch;
+        transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.4s ease, box-shadow 0.4s ease;
+        position: relative;
+    }
+
+    .service-pillar-card:hover {
+        transform: translateY(-5px);
+        border-color: var(--sea-bright);
+        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.85), 0 0 40px rgba(0, 212, 255, 0.18);
+    }
+
+    .pillar-tag {
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--accent);
+        font-weight: 800;
+        margin-bottom: 10px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+    }
+
+    .service-pillar-card h2 {
+        font-size: clamp(1.8rem, 3.2vw, 2.5rem);
+        font-weight: 900;
+        margin-bottom: 16px;
+        line-height: 1.2;
+        letter-spacing: -0.5px;
+        color: #ffffff;
+    }
+
+    .service-pillar-card p.lead-desc {
+        color: var(--text-dim);
+        font-size: 0.95rem;
+        line-height: 1.75;
+        margin-bottom: 24px;
+    }
+
+    .deliverables-list {
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .deliverables-list li {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        font-size: 0.88rem;
+        line-height: 1.6;
+        color: #e2e8f0;
+        background: rgba(255, 255, 255, 0.02);
+        border: 1px solid rgba(255, 255, 255, 0.05);
+        border-radius: 12px;
+        padding: 10px 14px;
+    }
+
+    .deliverables-list li .check-icon {
+        color: var(--accent);
+        font-weight: 900;
+        font-size: 0.95rem;
+        flex-shrink: 0;
+        margin-top: 1px;
+    }
+
+    /* Right Side Cockpit Telemetry Box */
+    .pillar-specs {
+        background: rgba(0, 8, 16, 0.9);
+        border: 1px solid rgba(0, 212, 255, 0.2);
+        border-radius: 22px;
+        padding: 26px 22px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        box-shadow: inset 0 0 20px rgba(0, 212, 255, 0.05);
+    }
+
+    /* Cyber Media Showcase Frame */
+    .pillar-media-frame {
+        position: relative;
+        width: 100%;
+        height: 165px;
+        border-radius: 14px;
+        overflow: hidden;
+        border: 1px solid rgba(0, 212, 255, 0.28);
+        background: #00060e;
+        margin-bottom: 18px;
+        box-shadow: 0 10px 25px rgba(0, 0, 0, 0.7);
+    }
+
+    .pillar-media-img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: contrast(1.1) brightness(0.88);
+        transition: transform 0.5s cubic-bezier(0.16, 1, 0.3, 1), filter 0.4s ease;
+        display: block;
+    }
+
+    .service-pillar-card:hover .pillar-media-img {
+        transform: scale(1.08);
+        filter: contrast(1.15) brightness(1.05);
+    }
+
+    .media-status-pill {
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        font-family: var(--font-mono);
+        font-size: 0.62rem;
+        font-weight: 800;
+        letter-spacing: 1.5px;
+        color: var(--accent);
+        background: rgba(0, 10, 20, 0.85);
+        padding: 4px 10px;
+        border-radius: 20px;
+        border: 1px solid rgba(0, 255, 204, 0.35);
+        backdrop-filter: blur(10px);
+        z-index: 2;
+    }
+
+    .media-reticle-overlay {
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(180deg, transparent 65%, rgba(0, 212, 255, 0.18) 100%);
+        pointer-events: none;
+        z-index: 1;
+    }
+
+    .spec-header-tag {
+        font-family: var(--font-mono);
+        font-size: 0.64rem;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--text-dim);
+        margin-bottom: 14px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .spec-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        margin-bottom: 20px;
+    }
+
+    .spec-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+        padding-bottom: 10px;
+        font-family: var(--font-mono);
+        font-size: 0.78rem;
+    }
+
+    .spec-row span:first-child { color: var(--text-dim); }
+    .spec-row span:last-child { color: var(--sea-bright); font-weight: 800; }
+
+    .spec-row.highlighted-spec {
+        border-bottom-color: rgba(0, 255, 204, 0.3);
+        background: rgba(0, 255, 204, 0.04);
+        padding: 8px 10px;
+        border-radius: 8px;
+    }
+
+    .spec-row.highlighted-spec span:last-child {
+        color: var(--accent);
+        font-weight: 900;
+        text-shadow: 0 0 10px rgba(0, 255, 204, 0.5);
+    }
+
+    .btn-service-cta {
+        width: 100%;
+        padding: 15px 20px;
+        background: var(--sea-bright);
+        color: var(--sea-deep);
+        text-decoration: none;
+        border-radius: 12px;
+        font-weight: 900;
+        text-transform: uppercase;
+        letter-spacing: 1.5px;
+        font-size: 0.76rem;
+        text-align: center;
+        transition: all 0.3s ease;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
+        box-shadow: 0 0 20px var(--surge-color);
+    }
+
+    .btn-service-cta:hover {
+        background: #ffffff;
+        color: #000;
+        transform: translateY(-2px);
+        box-shadow: 0 0 30px var(--sea-bright);
+    }
+
+    /* --- ACTIVE INTERCEPT CALLOUT --- */
+    .intercept-banner {
+        background: radial-gradient(ellipse at 50% 50%, rgba(255, 0, 85, 0.16) 0%, rgba(0, 10, 22, 0.85) 75%);
+        border: 1px solid rgba(255, 0, 85, 0.4);
+        border-radius: 26px;
+        padding: 48px 36px;
+        max-width: 1360px;
+        margin: 0 8% 80px;
+        text-align: center;
+        box-shadow: 0 0 50px rgba(255, 0, 85, 0.2);
+    }
+
+    .intercept-banner h3 {
+        font-size: clamp(1.6rem, 3.5vw, 2.3rem);
+        font-weight: 900;
+        color: #ffffff;
+        margin-bottom: 12px;
+    }
+
+    .intercept-banner p {
+        max-width: 740px;
+        margin: 0 auto 24px;
+        color: var(--text-dim);
+        font-size: 0.95rem;
+        line-height: 1.75;
+    }
+
+    /* --- SPRINT PROTOCOL WORKFLOW --- */
+    .workflow-section {
+        padding: 20px 8% 100px;
+        max-width: 1360px;
+        margin: 0 auto;
+        text-align: center;
+    }
+
+    .workflow-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 20px;
+        margin-top: 40px;
+        text-align: left;
+    }
+
+    .workflow-card {
+        background: rgba(0, 14, 28, 0.55);
+        padding: 28px 24px;
+        border-radius: 20px;
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        backdrop-filter: blur(15px);
+        transition: all 0.35s ease;
+        display: flex;
+        flex-direction: column;
+    }
+
+    .workflow-card:hover {
+        border-color: var(--sea-bright);
+        background: rgba(0, 212, 255, 0.05);
+        transform: translateY(-4px);
+    }
+
+    .workflow-num {
+        font-family: var(--font-mono);
+        color: var(--accent);
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 2px;
+        margin-bottom: 10px;
+    }
+
+    .workflow-card h4 {
+        font-size: 1.15rem;
+        font-weight: 800;
+        margin-bottom: 8px;
+        color: #ffffff;
+    }
+
+    .workflow-card p {
+        color: var(--text-dim);
+        font-size: 0.84rem;
+        line-height: 1.65;
+        margin: 0;
+    }
+
+    /* --- RESPONSIVE MOBILE OVERRIDES --- */
+    @media (max-width: 1024px) {
+        .service-pillar-card { grid-template-columns: 1fr; gap: 30px; padding: 36px 28px; }
+        .workflow-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+        .services-hero { padding: 150px 5% 40px; }
+        .services-hero h1 { font-size: 2.3rem; }
+        .hero-badge {
+            font-size: 0.6rem !important;
+            letter-spacing: 1px !important;
+            padding: 5px 12px !important;
+            gap: 6px !important;
+            max-width: 94vw !important;
+            white-space: nowrap !important;
+        }
+
+        .service-pillar-section { padding: 20px 5% 60px; gap: 28px; }
+        .service-pillar-card {
+            padding: 24px 18px;
+            border-radius: 20px;
+        }
+        .service-pillar-card h2 { font-size: 1.45rem; }
+        .service-pillar-card p.lead-desc { font-size: 0.88rem; margin-bottom: 18px; }
+        .deliverables-list li {
+            font-size: 0.82rem;
+            padding: 8px 12px;
+            border-radius: 10px;
+        }
+
+        .pillar-specs {
+            padding: 22px 18px;
+            border-radius: 16px;
+        }
+        .spec-row { font-size: 0.74rem; }
+
+        .intercept-banner {
+            margin: 0 5% 60px;
+            padding: 30px 18px;
+            border-radius: 20px;
+        }
+        .intercept-banner h3 { font-size: 1.4rem; }
+        .intercept-banner p { font-size: 0.86rem; margin-bottom: 18px; }
+
+        .workflow-section { padding: 10px 5% 70px; }
+        .workflow-grid { grid-template-columns: 1fr; gap: 16px; }
+        .workflow-card { padding: 20px 18px; border-radius: 16px; }
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<!-- HERO HEADER -->
+<header class="services-hero">
+    <div class="hero-badge">
+        <span style="white-space: nowrap;"><span style="color: var(--accent); margin-right: 4px;">●</span> OUR CAPABILITIES</span>
+        <span style="opacity: 0.35;">|</span>
+        <span style="white-space: nowrap;">ENGINEERED FOR SCALE</span>
+    </div>
+    <h1>Built for Speed, Trust & <br><span class="highlight">Market Distinction.</span></h1>
+    <p>
+        We don't sell bloated templates or generic stock visuals. Every website, commercial, and brand identity we deploy is engineered from the ground up to solve business challenges, win client respect, and convert attention into revenue.
+    </p>
+</header>
+
+<!-- MAIN SERVICE PILLARS -->
+<section class="service-pillar-section">
+
+    <!-- 1. CUSTOM WEB & SYSTEM DEVELOPMENT -->
+    <div class="service-pillar-card">
+        <div>
+            <div class="pillar-tag"><span>▶</span> PILLAR 01 // CORE ENGINEERING</div>
+            <h2>Custom Web, Software & System Development</h2>
+            <p class="lead-desc">
+                We engineer bulletproof web applications, client portals, and corporate websites powered by Python and Django. No bloated plugins or vulnerable page-builders—just high-velocity performance, clean database schemas, and rock-solid uptime backed by an industry-leading full year of warranty.
+            </p>
+            <ul class="deliverables-list">
+                <li><span class="check-icon">✓</span> <div><strong>1-Year Full System Support:</strong> 365 days of comprehensive technical maintenance, security patch management, bug fixes, and performance tuning included with every build.</div></li>
+                <li><span class="check-icon">✓</span> <div><strong>Custom Web Platforms & Client Portals:</strong> Engineered to handle high traffic and complex workflows seamlessly without breaking.</div></li>
+                <li><span class="check-icon">✓</span> <div><strong>Sub-Second Load Times:</strong> Optimized database indexing, Redis caching, and responsive frontend architecture.</div></li>
+                <li><span class="check-icon">✓</span> <div><strong>Active Intercept Built-In:</strong> Autonomous perimeter protection against automated bots, DDoS attempts, and injection risks.</div></li>
+                <li><span class="check-icon">✓</span> <div><strong>100% Code Ownership:</strong> Full source code, deployment scripts, and database schemas transferred directly to you with zero vendor lock-in.</div></li>
+            </ul>
+        </div>
+        <div class="pillar-specs">
+            <div class="pillar-media-frame">
+                <span class="media-status-pill">● WEB INFRASTRUCTURE</span>
+                <img src="{% static 'images/web.jpg' %}" alt="Web & System Architecture" class="pillar-media-img">
+                <div class="media-reticle-overlay"></div>
+            </div>
+            <div class="spec-header-tag">// ENGINE TELEMETRY SPECS</div>
+            <div class="spec-grid">
+                <div class="spec-row">
+                    <span>Core Framework</span>
+                    <span>Django / Python 3.12</span>
+                </div>
+                <div class="spec-row">
+                    <span>Database</span>
+                    <span>PostgreSQL / SSL</span>
+                </div>
+                <div class="spec-row">
+                    <span>Timeline</span>
+                    <span>4 - 8 Weeks Sprint</span>
+                </div>
+                <div class="spec-row highlighted-spec">
+                    <span>Warranty & Care</span>
+                    <span>1 Year Full Support (365 Days)</span>
+                </div>
+            </div>
+            <a href="{% url 'core:contact' %}?service=web" class="btn-service-cta">
+                <span>Commission Web System</span>
+                <span>⚡</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- 2. CINEMATIC VIDEO & 3D MOTION -->
+    <div class="service-pillar-card">
+        <div>
+            <div class="pillar-tag"><span>▶</span> PILLAR 02 // VISUAL STORYTELLING</div>
+            <h2>Cinematic Video & 3D Motion Graphics</h2>
+            <p class="lead-desc">
+                In a crowded marketplace, text alone doesn't cut through. We write, direct, shoot, and animate commercial-grade 4K video and 3D product motion graphics that capture audience focus and turn viewers into paying customers.
+            </p>
+            <ul class="deliverables-list">
+                <li><span class="check-icon">✓</span> <strong>Commercial Brand Films:</strong> High-impact narrative commercials shot in 4K studio quality.</li>
+                <li><span class="check-icon">✓</span> <strong>3D Product Renderings & Motion:</strong> Photorealistic product demonstrations that show value without expensive physical prototypes.</li>
+                <li><span class="check-icon">✓</span> <strong>High-Converting Social Ads:</strong> Optimized vertical and widescreen cuts engineered specifically for Instagram, LinkedIn, and YouTube.</li>
+                <li><span class="check-icon">✓</span> <strong>Custom Sound Design:</strong> Cinematic sound effects and audio mixing that give your brand immediate authority.</li>
+            </ul>
+        </div>
+        <div class="pillar-specs">
+            <div class="pillar-media-frame">
+                <span class="media-status-pill" style="color: var(--sea-bright); border-color: rgba(0, 212, 255, 0.4);">● 4K PRODUCTION SUITE</span>
+                <img src="{% static 'images/vid.jpg' %}" alt="Cinematic Video Production" class="pillar-media-img">
+                <div class="media-reticle-overlay"></div>
+            </div>
+            <div class="spec-header-tag">// CINEMATIC MEDIA SPECS</div>
+            <div class="spec-grid">
+                <div class="spec-row">
+                    <span>Resolution</span>
+                    <span>4K Ultra HD / ProRes</span>
+                </div>
+                <div class="spec-row">
+                    <span>Deliverables</span>
+                    <span>TV, Web & Social Cuts</span>
+                </div>
+                <div class="spec-row">
+                    <span>Timeline</span>
+                    <span>2 - 4 Weeks Sprint</span>
+                </div>
+                <div class="spec-row">
+                    <span>Licensing</span>
+                    <span>Full Commercial Rights</span>
+                </div>
+            </div>
+            <a href="{% url 'core:contact' %}?service=video" class="btn-service-cta">
+                <span>Commission Video Media</span>
+                <span>⚡</span>
+            </a>
+        </div>
+    </div>
+
+    <!-- 3. BRAND IDENTITY & GRAPHIC SUITE -->
+    <div class="service-pillar-card">
+        <div>
+            <div class="pillar-tag"><span>▶</span> PILLAR 03 // BRAND DOMINANCE</div>
+            <h2>Brand Identity & Graphic Architecture</h2>
+            <p class="lead-desc">
+                Your visual identity determines whether clients perceive you as a discount option or an industry authority. We build cohesive brand systems, vector logos, and complete corporate identity bibles that establish undeniable credibility.
+            </p>
+            <ul class="deliverables-list">
+                <li><span class="check-icon">✓</span> <strong>Bespoke Vector Logo Design:</strong> Distinct, scalable logos that look exceptional on mobile screens and billboards alike.</li>
+                <li><span class="check-icon">✓</span> <strong>Comprehensive Brand Bible:</strong> Typography guidelines, color palettes, and psychological design rules for consistent application.</li>
+                <li><span class="check-icon">✓</span> <strong>Corporate Collateral:</strong> Business cards, presentation decks, proposal templates, and luxury packaging assets.</li>
+                <li><span class="check-icon">✓</span> <strong>Social Media Design Kits:</strong> Standardized profile and post templates that make your brand immediately recognizable.</li>
+            </ul>
+        </div>
+        <div class="pillar-specs">
+            <div class="pillar-media-frame">
+                <span class="media-status-pill">● BRAND IDENTITY ASSET</span>
+                <img src="{% static 'images/br.jpg' %}" alt="Brand Identity & Graphic Architecture" class="pillar-media-img">
+                <div class="media-reticle-overlay"></div>
+            </div>
+            <div class="spec-header-tag">// BRAND ARCHITECTURE SPECS</div>
+            <div class="spec-grid">
+                <div class="spec-row">
+                    <span>Deliverables</span>
+                    <span>Vector Suite (SVG, AI, PDF)</span>
+                </div>
+                <div class="spec-row">
+                    <span>Brand Rules</span>
+                    <span>Full Corporate Bible</span>
+                </div>
+                <div class="spec-row">
+                    <span>Timeline</span>
+                    <span>2 Weeks Sprint</span>
+                </div>
+                <div class="spec-row">
+                    <span>Revisions</span>
+                    <span>Milestone-Driven</span>
+                </div>
+            </div>
+            <a href="{% url 'core:contact' %}?service=brand" class="btn-service-cta">
+                <span>Commission Brand Identity</span>
+                <span>⚡</span>
+            </a>
+        </div>
+    </div>
+
+</section>
+
+<!-- SECURITY INTERCEPT CALLOUT -->
+<div class="intercept-banner">
+    <h3>Integrated Security: Wolvatarr Active Intercept™</h3>
+    <p>
+        Every custom platform we engineer comes pre-hardened with our proprietary Active Intercept architecture. We monitor and defend your application at the perimeter—neutralizing malicious bots, preventing unauthorized database queries, and keeping your business online 24/7.
+    </p>
+    <a href="{% url 'core:contact' %}" class="btn-service-cta" style="width: auto; padding: 16px 36px;">
+        <span>Discuss Secure Deployment</span>
+    </a>
+</div>
+
+<!-- HOW WE DELIVER (THE SPRINT PROTOCOL) -->
+<section class="workflow-section">
+    <div style="max-width: 650px; margin: 0 auto;">
+        <span class="section-tagline">Predictable Execution</span>
+        <h2 style="font-size: clamp(2rem, 4vw, 2.8rem); font-weight: 900;">How We Work With You</h2>
+    </div>
+
+    <div class="workflow-grid">
+        <div class="workflow-card">
+            <div class="workflow-num">PHASE 01</div>
+            <h4>Discovery & Scope</h4>
+            <p>We analyze your business goals, target audience, and operational bottlenecks to build an airtight project blueprint.</p>
+        </div>
+
+        <div class="workflow-card">
+            <div class="workflow-num">PHASE 02</div>
+            <h4>Design & Prototype</h4>
+            <p>You review interactive mockups, storyboards, and database schemas to confirm every detail before development starts.</p>
+        </div>
+
+        <div class="workflow-card">
+            <div class="workflow-num">PHASE 03</div>
+            <h4>Build & Polish</h4>
+            <p>We engineer the system and produce media assets with bi-weekly milestone demonstrations so you track continuous progress.</p>
+        </div>
+
+        <div class="workflow-card">
+            <div class="workflow-num">PHASE 04</div>
+            <h4>Deployment & 1-Year Care</h4>
+            <p>We launch smoothly to cloud servers, transfer 100% asset ownership, and back every software and web platform with 1 full year of dedicated technical support and maintenance.</p>
+        </div>
+    </div>
+</section>
+{% endblock %}
