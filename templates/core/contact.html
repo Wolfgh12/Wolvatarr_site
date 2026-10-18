@@ -191,21 +191,21 @@
         display: flex;
         gap: 10px;
         flex-wrap: wrap;
-        margin-top: 10px;
+        margin-top: 14px;
     }
 
     .channel-chip {
         display: inline-flex;
         align-items: center;
         gap: 8px;
-        padding: 8px 16px;
+        padding: 10px 18px;
         background: rgba(255, 255, 255, 0.04);
         border: 1px solid rgba(255, 255, 255, 0.08);
         border-radius: 50px;
         color: var(--text);
         text-decoration: none;
-        font-size: 0.78rem;
-        font-weight: 600;
+        font-size: 0.8rem;
+        font-weight: 700;
         transition: all 0.3s ease;
     }
 
@@ -398,11 +398,138 @@
         line-height: 1.7;
     }
 
+    /* Dedicated Mobile Optimization */
     @media (max-width: 968px) {
-        .contact-container { grid-template-columns: 1fr; }
-        .form-row { grid-template-columns: 1fr; }
-        .contact-hero { padding-top: 180px; }
-        .contact-form-box { padding: 40px 25px; }
+        .contact-hero {
+            padding: 145px 5% 20px;
+        }
+
+        .hero-badge {
+            font-size: 0.65rem;
+            letter-spacing: 1.5px;
+            padding: 6px 16px;
+            max-width: 92vw;
+            white-space: nowrap;
+        }
+
+        .contact-hero h1 {
+            font-size: 2.35rem;
+            line-height: 1.15;
+            letter-spacing: -1px;
+            margin-bottom: 16px;
+        }
+
+        .contact-hero p {
+            font-size: 0.95rem;
+            line-height: 1.65;
+        }
+
+        .contact-container {
+            grid-template-columns: 1fr;
+            gap: 25px;
+            padding: 10px 5% 70px;
+        }
+
+        .contact-info {
+            padding: 32px 20px;
+            border-radius: 24px;
+            gap: 24px;
+        }
+
+        .info-item p.val {
+            font-size: 1.25rem;
+        }
+
+        .channel-chips {
+            flex-direction: column;
+            gap: 10px;
+            margin-top: 12px;
+        }
+
+        .channel-chip {
+            width: 100%;
+            justify-content: center;
+            padding: 14px 18px;
+            font-size: 0.85rem;
+            font-weight: 800;
+            border-radius: 14px;
+            background: rgba(0, 212, 255, 0.08);
+            border: 1px solid rgba(0, 212, 255, 0.28);
+            color: #ffffff;
+            box-shadow: 0 4px 18px rgba(0, 0, 0, 0.4);
+        }
+
+        .channel-chip.chip-whatsapp {
+            background: rgba(0, 255, 204, 0.1);
+            border-color: rgba(0, 255, 204, 0.45);
+            color: var(--accent);
+        }
+
+        .channel-chip.chip-whatsapp:active {
+            background: var(--accent);
+            color: var(--sea-deep);
+        }
+
+        .channel-chip.chip-call {
+            background: rgba(0, 212, 255, 0.12);
+            border-color: var(--sea-bright);
+            color: var(--sea-bright);
+        }
+
+        .channel-chip.chip-call:active {
+            background: var(--sea-bright);
+            color: var(--sea-deep);
+        }
+
+        .contact-form-box {
+            padding: 32px 20px;
+            border-radius: 24px;
+        }
+
+        .form-header {
+            margin-bottom: 24px;
+        }
+
+        .form-header h3 {
+            font-size: 1.45rem;
+        }
+
+        .form-row {
+            grid-template-columns: 1fr;
+            gap: 0;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        .form-group input, 
+        .form-group select, 
+        .form-group textarea {
+            padding: 14px 16px;
+            font-size: 0.9rem;
+            border-radius: 12px;
+        }
+
+        .btn-submit {
+            padding: 18px;
+            font-size: 0.82rem;
+            border-radius: 14px;
+        }
+
+        .advantage-section {
+            padding: 10px 5% 90px;
+        }
+
+        .advantage-grid {
+            grid-template-columns: 1fr;
+            gap: 18px;
+        }
+
+        .advantage-card {
+            padding: 28px 22px;
+            border-radius: 20px;
+        }
     }
 </style>
 {% endblock %}
@@ -457,11 +584,11 @@
         <!-- PHONE & WHATSAPP ITEM -->
         <div class="info-item">
             <h4><span>▶</span> Direct Phone & WhatsApp</h4>
-            <p class="val"><a href="tel:+233275063004">+233 27 506 3004</a></p>
-            <p class="sub">Available Monday through Saturday, 8:00 AM – 7:00 PM GMT for direct calls and consultations.</p>
+            <p class="val"><a href="tel:+233560708067">0560708067</a></p>
+            <p class="sub">Available Monday through Saturday, 8:00 AM – 7:00 PM GMT for direct calls, consultations, and priority WhatsApp transmission.</p>
             <div class="channel-chips">
-                <a href="https://wa.me/233275063004" target="_blank" class="channel-chip">💬 Chat on WhatsApp</a>
-                <a href="tel:+233275063004" class="channel-chip">📞 Direct Call</a>
+                <a href="https://wa.me/233560708067" target="_blank" class="channel-chip chip-whatsapp">💬 WhatsApp: @Wolvatarr</a>
+                <a href="tel:+233560708067" class="channel-chip chip-call">📞 Direct Line: 0560708067</a>
             </div>
         </div>
 
