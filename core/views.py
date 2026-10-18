@@ -58,7 +58,11 @@ def services(request):
 
 
 def portfolio(request):
-    projects = PortfolioProject.objects.filter(is_active=True).prefetch_related('screenshots')
+    try:
+        # list() forces immediate query evaluation inside the try-block
+        projects = list(PortfolioProject.objects.filter(is_active=True).prefetch_related('screenshots'))
+    except Exception:
+        projects = []
     return render(request, 'core/portfolio.html', {'projects': projects})
 
 

@@ -594,7 +594,11 @@
                 <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent);">{{ project.badge_code }}</span>
                 {% endif %}
             </div>
+            {% if project.cover_image %}
             <img src="{{ project.cover_image.url }}" alt="{{ project.title }}" class="cover-art">
+            {% else %}
+            <img src="{% static 'images/web.jpg' %}" alt="{{ project.title }}" class="cover-art">
+            {% endif %}
             {% if project.result_metric %}
             <div class="result-metric-badge">{{ project.result_metric }}</div>
             {% endif %}
@@ -701,9 +705,9 @@
     const projectGalleries = {
         {% for project in projects %}
         {{ project.id }}: [
-            "{{ project.cover_image.url }}",
+            {% if project.cover_image %}"{{ project.cover_image.url }}",{% endif %}
             {% for shot in project.screenshots.all %}
-            "{{ shot.image.url }}"{% if not forloop.last %},{% endif %}
+            {% if shot.image %}"{{ shot.image.url }}"{% if not forloop.last %},{% endif %}{% endif %}
             {% endfor %}
         ]{% if not forloop.last %},{% endif %}
         {% endfor %}
