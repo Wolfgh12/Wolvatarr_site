@@ -103,8 +103,20 @@ def active_intercept(request):
     """ 
     Renders the dedicated crimson-red Active Intercept™ Cyber Defense Vault.
     """
-    config = ActiveInterceptConfig.get_config()
-    recent_incidents = SecurityIncidentLog.objects.all().order_by('-created_at')[:8]
+    try:
+        config = ActiveInterceptConfig.get_config()
+        recent_incidents = list(SecurityIncidentLog.objects.all().order_by('-created_at')[:8])
+    except Exception:
+        class FallbackConfig:
+            is_armed = True
+            block_context_menu = True
+            block_devtools_keys = True
+            debugger_poison_loop = True
+            honeypot_traps = True
+
+        config = FallbackConfig()
+        recent_incidents = []
+
     return render(request, 'core/active_intercept.html', {
         'security_config': config,
         'recent_incidents': recent_incidents,
