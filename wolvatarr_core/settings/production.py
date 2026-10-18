@@ -1,5 +1,6 @@
 import os
 import urllib.parse
+from django.db.backends.signals import connection_created
 from .base import *
 
 # Strict Secret Key requirement
@@ -29,7 +30,7 @@ CSRF_TRUSTED_ORIGINS = [
     if origin.strip()
 ]
 
-# Database Routing: Automatically parses Coolify managed PostgreSQL
+# Database Routing: Automatically parses PostgreSQL or optimized SQLite with WAL
 if os.environ.get('DATABASE_URL'):
     url = urllib.parse.urlparse(os.environ.get('DATABASE_URL'))
     DATABASES = {
@@ -56,12 +57,40 @@ elif os.environ.get('POSTGRES_DB'):
         }
     }
 else:
+    # Resolve SQLite database path within Docker persistent volume or root directory
+    db_path = os.environ.get(
+        'DATABASE_PATH',
+        str(BASE_DIR / 'data' / 'db.sqlite3' if (BASE_DIR / 'data' / 'db.sqlite3').exists() else BASE_DIR / 'db.sqlite3')
+    )
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.sqlite3',
-            'NAME': BASE_DIR / 'db.sqlite3',
+            'NAME': db_path,
+            'OPTIONS': {
+                'timeout': 20,  # 20s busy timeout eliminates 'database is locked' errors under concurrency
+            },
         }
     }
+
+# SQLite High-Concurrency WAL Engine: Allows concurrent reads while writes take place
+def configure_sqlite_performance(sender, connection, **kwargs):
+    if connection.vendor == 'sqlite':
+        cursor = connection.cursor()
+        cursor.execute('PRAGMA journal_mode = WAL;')
+        cursor.execute('PRAGMA synchronous = NORMAL;')
+        cursor.execute('PRAGMA busy_timeout = 20000;')
+        cursor.execute('PRAGMA temp_store = MEMORY;')
+        cursor.execute('PRAGMA mmap_size = 134217728;')  # 128MB Memory-Mapped I/O
+        cursor.execute('PRAGMA cache_size = -64000;')    # 64MB Cache
+
+connection_created.connect(configure_sqlite_performance)
+
+# Response GZip Compression: Compresses HTML & JSON payload down by ~75% before transit
+if 'django.middleware.gzip.GZipMiddleware' not in MIDDLEWARE:
+    MIDDLEWARE.insert(0, 'django.middleware.gzip.GZipMiddleware')
+
+# WhiteNoise Edge Caching: Caches static CSS, JS, fonts, and images in browser for 1 Year
+WHITENOISE_MAX_AGE = 31536000
 
 # Reverse Proxy Gateway & SSL Headers for Traefik / Coolify / Contabo
 SECURE_PROXY_SSL_HEADER = ('HTTP_X_FORWARDED_PROTO', 'https')
@@ -77,7 +106,7 @@ X_FRAME_OPTIONS = 'DENY'
 SECURE_REFERRER_POLICY = 'strict-origin-when-cross-origin'
 
 # HTTP Strict Transport Security (HSTS)
-SECURE_HSTS_SECONDS = 31536000  # 1 Full Year
+SECURE_HSTS_SECONDS = 31536000
 SECURE_HSTS_INCLUDE_SUBDOMAINS = True
 SECURE_HSTS_PRELOAD = True
 
@@ -109,7 +138,7 @@ LOGGING = {
     'root': {
         'handlers': ['console'],
         'level': 'WARNING',
-    }, 
+    },
     'loggers': {
         'django': {
             'handlers': ['console'],

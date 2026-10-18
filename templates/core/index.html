@@ -1769,7 +1769,7 @@
             </div>
 
             <!-- VIDEO ELEMENT -->
-            <video id="mainPlayer" playsinline preload="metadata" style="filter: contrast(1.04);">
+            <video id="mainPlayer" playsinline preload="none" style="filter: contrast(1.04);">
     <source src="{% static 'images/wolf.mp4' %}" type="video/mp4">
     Your browser does not support the video tag.
 </video>
@@ -2173,7 +2173,7 @@ Click "🎮 Start Game" to enter your pilot callsign and play, or tap "🔍 Webs
                     <span class="badge-status">● WEB & SYSTEM DEV</span>
                     <span class="badge-year">Custom Build</span>
                 </div>
-                <img src="{% static 'images/web.jpg' %}" alt="Web & System Development" class="thumb-watermark" style="width: 65%; height: auto; max-height: 135px; object-fit: cover; border-radius: 12px; opacity: 0.85; filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.35));">
+                <img src="{% static 'images/web.jpg' %}" alt="Web & System Development" class="thumb-watermark" loading="lazy" decoding="async" style="width: 65%; height: auto; max-height: 135px; object-fit: cover; border-radius: 12px; opacity: 0.85; filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.35));">
                 <div class="thumb-metric">
                     <span class="metric-val">100%</span>
                     <span class="metric-lbl">Reliable & Fast</span>
@@ -2203,7 +2203,7 @@ Click "🎮 Start Game" to enter your pilot callsign and play, or tap "🔍 Webs
                     <span class="badge-status" style="color: var(--accent); border-color: rgba(0, 255, 204, 0.3);">● VIDEO PRODUCTION</span>
                     <span class="badge-year">4K Studio Quality</span>
                 </div>
-                <img src="{% static 'images/vid.jpg' %}" alt="Cinematic Video Production" class="thumb-watermark" style="width: 65%; height: auto; max-height: 135px; object-fit: cover; border-radius: 12px; opacity: 0.85; filter: drop-shadow(0 0 20px rgba(0, 255, 204, 0.35));">
+                <img src="{% static 'images/vid.jpg' %}" alt="Cinematic Video Production" class="thumb-watermark" loading="lazy" decoding="async" style="width: 65%; height: auto; max-height: 135px; object-fit: cover; border-radius: 12px; opacity: 0.85; filter: drop-shadow(0 0 20px rgba(0, 255, 204, 0.35));">
                 <div class="thumb-metric">
                     <span class="metric-val">10x</span>
                     <span class="metric-lbl">Higher Engagement</span>
@@ -2233,7 +2233,7 @@ Click "🎮 Start Game" to enter your pilot callsign and play, or tap "🔍 Webs
                     <span class="badge-status">● BRAND & GRAPHICS</span>
                     <span class="badge-year">Full Identity Kit</span>
                 </div>
-                <img src="{% static 'images/br.jpg' %}" alt="Brand Identity & Graphic Design" class="thumb-watermark" style="width: 65%; height: auto; max-height: 135px; object-fit: cover; border-radius: 12px; opacity: 0.85; filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.35));">
+                <img src="{% static 'images/br.jpg' %}" alt="Brand Identity & Graphic Design" class="thumb-watermark" loading="lazy" decoding="async" style="width: 65%; height: auto; max-height: 135px; object-fit: cover; border-radius: 12px; opacity: 0.85; filter: drop-shadow(0 0 20px rgba(0, 212, 255, 0.35));">
                 <div class="thumb-metric">
                     <span class="metric-val">Premium</span>
                     <span class="metric-lbl">Market Appeal</span>
@@ -4321,7 +4321,7 @@ Ready to commission? Click '⚡ Talk With Us' or reach our direct line: <strong>
 
     document.querySelectorAll('.hidden').forEach(el => observer.observe(el));
 
-    window.addEventListener('load', () => {
+    document.addEventListener('DOMContentLoaded', () => {
         runCounters();
         document.querySelectorAll('.hidden').forEach(el => {
             const rect = el.getBoundingClientRect();
