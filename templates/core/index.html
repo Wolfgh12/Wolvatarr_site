@@ -1769,8 +1769,8 @@
             </div>
 
             <!-- VIDEO ELEMENT -->
-            <video id="mainPlayer" playsinline preload="none" poster="{% static 'images/wolf-poster.webp' %}" style="filter: contrast(1.04);">
-    <source src="{% static 'images/wolf.mp4' %}" type="video/mp4">
+            <video id="mainPlayer" playsinline preload="metadata" poster="{% static 'images/Wolvatarr_main_logo.png' %}" style="filter: contrast(1.04);">
+    <source src="/media/Wolf_Promo_Genesis.mp4" type="video/mp4">
     Your browser does not support the video tag.
 </video>
 
@@ -4376,10 +4376,18 @@ Ready to commission? Click '⚡ Talk With Us' or reach our direct line: <strong>
         }
     }
 
+    let isPlayPending = false;
+
     function togglePlay() {
-        if (!video) return;
+        if (!video || isPlayPending) return;
         if (video.paused) {
-            video.play().then(() => syncPlayStateUI(true)).catch(() => {});
+            isPlayPending = true;
+            video.play()
+                .then(() => syncPlayStateUI(true))
+                .catch(() => {})
+                .finally(() => {
+                    isPlayPending = false;
+                });
         } else {
             video.pause();
             syncPlayStateUI(false);
