@@ -129,246 +129,356 @@
         box-shadow: 0 0 25px var(--surge-color);
     }
 
-    /* Portfolio Grid - Precision Sizing (Prevents Single-Card Stretching) */
+    /* GOD MODE: Strict 4-Per-Row Arsenal Grid */
     .portfolio-grid {
         display: grid;
-        grid-template-columns: repeat(auto-fill, minmax(min(100%, 320px), 380px));
-        justify-content: center;
-        gap: 30px;
-        max-width: 1280px;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 20px;
+        max-width: 1560px;
         margin: 0 auto;
-        padding: 0 5% 120px;
+        padding: 0 4% 120px;
         position: relative;
         z-index: 2;
         width: 100%;
     }
 
+    /* Compact God-Mode Cyber Chassis */
     .portfolio-card {
-        background: rgba(2, 8, 16, 0.75);
-        border: 1px solid rgba(255, 255, 255, 0.07);
-        border-radius: 20px;
+        background: linear-gradient(160deg, rgba(2, 16, 32, 0.92) 0%, rgba(1, 5, 12, 0.98) 100%);
+        border: 1px solid rgba(0, 212, 255, 0.22);
+        border-radius: 16px;
         overflow: hidden;
         backdrop-filter: blur(30px);
         display: flex;
         flex-direction: column;
-        transition: all 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+        justify-content: space-between;
+        transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1), border-color 0.38s ease, box-shadow 0.38s ease;
         position: relative;
-        box-shadow: 0 20px 50px rgba(0, 0, 0, 0.8), inset 0 1px 0 rgba(255, 255, 255, 0.08);
-        max-width: 385px;
+        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(0, 212, 255, 0.15);
         width: 100%;
-        margin: 0 auto;
+    }
+
+    /* Top Laser Hairline */
+    .portfolio-card::before {
+        content: "";
+        position: absolute;
+        top: 0; left: 0; right: 0; height: 2px;
+        background: linear-gradient(90deg, transparent, var(--sea-bright), var(--accent), transparent);
+        opacity: 0.45;
+        transition: opacity 0.38s ease;
+        z-index: 5;
     }
 
     .portfolio-card:hover {
-        transform: translateY(-8px);
-        border-color: rgba(0, 212, 255, 0.5);
-        box-shadow: 0 30px 80px rgba(0, 0, 0, 0.95), 0 0 35px rgba(0, 212, 255, 0.15), inset 0 0 20px rgba(0, 212, 255, 0.04);
+        transform: translateY(-9px);
+        border-color: var(--sea-bright);
+        box-shadow: 0 30px 75px rgba(0, 0, 0, 0.95), 0 0 38px rgba(0, 212, 255, 0.28), inset 0 0 24px rgba(0, 212, 255, 0.08);
+        z-index: 10;
+    }
+    .portfolio-card:hover::before { opacity: 1; }
+
+    /* In-Development Amber Chassis */
+    .card-dev {
+        background: linear-gradient(160deg, rgba(28, 16, 2, 0.92) 0%, rgba(8, 4, 1, 0.98) 100%);
+        border-color: rgba(255, 170, 0, 0.32);
+        box-shadow: 0 18px 45px rgba(0, 0, 0, 0.85), inset 0 1px 0 rgba(255, 170, 0, 0.18);
+    }
+    .card-dev::before {
+        background: linear-gradient(90deg, transparent, #ffaa00, #ff5500, transparent);
+    }
+    .card-dev:hover {
+        border-color: #ffaa00;
+        box-shadow: 0 30px 75px rgba(0, 0, 0, 0.95), 0 0 38px rgba(255, 170, 0, 0.26), inset 0 0 24px rgba(255, 170, 0, 0.08);
     }
 
-    @keyframes fadeInUp {
-        from { opacity: 0; transform: translateY(30px); }
-        to { opacity: 1; transform: translateY(0); }
-    }
-
-    .reveal-card {
-        opacity: 0;
-        animation: fadeInUp 0.7s cubic-bezier(0.16, 1, 0.3, 1) forwards;
-    }
-
-    /* Razor-Sharp Cinematic Media Viewport */
+    /* Compact Holographic Viewport (No Tall Bloat) */
     .project-media {
         width: 100%;
-        height: 240px;
-        background: #010408;
+        height: 170px;
+        background:
+            radial-gradient(circle at 50% 50%, rgba(0, 212, 255, 0.14) 0%, transparent 70%),
+            linear-gradient(rgba(0, 212, 255, 0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(0, 212, 255, 0.04) 1px, transparent 1px),
+            #01060d;
+        background-size: 100% 100%, 20px 20px, 20px 20px, 100% 100%;
         position: relative;
         overflow: hidden;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
-        cursor: pointer;
+        border-bottom: 1px solid rgba(0, 212, 255, 0.14);
+        display: flex;
+        align-items: center;
+        justify-content: center;
     }
 
-    .project-media::after {
+    .card-dev .project-media {
+        background:
+            radial-gradient(circle at 50% 50%, rgba(255, 170, 0, 0.14) 0%, transparent 70%),
+            linear-gradient(rgba(255, 170, 0, 0.04) 1px, transparent 1px),
+            linear-gradient(90deg, rgba(255, 170, 0, 0.04) 1px, transparent 1px),
+            #080400;
+        background-size: 100% 100%, 20px 20px, 20px 20px, 100% 100%;
+        border-bottom: 1px dashed rgba(255, 170, 0, 0.35);
+    }
+
+    /* HUD Corner Targeting Brackets */
+    .hud-corners::before,
+    .hud-corners::after {
         content: "";
         position: absolute;
-        inset: 0;
-        background: linear-gradient(180deg, rgba(0, 6, 14, 0.2) 0%, rgba(0, 6, 14, 0.75) 100%);
+        width: 12px;
+        height: 12px;
+        border-color: var(--sea-bright);
+        border-style: solid;
+        opacity: 0.55;
+        transition: all 0.3s ease;
+        z-index: 3;
         pointer-events: none;
-        z-index: 1;
-        transition: opacity 0.4s ease;
     }
-
-    .portfolio-card:hover .project-media::after {
-        opacity: 0.25;
-    }
+    .hud-corners::before { top: 10px; left: 10px; border-width: 2px 0 0 2px; }
+    .hud-corners::after { bottom: 10px; right: 10px; border-width: 0 2px 2px 0; }
+    .card-dev .hud-corners::before,
+    .card-dev .hud-corners::after { border-color: #ffaa00; }
+    .portfolio-card:hover .hud-corners::before { top: 7px; left: 7px; opacity: 1; }
+    .portfolio-card:hover .hud-corners::after { bottom: 7px; right: 7px; opacity: 1; }
 
     .project-media img.cover-art {
         width: 100%;
         height: 100%;
         object-fit: cover;
-        transition: transform 0.6s cubic-bezier(0.16, 1, 0.3, 1), filter 0.6s ease;
-        filter: contrast(1.05) brightness(0.92);
+        transition: transform 0.55s cubic-bezier(0.16, 1, 0.3, 1), filter 0.55s ease;
+        filter: contrast(1.06) brightness(0.92);
     }
-
     .portfolio-card:hover .project-media img.cover-art {
-        transform: scale(1.05);
-        filter: contrast(1.12) brightness(1.04);
+        transform: scale(1.06);
+        filter: contrast(1.12) brightness(1.05);
     }
 
-    /* Minimalist HUD Floating Telemetry */
+    /* Holographic Domain Core (Shown when no backend screenshot is uploaded yet) */
+    .holo-core {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        padding: 14px;
+        z-index: 2;
+        gap: 8px;
+    }
+
+    .holo-ring {
+        width: 44px;
+        height: 44px;
+        border-radius: 50%;
+        border: 1.5px solid rgba(0, 212, 255, 0.45);
+        box-shadow: 0 0 20px rgba(0, 212, 255, 0.25), inset 0 0 12px rgba(0, 212, 255, 0.2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        font-weight: 900;
+        color: var(--sea-bright);
+        letter-spacing: 1px;
+        transition: transform 0.4s ease, box-shadow 0.4s ease;
+    }
+    .portfolio-card:hover .holo-ring {
+        transform: scale(1.1);
+        box-shadow: 0 0 28px rgba(0, 212, 255, 0.55), inset 0 0 14px rgba(0, 212, 255, 0.35);
+    }
+
+    .card-dev .holo-ring {
+        border-color: rgba(255, 170, 0, 0.6);
+        border-top-color: #ffaa00;
+        color: #ffaa00;
+        box-shadow: 0 0 20px rgba(255, 170, 0, 0.25);
+        animation: tacticalSpin 3.5s linear infinite;
+    }
+
+    .holo-domain {
+        font-family: var(--font-mono);
+        font-size: 0.72rem;
+        font-weight: 800;
+        color: #e2e8f0;
+        letter-spacing: 0.5px;
+        word-break: break-all;
+    }
+
+    .dev-scan-line {
+        position: absolute;
+        top: 0; left: 0; width: 100%; height: 2px;
+        background: linear-gradient(90deg, transparent, #ffaa00, transparent);
+        box-shadow: 0 0 14px #ffaa00;
+        animation: radarScanLine 2.4s infinite linear;
+        pointer-events: none;
+        z-index: 3;
+    }
+
+    @keyframes radarScanLine {
+        0% { transform: translateY(0); opacity: 0; }
+        15% { opacity: 1; }
+        85% { opacity: 1; }
+        100% { transform: translateY(170px); opacity: 0; }
+    }
+    @keyframes tacticalSpin { 100% { transform: rotate(360deg); } }
+
+    /* Minimalist Top Pill */
     .card-top-bar {
         position: absolute;
-        top: 16px; left: 18px; right: 18px;
+        top: 12px; left: 14px; right: 14px;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        z-index: 2;
+        z-index: 4;
     }
 
     .category-pill {
         font-family: var(--font-mono);
-        font-size: 0.65rem;
+        font-size: 0.6rem;
         font-weight: 800;
-        letter-spacing: 2px;
+        letter-spacing: 1.5px;
         text-transform: uppercase;
-        color: var(--sea-bright);
-        background: rgba(0, 8, 16, 0.85);
-        padding: 5px 12px;
-        border-radius: 6px;
-        border: 1px solid rgba(0, 212, 255, 0.25);
-        backdrop-filter: blur(12px);
-    }
-
-    .result-metric-badge {
-        position: absolute;
-        bottom: 16px; right: 18px;
-        background: rgba(0, 8, 16, 0.9);
-        border: 1px solid rgba(255, 255, 255, 0.1);
-        padding: 4px 10px;
-        border-radius: 6px;
-        font-family: var(--font-mono);
-        font-size: 0.65rem;
         color: var(--accent);
-        font-weight: 800;
-        letter-spacing: 1px;
-        z-index: 2;
-        display: flex;
-        align-items: center;
-        gap: 6px;
+        background: rgba(0, 10, 20, 0.88);
+        padding: 4px 10px;
+        border-radius: 5px;
+        border: 1px solid rgba(0, 255, 204, 0.3);
+        backdrop-filter: blur(10px);
     }
 
-    .result-metric-badge::before {
-        content: "";
-        width: 5px; height: 5px;
-        border-radius: 50%;
-        background: var(--accent);
-        box-shadow: 0 0 6px var(--accent);
+    .card-dev .category-pill {
+        color: #ffaa00;
+        border-color: rgba(255, 170, 0, 0.45);
+        background: rgba(20, 10, 0, 0.9);
     }
 
-    /* Content Anatomy */
+    /* Ultra-Clean Compact Body (Zero Description Bloat) */
     .project-info {
-        padding: 26px 28px 24px;
+        padding: 18px 20px 20px;
         display: flex;
         flex-direction: column;
+        gap: 12px;
         flex-grow: 1;
     }
 
     .project-sector {
         font-family: var(--font-mono);
-        font-size: 0.68rem;
-        color: var(--text-dim);
-        letter-spacing: 2px;
+        font-size: 0.62rem;
+        color: var(--sea-bright);
+        letter-spacing: 1.8px;
         text-transform: uppercase;
-        margin-bottom: 8px;
+        font-weight: 700;
     }
+    .card-dev .project-sector { color: #ffaa00; }
 
     .project-info h3 {
-        font-size: 1.3rem;
-        font-weight: 800;
+        font-size: 1.15rem;
+        font-weight: 900;
         color: #ffffff;
-        letter-spacing: -0.5px;
-        margin-bottom: 10px;
-        line-height: 1.3;
+        letter-spacing: -0.3px;
+        margin: 2px 0 0;
+        line-height: 1.25;
         transition: color 0.3s;
     }
+    .portfolio-card:hover .project-info h3 { color: var(--sea-bright); }
+    .card-dev:hover .project-info h3 { color: #ffaa00; }
 
-    .portfolio-card:hover .project-info h3 { 
-        color: var(--sea-bright); 
-    }
-
-    .project-info p {
-        font-size: 0.86rem;
-        color: var(--text-dim);
-        line-height: 1.65;
-        margin-bottom: 20px;
-        flex-grow: 1;
-    }
-
-    /* Sleek Hairline Code Chips */
     .tech-tags {
         display: flex;
-        gap: 6px;
+        gap: 5px;
         flex-wrap: wrap;
-        margin-bottom: 22px;
     }
 
     .tech-tags span {
         font-family: var(--font-mono);
-        font-size: 0.64rem;
+        font-size: 0.6rem;
         color: #94a3b8;
-        background: rgba(255, 255, 255, 0.03);
-        border: 1px solid rgba(255, 255, 255, 0.06);
-        padding: 3px 8px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.08);
+        padding: 3px 7px;
         border-radius: 4px;
-        letter-spacing: 0.5px;
     }
 
-    /* Interactive Command Action Deck */
+    /* Action Deck */
     .card-actions {
         display: flex;
-        justify-content: space-between;
+        gap: 8px;
         align-items: center;
+        margin-top: auto;
+        padding-top: 12px;
         border-top: 1px solid rgba(255, 255, 255, 0.06);
-        padding-top: 16px;
     }
 
     .view-gallery-btn {
-        background: rgba(0, 212, 255, 0.08);
-        border: 1px solid rgba(0, 212, 255, 0.3);
-        color: var(--sea-bright);
-        padding: 8px 16px;
-        border-radius: 6px;
+        background: linear-gradient(135deg, rgba(0, 212, 255, 0.14) 0%, rgba(0, 255, 204, 0.08) 100%);
+        border: 1px solid rgba(0, 212, 255, 0.4);
+        color: #ffffff;
+        padding: 9px 14px;
+        border-radius: 8px;
         font-family: var(--font-mono);
-        font-size: 0.7rem;
+        font-size: 0.68rem;
         font-weight: 800;
         text-transform: uppercase;
         letter-spacing: 1px;
+        text-decoration: none;
         transition: all 0.25s ease;
         cursor: pointer;
         display: inline-flex;
         align-items: center;
+        justify-content: center;
         gap: 6px;
+        flex: 1;
     }
 
     .view-gallery-btn:hover {
         background: var(--sea-bright);
         color: var(--sea-deep);
-        box-shadow: 0 0 20px var(--surge-color);
+        box-shadow: 0 0 22px var(--surge-color);
         transform: translateY(-1px);
     }
 
-    .inspect-link {
-        font-family: var(--font-mono);
-        font-size: 0.72rem;
-        color: var(--text-dim);
-        text-decoration: none;
-        display: inline-flex;
-        align-items: center;
-        gap: 5px;
-        transition: all 0.25s ease;
+    .card-dev .view-gallery-btn {
+        background: rgba(255, 170, 0, 0.1);
+        border-color: rgba(255, 170, 0, 0.45);
+        color: #ffaa00;
+    }
+    .card-dev .view-gallery-btn:hover {
+        background: #ffaa00;
+        color: #050300;
+        box-shadow: 0 0 22px rgba(255, 170, 0, 0.55);
     }
 
-    .inspect-link:hover { 
-        color: var(--accent);
-        transform: translateX(3px);
+    .shot-trigger-btn {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        color: var(--sea-bright);
+        padding: 9px 11px;
+        border-radius: 8px;
+        font-family: var(--font-mono);
+        font-size: 0.68rem;
+        font-weight: 800;
+        cursor: pointer;
+        transition: all 0.25s ease;
+    }
+    .shot-trigger-btn:hover {
+        border-color: var(--sea-bright);
+        background: rgba(0, 212, 255, 0.15);
+    }
+
+    /* Responsive Breakpoints (Strictly 4 per row on desktop > 1080px) */
+    @media (max-width: 1080px) {
+        .portfolio-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); padding: 0 5% 100px; }
+    }
+    @media (max-width: 640px) {
+        .portfolio-grid { grid-template-columns: 1fr; max-width: 440px; padding: 0 5% 80px; }
+    }
+
+    @keyframes fadeInUp {
+        from { opacity: 0; transform: translateY(24px); }
+        to { opacity: 1; transform: translateY(0); }
+    }
+
+    .reveal-card {
+        opacity: 0;
+        animation: fadeInUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
     }
 
     /* Gallery Modal & Lightbox */
@@ -617,50 +727,206 @@
     </div>
 </div>
 
-<!-- PORTFOLIO SHOWCASE GRID - DYNAMIC DATABASE PIPELINE -->
+<!-- PORTFOLIO SHOWCASE GRID - GOD MODE 4-COLUMN ARCHITECTURE -->
 <section class="portfolio-grid" id="project-grid">
 
-    {% for project in projects %}
-    <div class="portfolio-card reveal-card" data-category="{{ project.category }}">
-        <div class="project-media" onclick="openProjectGallery({{ project.id }})">
-            <div class="card-top-bar">
-                <span class="category-pill">{{ project.get_category_display }}</span>
-                {% if project.badge_code %}
-                <span style="font-family: var(--font-mono); font-size: 0.65rem; color: var(--accent);">{{ project.badge_code }}</span>
-                {% endif %}
-            </div>
-            <img src="{{ project.cover_image.url }}" alt="{{ project.title }}" class="cover-art">
-            {% if project.result_metric %}
-            <div class="result-metric-badge">{{ project.result_metric }}</div>
-            {% endif %}
-        </div>
-        <div class="project-info">
-            {% if project.sector %}
-            <div class="project-sector">{{ project.sector }}</div>
-            {% endif %}
-            <h3>{{ project.title }}</h3>
-            <p>{{ project.description }}</p>
-            <div class="tech-tags">
-                {% for tag in project.get_tag_list %}
-                <span>{{ tag }}</span>
-                {% endfor %}
-            </div>
-            <div class="card-actions">
-                <button class="view-gallery-btn" onclick="openProjectGallery({{ project.id }})">
-                    <span>Inspect System</span>
-                    <span>({{ project.screenshots.count|default:"1" }})</span>
-                </button>
-                {% if project.external_link %}
-                <a href="{{ project.external_link }}" target="_blank" rel="noopener noreferrer" class="inspect-link">{{ project.link_text|safe }}</a>
+    {% if projects %}
+        {% for project in projects %}
+        <div class="portfolio-card {% if 'DEV' in project.badge_code|upper or 'STAGING' in project.badge_code|upper %}card-dev{% endif %} reveal-card" data-category="{{ project.category }}">
+            <div class="project-media hud-corners" {% if project.cover_image %}onclick="openProjectGallery({{ project.id }})" style="cursor:pointer;"{% endif %}>
+                <div class="card-top-bar">
+                    <span class="category-pill">● {{ project.badge_code|default:project.get_category_display }}</span>
+                </div>
+                {% if project.cover_image %}
+                    <img src="{{ project.cover_image.url }}" alt="{{ project.title }}" class="cover-art">
                 {% else %}
-                <a href="{% url 'core:contact' %}?service={{ project.category }}" class="inspect-link">{{ project.link_text|safe }}</a>
+                    {% if 'DEV' in project.badge_code|upper or 'STAGING' in project.badge_code|upper %}
+                    <div class="dev-scan-line"></div>
+                    {% endif %}
+                    <div class="holo-core">
+                        <div class="holo-ring">0{{ forloop.counter }}</div>
+                        <div class="holo-domain">{{ project.sector|default:project.title }}</div>
+                    </div>
                 {% endif %}
             </div>
+
+            <div class="project-info">
+                <div>
+                    <div class="project-sector">{{ project.sector|default:project.get_category_display }}</div>
+                    <h3>{{ project.title }}</h3>
+                </div>
+                <div class="tech-tags">
+                    {% for tag in project.get_tag_list %}
+                    <span>{{ tag }}</span>
+                    {% endfor %}
+                </div>
+                <div class="card-actions">
+                    {% if project.external_link %}
+                    <a href="{{ project.external_link }}" target="_blank" rel="noopener noreferrer" class="view-gallery-btn">
+                        <span>{{ project.link_text|default:"Visit Live Site"|safe }}</span>
+                        <span>↗</span>
+                    </a>
+                    {% else %}
+                    <a href="{% url 'core:contact' %}?service={{ project.category }}" class="view-gallery-btn">
+                        <span>Request Brief</span>
+                        <span>→</span>
+                    </a>
+                    {% endif %}
+                    {% if project.cover_image %}
+                    <button type="button" class="shot-trigger-btn" onclick="openProjectGallery({{ project.id }})" title="View Screenshots">
+                        🖼 {{ project.screenshots.count|default:"1" }}
+                    </button>
+                    {% endif %}
+                </div>
+            </div>
         </div>
-    </div>
-    {% empty %}
-    <!-- ACTIVE STAGING NOTICE (SHOWN ONLY IF ZERO PROJECTS ARE CREATED IN DJANGO ADMIN) -->
-    <div style="grid-column: 1 / -1; width: 100%; max-width: 680px; margin: 0 auto; text-align: center; padding: clamp(40px, 8vw, 65px) clamp(20px, 5vw, 40px); background: linear-gradient(135deg, rgba(0, 14, 28, 0.65) 0%, rgba(0, 6, 14, 0.85) 100%); border: 1px dashed rgba(0, 212, 255, 0.3); border-radius: 22px; backdrop-filter: blur(25px); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);">
+        {% endfor %}
+    {% else %}
+        <!-- WEB NODE 01: INHERITANCE BOX -->
+        <div class="portfolio-card reveal-card" data-category="web" style="animation-delay: 0.0s;">
+            <div class="project-media hud-corners">
+                <div class="card-top-bar">
+                    <span class="category-pill">● LIVE SYSTEM</span>
+                </div>
+                <div class="holo-core">
+                    <div class="holo-ring">01</div>
+                    <div class="holo-domain">inheritancebox.com</div>
+                </div>
+            </div>
+            <div class="project-info">
+                <div>
+                    <div class="project-sector">Legal &amp; Estate Vault</div>
+                    <h3>InheritanceBox</h3>
+                </div>
+                <div class="tech-tags">
+                    <span>Django</span><span>PostgreSQL</span><span>Encrypted</span>
+                </div>
+                <div class="card-actions">
+                    <a href="https://www.inheritancebox.com" target="_blank" rel="noopener noreferrer" class="view-gallery-btn">
+                        <span>Visit Live Site</span>
+                        <span>↗</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- WEB NODE 02: WELLFUL HOME -->
+        <div class="portfolio-card reveal-card" data-category="web" style="animation-delay: 0.08s;">
+            <div class="project-media hud-corners">
+                <div class="card-top-bar">
+                    <span class="category-pill">● LIVE SYSTEM</span>
+                </div>
+                <div class="holo-core">
+                    <div class="holo-ring">02</div>
+                    <div class="holo-domain">wellfulhome.com</div>
+                </div>
+            </div>
+            <div class="project-info">
+                <div>
+                    <div class="project-sector">Commercial Storefront</div>
+                    <h3>WellfulHome</h3>
+                </div>
+                <div class="tech-tags">
+                    <span>Full-Stack</span><span>High-Speed UI</span><span>SSL</span>
+                </div>
+                <div class="card-actions">
+                    <a href="https://www.wellfulhome.com" target="_blank" rel="noopener noreferrer" class="view-gallery-btn">
+                        <span>Visit Live Site</span>
+                        <span>↗</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- WEB NODE 03: UG FINANCE -->
+        <div class="portfolio-card reveal-card" data-category="web" style="animation-delay: 0.16s;">
+            <div class="project-media hud-corners">
+                <div class="card-top-bar">
+                    <span class="category-pill">● INSTITUTIONAL</span>
+                </div>
+                <div class="holo-core">
+                    <div class="holo-ring">03</div>
+                    <div class="holo-domain">finance.ugc.edu.gh</div>
+                </div>
+            </div>
+            <div class="project-info">
+                <div>
+                    <div class="project-sector">Academic &amp; Finance Portal</div>
+                    <h3>UGC Finance</h3>
+                </div>
+                <div class="tech-tags">
+                    <span>Enterprise</span><span>High-Traffic</span><span>Portal</span>
+                </div>
+                <div class="card-actions">
+                    <a href="https://finance.ugc.edu.gh" target="_blank" rel="noopener noreferrer" class="view-gallery-btn">
+                        <span>Visit Live Site</span>
+                        <span>↗</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- WEB NODE 04: NANATEST PYTHONANYWHERE (IN DEVELOPMENT) -->
+        <div class="portfolio-card card-dev reveal-card" data-category="web" style="animation-delay: 0.24s;">
+            <div class="project-media hud-corners">
+                <div class="dev-scan-line"></div>
+                <div class="card-top-bar">
+                    <span class="category-pill">● IN DEVELOPMENT</span>
+                </div>
+                <div class="holo-core">
+                    <div class="holo-ring">DEV</div>
+                    <div class="holo-domain">nanatest.pythonanywhere.com</div>
+                </div>
+            </div>
+            <div class="project-info">
+                <div>
+                    <div class="project-sector">Active Staging Build</div>
+                    <h3>NanaTest Cloud Node</h3>
+                </div>
+                <div class="tech-tags">
+                    <span>Python</span><span>WSGI</span><span>In Progress</span>
+                </div>
+                <div class="card-actions">
+                    <a href="https://nanatest.pythonanywhere.com" target="_blank" rel="noopener noreferrer" class="view-gallery-btn">
+                        <span>Preview Staging</span>
+                        <span>↗</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- WEB NODE 05: UKA GHANA (IN DEVELOPMENT) -->
+        <div class="portfolio-card card-dev reveal-card" data-category="web" style="animation-delay: 0.32s;">
+            <div class="project-media hud-corners">
+                <div class="dev-scan-line"></div>
+                <div class="card-top-bar">
+                    <span class="category-pill">● IN DEVELOPMENT</span>
+                </div>
+                <div class="holo-core">
+                    <div class="holo-ring">DEV</div>
+                    <div class="holo-domain">ukaghana.vercel.app</div>
+                </div>
+            </div>
+            <div class="project-info">
+                <div>
+                    <div class="project-sector">Active Staging Build</div>
+                    <h3>UKA Ghana Platform</h3>
+                </div>
+                <div class="tech-tags">
+                    <span>Web App</span><span>Vercel Edge</span><span>In Progress</span>
+                </div>
+                <div class="card-actions">
+                    <a href="https://ukaghana.vercel.app" target="_blank" rel="noopener noreferrer" class="view-gallery-btn">
+                        <span>Preview Staging</span>
+                        <span>↗</span>
+                    </a>
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <!-- CLASSIFIED STAGING NOTICE (SHOWN WHEN FILTERING EMPTY CATEGORIES LIKE VIDEO OR BRAND) -->
+    <div id="empty-category-banner" style="display: none; grid-column: 1 / -1; width: 100%; max-width: 680px; margin: 0 auto; text-align: center; padding: clamp(40px, 8vw, 65px) clamp(20px, 5vw, 40px); background: linear-gradient(135deg, rgba(0, 14, 28, 0.65) 0%, rgba(0, 6, 14, 0.85) 100%); border: 1px dashed rgba(0, 212, 255, 0.3); border-radius: 22px; backdrop-filter: blur(25px); box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);">
         <div style="font-family: var(--font-mono); font-size: 0.72rem; letter-spacing: 2.5px; color: var(--sea-bright); text-transform: uppercase; margin-bottom: 12px; font-weight: 800;">
             ● TELEMETRY NODE // ARSENAL STAGING
         </div>
@@ -673,7 +939,6 @@
             <span style="font-size: 1.1rem;">⚡</span>
         </a>
     </div>
-    {% endfor %}
 
 </section>
 <!-- GALLERY MODAL -->
@@ -736,7 +1001,7 @@
     const projectGalleries = {
         {% for project in projects %}
         {{ project.id }}: [
-            "{{ project.cover_image.url }}",
+            {% if project.cover_image %}"{{ project.cover_image.url }}",{% endif %}
             {% for shot in project.screenshots.all %}
             "{{ shot.image.url }}"{% if not forloop.last %},{% endif %}
             {% endfor %}
@@ -810,6 +1075,8 @@
 
     // 3. CATEGORY FILTERING LOGIC
     const filterBtns = document.querySelectorAll('.filter-btn');
+    const emptyBanner = document.getElementById('empty-category-banner');
+
     filterBtns.forEach(btn => {
         btn.addEventListener('click', () => {
             filterBtns.forEach(b => b.classList.remove('active'));
@@ -833,6 +1100,10 @@
                     card.style.display = 'none';
                 }
             });
+
+            if (emptyBanner) {
+                emptyBanner.style.display = visibleIndex === 0 ? 'block' : 'none';
+            }
         });
     });
 </script>

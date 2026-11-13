@@ -129,7 +129,7 @@ class PortfolioProject(models.Model):
     result_metric = models.CharField(max_length=100, help_text="e.g. Zero-Knowledge Security or 1.2M+ Reach Footprint")
     description = models.TextField(help_text="Capability summary and business outcome")
     tech_tags = models.CharField(max_length=255, help_text="Comma-separated tags (e.g. Python 3.12, Django ASGI, PostgreSQL)")
-    cover_image = models.ImageField(upload_to='portfolio/covers/', help_text="Main high-res card display image")
+    cover_image = models.ImageField(upload_to='portfolio/covers/', blank=True, null=True, help_text="Main high-res card display image")
     external_link = models.URLField(blank=True, null=True, help_text="Optional live deployment URL (leave blank to route to /contact/)")
     link_text = models.CharField(max_length=60, default="Commission Platform &rarr;")
     display_order = models.PositiveIntegerField(default=0, help_text="Order on page (0 shows first)")
