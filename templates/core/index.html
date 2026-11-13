@@ -380,6 +380,11 @@
         transform: translate(-50%, -50%) scale(1.08);
     }
 
+    .video-wrapper.is-loading .video-center-play {
+        animation: pulse-glow 0.8s infinite;
+        border-color: var(--accent);
+    }
+
     /* Bottom Control Bar */
     .custom-controls {
         position: absolute;
@@ -1769,7 +1774,7 @@
             </div>
 
             <!-- VIDEO ELEMENT -->
-            <video id="mainPlayer" playsinline preload="metadata" poster="{% static 'images/Wolvatarr_main_logo.png' %}" style="filter: contrast(1.04);">
+            <video id="mainPlayer" playsinline preload="auto" poster="{% static 'images/Wolvatarr_main_logo.png' %}" style="filter: contrast(1.04);">
     <source src="{% static 'images/Wolf_Promo_Genesis.mp4' %}" type="video/mp4">
     Your browser does not support the video tag.
 </video>
@@ -4382,11 +4387,13 @@ Ready to commission? Click '⚡ Talk With Us' or reach our direct line: <strong>
         if (!video || isPlayPending) return;
         if (video.paused) {
             isPlayPending = true;
+            if (videoWrapper) videoWrapper.classList.add('is-loading');
             video.play()
                 .then(() => syncPlayStateUI(true))
                 .catch(() => {})
                 .finally(() => {
                     isPlayPending = false;
+                    if (videoWrapper) videoWrapper.classList.remove('is-loading');
                 });
         } else {
             video.pause();
@@ -4460,6 +4467,14 @@ Ready to commission? Click '⚡ Talk With Us' or reach our direct line: <strong>
         video.addEventListener('ended', () => {
             syncPlayStateUI(false);
             showControls();
+        });
+
+        video.addEventListener('waiting', () => {
+            if (videoWrapper) videoWrapper.classList.add('is-loading');
+        });
+
+        video.addEventListener('playing', () => {
+            if (videoWrapper) videoWrapper.classList.remove('is-loading');
         });
 
         if (videoWrapper) {
