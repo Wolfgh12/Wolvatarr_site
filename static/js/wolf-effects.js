@@ -4,18 +4,67 @@
  */
 
 // --- 1. THE WOLF HOWL (Wild Animation Version) ---
+let howlStarting = false;
+
 function playWolfHowl() {
     const howl = document.getElementById('wolfHowlAudio');
-    if (howl) {
-        howl.currentTime = 0;
-        howl.play().catch(e => console.log("Audio play blocked until user interaction."));
-        
-        // High-energy surge feedback
-        const trigger = document.querySelector('.howl-trigger');
-        if (trigger) {
-            trigger.classList.add('electric-surge');
-            setTimeout(() => trigger.classList.remove('electric-surge'), 500);
+    const trigger = document.querySelector('.howl-trigger');
+    const label = trigger ? trigger.querySelector('.howl-label') : null;
+    if (!howl) return;
+
+    // High-energy surge feedback on every click
+    if (trigger) {
+        trigger.classList.remove('electric-surge');
+        void trigger.offsetWidth;
+        trigger.classList.add('electric-surge');
+        setTimeout(() => trigger.classList.remove('electric-surge'), 500);
+    }
+
+    // Do not cut off or restart if already howling
+    if (howlStarting || (!howl.paused && !howl.ended && howl.currentTime > 0)) {
+        return;
+    }
+
+    howl.volume = 1.0;
+
+    if (!howl.dataset.bound) {
+        howl.dataset.bound = '1';
+        howl.addEventListener('ended', () => {
+            howlStarting = false;
+            howl.currentTime = 0;
+            if (label) label.textContent = 'Wolf Command: Howl';
+        });
+        howl.addEventListener('stalled', () => {
+            if (!howl.ended && howl.currentTime > 0) {
+                howl.play().catch(() => {});
+            }
+        });
+    }
+
+    const startPlayback = () => {
+        howlStarting = true;
+        if (howl.ended) howl.currentTime = 0;
+        const playPromise = howl.play();
+        if (playPromise !== undefined) {
+            playPromise
+                .then(() => {
+                    howlStarting = false;
+                    if (label) label.textContent = 'Howling...';
+                })
+                .catch(() => {
+                    howlStarting = false;
+                });
+        } else {
+            howlStarting = false;
         }
+    };
+
+    if (howl.readyState >= 2) {
+        startPlayback();
+    } else {
+        howlStarting = true;
+        howl.load();
+        howl.addEventListener('canplay', startPlayback, { once: true });
     }
 }
 
